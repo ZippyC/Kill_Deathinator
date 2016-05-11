@@ -21,7 +21,14 @@ public class DrawView extends SurfaceView {
     private long lastClick;//keeping track of last click
     private Vibrator vibrator;//vibrator
     private Paint paint = new Paint();//paint used for text color
+    private Paint paint2 = new Paint();
     private Bitmap background_1;//level 1 background image
+    private Bitmap archerPic;//archer
+    private Bitmap playerPic;//player
+    private Bitmap scoutPic;
+    private Bitmap soldierPic;
+    private Bitmap treePic;
+    private Bitmap treasurePic;
     private boolean bavariaOn = false;//keeping track of if the bavaria song is playing
     private RectF upButton = new RectF(640, 640, 740, 740);
     private RectF leftButton = new RectF(540, 740, 640, 840);
@@ -42,6 +49,7 @@ public class DrawView extends SurfaceView {
         loopThread = new LoopThread(this);
         paint.setTextSize(50);//text size
         paint.setColor(Color.rgb(0, 200, 160));//set colour to a blood red-ish type colour
+        paint2.setColor(Color.WHITE);
         viewX=12;
         viewY=12;
         getHolder().addCallback(new SurfaceHolder.Callback() {
@@ -71,6 +79,12 @@ public class DrawView extends SurfaceView {
         });
 
         background_1 = BitmapFactory.decodeResource(getResources(), R.drawable.nab_bear_man);//instantiate the first backgound
+        playerPic=BitmapFactory.decodeResource(getResources(), R.drawable.player);
+        archerPic=BitmapFactory.decodeResource(getResources(), R.drawable.archer);
+        scoutPic=BitmapFactory.decodeResource(getResources(), R.drawable.scout);
+        soldierPic=BitmapFactory.decodeResource(getResources(), R.drawable.soldier);
+        treePic=BitmapFactory.decodeResource(getResources(), R.drawable.tree);
+        treasurePic=BitmapFactory.decodeResource(getResources(), R.drawable.treasure);
         vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);//instantiate the vibrator
         bavaria = MediaPlayer.create(context, R.raw.meanwhile_in_bavaria);
         for(int r=0; r<paints.length; r++){
@@ -114,6 +128,9 @@ public class DrawView extends SurfaceView {
 
     private void createLevel() {
         boardStatic.add(17, 17, (new StaticObject(0, false, false)));
+        boardStatic.add(0, 10, (new StaticObject(1, false, false)));
+        boardStatic.add(10, 3, (new StaticObject(2, false, true)));
+        boardStatic.add(10, 6, (new StaticObject(3, true, false)));
         for (int r = 0; r < board.length; r++) {
             for (int c = 0; c < board[0].length; c++) {
                 board[r][c] = new RectF(canvasWidth / 8 * c, canvasWidth / 8 * r, canvasWidth / 8 * (c + 1), canvasWidth / 8 * (r + 1));
@@ -131,10 +148,33 @@ public class DrawView extends SurfaceView {
         canvas.drawBitmap(background_1, 0, 0, paint);
         for(int r=0; r<board.length; r++){
             for(int c=0; c<board[0].length; c++){
-                canvas.drawRect(board[r][c], paints[r+viewX][c+viewY]);
+                if(boardStatic.get(r+viewX, c+viewY)!=null) {
+                    switch (boardStatic.get(r+viewX, c+viewY).getType()) {
+                        case 0:
+                            canvas.drawBitmap(playerPic, null, board[r][c], null);//draw Player
+                            break;
+                        case 1:
+                            canvas.drawBitmap(treasurePic, null, board[r][c], null);//drawTreasure
+                            break;
+                        case 2:
+                            canvas.drawBitmap(treePic, null, board[r][c], null);//draw Tree
+                            break;
+                        case 3:
+                            canvas.drawBitmap(archerPic, null, board[r][c], null);//draw Archer
+                            break;
+                        //case 5: canvas.drawBitmap(,null,board[r][c],null);
+                        default:
+                            canvas.drawBitmap(background_1, null, board[r][c], null);//draw MacNabb
+                            break;
+                    }
+                }
+                else {
+                    canvas.drawBitmap(background_1, null, board[r][c], null);//draw MacNabb
+                    //canvas.drawRect(board[r][c], paint2);
+                }
             }
         }
-        canvas.drawRect(upButton, paint);
+        canvas.drawRect(upButton, paint2);
         canvas.drawRect(leftButton, paint);
         canvas.drawRect(downButton, paint);
         canvas.drawRect(rightButton, paint);
@@ -154,25 +194,25 @@ public class DrawView extends SurfaceView {
 
             synchronized (getHolder()) {
                 if (upButton.contains(x, y)) {
-                    if(viewY>0) {
-                        viewY -= 2;
+                    if(viewX>0) {
+                        viewX -= 2;
                     }
                 }
                 else
                 if(downButton.contains(x, y)){
-                    if(viewY<12)
-                        viewY+=2;
+                    if(viewX<12)
+                        viewX+=2;
                 }
                 else
                 if(rightButton.contains(x, y)){
-                    if(viewX<12){
-                        viewX+=2;
+                    if(viewY<12){
+                        viewY+=2;
                     }
                 }
                 else
                 if(leftButton.contains(x, y))
-                    if(viewX>0)
-                        viewX-=2;
+                    if(viewY>0)
+                        viewY-=2;
             }
         }
         return true;
