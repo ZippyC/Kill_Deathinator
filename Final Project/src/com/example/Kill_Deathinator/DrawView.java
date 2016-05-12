@@ -145,7 +145,7 @@ public class DrawView extends SurfaceView {
 
     //pre:  "fileName" is the name of a real file containing lines of text - the first line intended to be unused
     //post:returns a String array of all the elements in <filename>.txt, with index 0 unused (heap) O(n)
-    public static ArrayList<String> readFile(String fileName)
+    /*public static ArrayList<String> readFile(String fileName)
     {
         try {
             int size = getFileSize(fileName);        //holds the # of elements in the file
@@ -154,8 +154,17 @@ public class DrawView extends SurfaceView {
             String line;
             while (input.hasNextLine())                //while there is another line in the file
             {
-                line = input.nextLine();                    //read in the next Line in the file and store it in line
-                list.add(line);                            //add the line into the array
+                try {
+                    line = input.nextLine();                    //read in the next Line in the file and store it in line
+                    list.add(line);                         //add the line into the array
+                }
+                catch (java.util.InputMismatchException ex1){
+                    return null;
+                }
+                catch (java.util.NoSuchElementException ex2){
+                    return null;
+                }
+
             }
             input.close();
             return list;
@@ -164,14 +173,40 @@ public class DrawView extends SurfaceView {
         {
             return null;
         }
-    }
+    }*/
+public ArrayList<String> readFile(String textFile){
+    ArrayList<String> temp= new ArrayList<String>();
+    /*try{
+        //Resources res = getResources();;
+        InputStream input = getResources().openRawResource(R.raw.level_1);
 
+    }*/
+    InputStream fis;
+    final StringBuffer storedString = new StringBuffer();
+
+    try {
+        fis = getResources().openRawResource(R.raw.level_1);
+        DataInputStream dataIO = new DataInputStream(fis);
+        String strLine = null;
+
+        while ((strLine = dataIO.readLine()) != null) {
+            temp.add(strLine);
+        }
+
+        dataIO.close();
+        fis.close();
+    }
+    catch  (Exception e) {
+    }
+    return temp;
+}
 
     private void createLevel(int level) {
         int x, y, t;//x=X index, y= Y index, t=Type
         boolean e, w;//e=Enemy, w=Walkable
-        ArrayList<String> temp = readFile("level_" + level);
+        ArrayList<String> temp = readFile("level_1.txt");
         if (temp != null) {
+            paint.setColor(Color.BLUE);
             for (int i = 1; i < temp.size(); i++) {//define all the variables then add the Object to the sparseMatrix
                 x = Integer.parseInt(temp.get(i).substring(0, 2));
                 y = Integer.parseInt(temp.get(i).substring(2, 4));
@@ -181,10 +216,10 @@ public class DrawView extends SurfaceView {
                 boardStatic.add(x, y, (new StaticObject(t, e, w)));//add the Object to the sparseMatrix
             }
         }
-        boardStatic.add(17, 17, (new StaticObject(0, false, false)));
+        /*boardStatic.add(17, 17, (new StaticObject(0, false, false)));
         boardStatic.add(6, 7, (new StaticObject(1, false, false)));
         boardStatic.add(10, 3, (new StaticObject(2, false, true)));
-        boardStatic.add(10, 6, (new StaticObject(3, true, false)));
+        boardStatic.add(10, 6, (new StaticObject(3, true, false)));*/
     }
     //post: creates the 8x8 screen based on the size of the screen
     private void createScreen(){
