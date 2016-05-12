@@ -7,6 +7,8 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import java.io.*;
+import java.util.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +46,7 @@ public class DrawView extends SurfaceView {
 
     //post: creates a the dialogue for a new level, death, vulnerability
 
-    public DrawView(Context context) {
+    public DrawView(Context context){
         super(context);
         loopThread = new LoopThread(this);
         paint.setTextSize(50);//text size
@@ -126,12 +128,67 @@ public class DrawView extends SurfaceView {
         return null;//should never be reached
     }
 
-    private void createLevel() {
+    //pre:  "fileName" is the name of a real file containing lines of text
+    //post: returns the number of lines in fileName O(n)
+    public static int getFileSize(String fileName)throws IOException
+    {
+        Scanner input = new Scanner(new FileReader(fileName));
+        int size=0;
+        while (input.hasNextLine())				//while there is another line in the file
+        {
+            size++;										//add to the size
+            input.nextLine();							//go to the next line in the file
+        }
+        input.close();									//always close the files when you are done
+        return size;
+    }
+
+    //pre:  "fileName" is the name of a real file containing lines of text - the first line intended to be unused
+    //post:returns a String array of all the elements in <filename>.txt, with index 0 unused (heap) O(n)
+    public static ArrayList<String> readFile(String fileName)
+    {
+        try {
+            int size = getFileSize(fileName);        //holds the # of elements in the file
+            ArrayList<String> list = new ArrayList<String>();
+            Scanner input = new Scanner(new FileReader(fileName));
+            String line;
+            while (input.hasNextLine())                //while there is another line in the file
+            {
+                line = input.nextLine();                    //read in the next Line in the file and store it in line
+                list.add(line);                            //add the line into the array
+            }
+            input.close();
+            return list;
+        }
+        catch (IOException ex3)			//file is corrupted or doesn't exist - clear high scores and remake the file
+        {
+            return null;
+        }
+    }
+
+
+    private void createLevel(int level) {
+        int x, y, t;//x=X index, y= Y index, t=Type
+        boolean e, w;//e=Enemy, w=Walkable
+        ArrayList<String> temp = readFile("level_" + level);
+        if (temp != null) {
+            for (int i = 1; i < temp.size(); i++) {//define all the variables then add the Object to the sparseMatrix
+                x = Integer.parseInt(temp.get(i).substring(0, 2));
+                y = Integer.parseInt(temp.get(i).substring(2, 4));
+                t = Integer.parseInt(temp.get(i).substring(4, 5));
+                e = Boolean.parseBoolean(temp.get(t).substring(5, 9));
+                w = Boolean.parseBoolean(temp.get(i).substring(9));
+                boardStatic.add(x, y, (new StaticObject(t, e, w)));//add the Object to the sparseMatrix
+            }
+        }
         boardStatic.add(17, 17, (new StaticObject(0, false, false)));
-        boardStatic.add(0, 10, (new StaticObject(1, false, false)));
+        boardStatic.add(6, 7, (new StaticObject(1, false, false)));
         boardStatic.add(10, 3, (new StaticObject(2, false, true)));
         boardStatic.add(10, 6, (new StaticObject(3, true, false)));
-        for (int r = 0; r < board.length; r++) {
+    }
+    //post: creates the 8x8 screen based on the size of the screen
+    private void createScreen(){
+        for (int r = 0; r < board.length; r++) {//create the 8x8 array of the screen
             for (int c = 0; c < board[0].length; c++) {
                 board[r][c] = new RectF(canvasWidth / 8 * c, canvasWidth / 8 * r, canvasWidth / 8 * (c + 1), canvasWidth / 8 * (r + 1));
             }
@@ -140,10 +197,12 @@ public class DrawView extends SurfaceView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        if(canvasWidth==0)
-            canvasWidth=canvas.getWidth();
+        if(canvasWidth==0) {
+            canvasWidth = canvas.getWidth();
+            createScreen();
+        }
         if(!levelStarted){
-            createLevel();
+            createLevel(1);
         }
         canvas.drawBitmap(background_1, 0, 0, paint);
         for(int r=0; r<board.length; r++){
@@ -184,10 +243,10 @@ public class DrawView extends SurfaceView {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (System.currentTimeMillis() - lastClick > 150) {//prevents spam tapping and accidentally pressing multiple times based on dragging
-            if(!bavariaOn) {
+            /*if(!bavariaOn) {
                 bavaria.start();
                 bavariaOn=true;
-            }
+            }*/
             lastClick = System.currentTimeMillis();
             float x = event.getX();
             float y = event.getY();
