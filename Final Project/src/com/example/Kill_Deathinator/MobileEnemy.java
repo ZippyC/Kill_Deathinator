@@ -5,34 +5,35 @@ package com.example.Kill_Deathinator;
  */
 public class MobileEnemy extends WorldObject{
     /*elements*/
-    private int sX;//starting X position
-    private int sY;//starting Y position
+    private int eX;//starting X position
+    private int eY;//starting Y position
     private boolean vertical;//if the unit moves up/down, or left/right(true=up/down)
     private boolean leaving;//if the unit is traveling away from, or towards their home location(true=away)
     private boolean living;//if the unit is still alive
     private boolean moved;//if the unit has moved this turn
     /*constructor*/
-    public MobileEnemy(int XPos, int YPos, int SX, int SY, boolean V, boolean Living, boolean Leaving){
-        super(XPos, YPos);
-        sX=SX;
-        sY=SY;
+    public MobileEnemy(int XPos, int YPos, int Type, boolean Enemy, boolean Walkable, boolean V, boolean Living, boolean Leaving, int EX, int EY){
+        super(XPos, YPos, Type, Enemy, Walkable);
+        eX=EX;
+        eY=EY;
         vertical=V;
         living=Living;
         leaving=Leaving;
     }
     /*methods*/
     /*gets & sets*/
-    public int getSX() {
-        return sX;
+
+    public int getEX() {
+        return eX;
     }
-    public void setSX(int sX) {
-        this.sX = sX;
+    public void setEX(int eX) {
+        this.eX = eX;
     }
-    public int getSY() {
-        return sY;
+    public int getEY() {
+        return eY;
     }
-    public void setSY(int sY) {
-        this.sY = sY;
+    public void setEY(int eY) {
+        this.eY = eY;
     }
     public boolean isVertical() {
         return vertical;

@@ -43,6 +43,7 @@ public class DrawView extends SurfaceView {
     private RectF[][] board=new RectF[8][8];
     private int canvasWidth=0;
     private boolean levelStarted=false;
+    private int level=1;
 
     //post: creates a the dialogue for a new level, death, vulnerability
 
@@ -145,61 +146,27 @@ public class DrawView extends SurfaceView {
 
     //pre:  "fileName" is the name of a real file containing lines of text - the first line intended to be unused
     //post:returns a String array of all the elements in <filename>.txt, with index 0 unused (heap) O(n)
-    /*public static ArrayList<String> readFile(String fileName)
-    {
+    public ArrayList<String> readFile(String textFile){
+        ArrayList<String> temp= new ArrayList<String>();
+        InputStream fis;
+        final StringBuffer storedString = new StringBuffer();
+
         try {
-            int size = getFileSize(fileName);        //holds the # of elements in the file
-            ArrayList<String> list = new ArrayList<String>();
-            Scanner input = new Scanner(new FileReader(fileName));
-            String line;
-            while (input.hasNextLine())                //while there is another line in the file
-            {
-                try {
-                    line = input.nextLine();                    //read in the next Line in the file and store it in line
-                    list.add(line);                         //add the line into the array
-                }
-                catch (java.util.InputMismatchException ex1){
-                    return null;
-                }
-                catch (java.util.NoSuchElementException ex2){
-                    return null;
-                }
+            fis = getResources().openRawResource(R.raw.level_1);
+            DataInputStream dataIO = new DataInputStream(fis);
+            String strLine = null;
 
+            while ((strLine = dataIO.readLine()) != null) {
+                temp.add(strLine);
             }
-            input.close();
-            return list;
+
+            dataIO.close();
+            fis.close();
         }
-        catch (IOException ex3)			//file is corrupted or doesn't exist - clear high scores and remake the file
-        {
-            return null;
+        catch  (Exception e) {
         }
-    }*/
-public ArrayList<String> readFile(String textFile){
-    ArrayList<String> temp= new ArrayList<String>();
-    /*try{
-        //Resources res = getResources();;
-        InputStream input = getResources().openRawResource(R.raw.level_1);
-
-    }*/
-    InputStream fis;
-    final StringBuffer storedString = new StringBuffer();
-
-    try {
-        fis = getResources().openRawResource(R.raw.level_1);
-        DataInputStream dataIO = new DataInputStream(fis);
-        String strLine = null;
-
-        while ((strLine = dataIO.readLine()) != null) {
-            temp.add(strLine);
-        }
-
-        dataIO.close();
-        fis.close();
+        return temp;
     }
-    catch  (Exception e) {
-    }
-    return temp;
-}
 
     private void createLevel(int level) {
         int x, y, t;//x=X index, y= Y index, t=Type
@@ -213,13 +180,9 @@ public ArrayList<String> readFile(String textFile){
                 t = Integer.parseInt(temp.get(i).substring(4, 5));
                 e = Boolean.parseBoolean(temp.get(t).substring(5, 9));
                 w = Boolean.parseBoolean(temp.get(i).substring(9));
-                boardStatic.add(x, y, (new StaticObject(t, e, w)));//add the Object to the sparseMatrix
+                boardStatic.add(x, y, (new WorldObject(x, y, t, e, w)));//add the Object to the sparseMatrix
             }
         }
-        /*boardStatic.add(17, 17, (new StaticObject(0, false, false)));
-        boardStatic.add(6, 7, (new StaticObject(1, false, false)));
-        boardStatic.add(10, 3, (new StaticObject(2, false, true)));
-        boardStatic.add(10, 6, (new StaticObject(3, true, false)));*/
     }
     //post: creates the 8x8 screen based on the size of the screen
     private void createScreen(){
