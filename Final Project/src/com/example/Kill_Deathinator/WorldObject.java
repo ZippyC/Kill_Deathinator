@@ -6,13 +6,17 @@ package com.example.Kill_Deathinator;
 public class WorldObject{
     private int xPos;//original X position on the board
     private int yPos;//original Y position on the board
-    private int type;//0=player, 1=treasure, 2=tree, 3=archer, 4=player home, 5=player on a tree
-    private boolean enemy;
-    private boolean walkable;
-    public WorldObject(int XPos, int YPos, int Type, boolean Enemy, boolean Walkable) {
+    private int type;//0=player, 1=treasure, 2=tree, 3=archer, 4=player home, 5=player on a tree, 6=soldier, 7=scout
+    private int vision;//how far can the unit see
+    private boolean enemy;//if this unit is an enemy
+    private boolean walkable;//if the player can walk over this unit
+    public WorldObject(int XPos, int YPos, int Type, int Vision, boolean Enemy, boolean Walkable) {
         xPos=XPos;
         yPos=YPos;
         type=Type;
+        vision=Vision;
+        enemy=Enemy;
+        walkable=Walkable;
     }
     /*gets & sets*/
     public int getType() {
@@ -32,6 +36,12 @@ public class WorldObject{
     }
     public void setWalkable(boolean walkable) {
         this.walkable = walkable;
+    }
+    public int getVision() {
+        return vision;
+    }
+    public void setVision(int vision) {
+        this.vision = vision;
     }
 }
 

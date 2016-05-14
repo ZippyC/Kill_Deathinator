@@ -12,11 +12,11 @@ public class MobileEnemy extends WorldObject{
     private boolean living;//if the unit is still alive
     private boolean moved;//if the unit has moved this turn
     /*constructor*/
-    public MobileEnemy(int XPos, int YPos, int Type, boolean Enemy, boolean Walkable, boolean V, boolean Living, boolean Leaving, int EX, int EY){
-        super(XPos, YPos, Type, Enemy, Walkable);
+    public MobileEnemy(int XPos, int YPos, int Type, int Vision, boolean Enemy, boolean Walkable, boolean Vertical, boolean Living, boolean Leaving, int EX, int EY){
+        super(XPos, YPos, Type, Vision, Enemy, Walkable);
         eX=EX;
         eY=EY;
-        vertical=V;
+        vertical=Vertical;
         living=Living;
         leaving=Leaving;
     }

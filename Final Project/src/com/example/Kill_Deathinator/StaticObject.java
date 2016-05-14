@@ -3,19 +3,19 @@ package com.example.Kill_Deathinator;
 /**
  * Created by 1568630 on 5/6/2016.
  */
-public class StaticObject extends WorldObject{
+public class StaticObject{
     /*elements*/
-    private boolean enemy;
+    /*private boolean enemy;
     private boolean walkable;
     /*constructor*/
-    public StaticObject(int XPos, int YPos, int Type, boolean Enemy, boolean Walkable){
+    /*public StaticObject(int XPos, int YPos, int Type, boolean Enemy, boolean Walkable){
         super(XPos, YPos, Type);
                 enemy=Enemy;
         walkable=Walkable;
-    }
+    }*/
 
     /*gets & sets*/
-    public boolean isEnemy() {
+    /*public boolean isEnemy() {
         return enemy;
     }
     public void setEnemy(boolean enemy) {
@@ -26,5 +26,5 @@ public class StaticObject extends WorldObject{
     }
     public void setWalkable(boolean walkable) {
         this.walkable = walkable;
-    }
+    }*/
 }

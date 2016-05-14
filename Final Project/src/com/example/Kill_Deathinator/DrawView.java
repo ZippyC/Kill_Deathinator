@@ -16,10 +16,9 @@ import java.util.List;
  * Created by 1568630 on 4/27/2016.
  */
 public class DrawView extends SurfaceView {
-    private SparseMatrix<StaticObject> boardStatic = new SparseMatrix<StaticObject>(20, 20);
+    private SparseMatrix<WorldObject> boardStatic = new SparseMatrix<WorldObject>(20, 20);
     private MediaPlayer bavaria;//media files of background music
     private LoopThread loopThread;
-    private List<Sprite> sprites = new ArrayList<Sprite>();//enemies, angel, dead creatures
     private long lastClick;//keeping track of last click
     private Vibrator vibrator;//vibrator
     private Paint paint = new Paint();//paint used for text color
@@ -81,7 +80,7 @@ public class DrawView extends SurfaceView {
             }
         });
 
-        background_1 = BitmapFactory.decodeResource(getResources(), R.drawable.nab_bear_man);//instantiate the first backgound
+        background_1 = BitmapFactory.decodeResource(getResources(), R.drawable.dirt);//instantiate the first backgound
         playerPic=BitmapFactory.decodeResource(getResources(), R.drawable.player);
         archerPic=BitmapFactory.decodeResource(getResources(), R.drawable.archer);
         scoutPic=BitmapFactory.decodeResource(getResources(), R.drawable.scout);
@@ -169,18 +168,38 @@ public class DrawView extends SurfaceView {
     }
 
     private void createLevel(int level) {
-        int x, y, t;//x=X index, y= Y index, t=Type
-        boolean e, w;//e=Enemy, w=Walkable
+        int x, y, t, v, ex, ey;//x=X index, y= Y index, t=Type, v=Vision, ex=endingX position, ey=endingY Position
+        boolean e, w, vert;//e=Enemy, w=Walkable, vert=vertical
+        boolean mobiles = true;//tells the loop if it should be reading in WorldObjects or MobileEnemys
         ArrayList<String> temp = readFile("level_1.txt");
         if (temp != null) {
-            paint.setColor(Color.BLUE);
+            paint.setColor(Color.LTGRAY);
             for (int i = 1; i < temp.size(); i++) {//define all the variables then add the Object to the sparseMatrix
-                x = Integer.parseInt(temp.get(i).substring(0, 2));
-                y = Integer.parseInt(temp.get(i).substring(2, 4));
-                t = Integer.parseInt(temp.get(i).substring(4, 5));
-                e = Boolean.parseBoolean(temp.get(t).substring(5, 9));
-                w = Boolean.parseBoolean(temp.get(i).substring(9));
-                boardStatic.add(x, y, (new WorldObject(x, y, t, e, w)));//add the Object to the sparseMatrix
+                if(temp.get(i).equals("cha")) {                                 //SOME ERROR IS OCCURING HERE AND IDK WHAT IS MAKING IT HAPPEN, reads in the first set of lines of the text file and uses the ELSE code block instead of IF
+                    mobiles = false;
+                    i++;
+                }
+                if(mobiles) {
+                    x = Integer.parseInt(temp.get(i).substring(0, 2));
+                    y = Integer.parseInt(temp.get(i).substring(2, 4));
+                    t = Integer.parseInt(temp.get(i).substring(4, 5));
+                    v = Integer.parseInt(temp.get(i).substring(5, 6));
+                    e = Boolean.parseBoolean(temp.get(t).substring(6, 10));
+                    w = Boolean.parseBoolean(temp.get(i).substring(10));
+                    boardStatic.add(x, y, (new WorldObject(x, y, t, v, e, w)));//add the Object to the sparseMatrix
+                }
+                else {
+                    x = Integer.parseInt(temp.get(i).substring(0, 2));
+                    y = Integer.parseInt(temp.get(i).substring(2, 4));
+                    t = Integer.parseInt(temp.get(i).substring(4, 5));
+                    v = Integer.parseInt(temp.get(i).substring(5, 6));
+                    e = Boolean.parseBoolean(temp.get(t).substring(6, 10));
+                    w = Boolean.parseBoolean(temp.get(i).substring(10, 14));
+                    vert = Boolean.parseBoolean(temp.get(t).substring(14, 18));
+                    ex = Integer.parseInt(temp.get(i).substring(18, 20));
+                    ey = Integer.parseInt(temp.get(i).substring(20));
+                    boardStatic.add(x, y, (new MobileEnemy(x, y, t, v, e, w, vert, true, true, ex, ey)));//add the MobileEnemy to the board
+                }
             }
         }
     }
@@ -219,7 +238,16 @@ public class DrawView extends SurfaceView {
                         case 3:
                             canvas.drawBitmap(archerPic, null, board[r][c], null);//draw Archer
                             break;
-                        //case 5: canvas.drawBitmap(,null,board[r][c],null);
+                        case 5:
+                            canvas.drawBitmap(treePic, null, board[r][c], null);//draw Tree
+                            canvas.drawBitmap(playerPic, null, board[r][c], null);//draw Player
+                            break;
+                        case 6:
+                            canvas.drawBitmap(soldierPic, null, board[r][c], null);//draw Soldier
+                            break;
+                        case 7:
+                            canvas.drawBitmap(scoutPic, null, board[r][c], null);//draw Scout
+                            break;
                         default:
                             canvas.drawBitmap(background_1, null, board[r][c], null);//draw MacNabb
                             break;
