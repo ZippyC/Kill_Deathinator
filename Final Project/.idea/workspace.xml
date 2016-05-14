@@ -42,13 +42,12 @@
       <file leaf-file-name="DrawView.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/example/Kill_Deathinator/DrawView.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="476">
-              <caret line="172" column="102" selection-start-line="172" selection-start-column="102" selection-end-line="172" selection-end-column="102" />
+            <state relative-caret-position="272">
+              <caret line="182" column="66" selection-start-line="182" selection-start-column="66" selection-end-line="182" selection-end-column="66" />
               <folding>
                 <element signature="e#532#545#0" expanded="true" />
                 <element signature="method#getFileSize#0;class#DrawView#0" expanded="false" />
                 <element signature="method#readFile#0;class#DrawView#0" expanded="false" />
-                <element signature="e#6205#6213#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -57,8 +56,8 @@
       <file leaf-file-name="MobileEnemy.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/example/Kill_Deathinator/MobileEnemy.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="18" column="26" selection-start-line="18" selection-start-column="26" selection-end-line="18" selection-end-column="26" />
+            <state relative-caret-position="360">
+              <caret line="37" column="30" selection-start-line="37" selection-start-column="19" selection-end-line="37" selection-end-column="30" />
               <folding />
             </state>
           </provider>
@@ -77,8 +76,8 @@
       <file leaf-file-name="WorldObject.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/example/Kill_Deathinator/WorldObject.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="8" column="116" selection-start-line="8" selection-start-column="116" selection-end-line="8" selection-end-column="116" />
+            <state relative-caret-position="501">
+              <caret line="53" column="5" selection-start-line="53" selection-start-column="5" selection-end-line="53" selection-end-column="5" />
               <folding />
             </state>
           </provider>
@@ -97,8 +96,8 @@
       <file leaf-file-name="level_1.txt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/res/raw/level_1.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="12" column="14" selection-start-line="12" selection-start-column="14" selection-end-line="12" selection-end-column="14" />
+            <state relative-caret-position="-643">
+              <caret line="4" column="23" selection-start-line="4" selection-start-column="23" selection-end-line="4" selection-end-column="23" />
               <folding />
             </state>
           </provider>
@@ -129,9 +128,9 @@
         <option value="$PROJECT_DIR$/src/com/example/Kill_Deathinator/level_1.txt" />
         <option value="$PROJECT_DIR$/src/com/example/Kill_Deathinator/MyActivity.java" />
         <option value="$PROJECT_DIR$/src/com/example/Kill_Deathinator/StaticObject.java" />
+        <option value="$PROJECT_DIR$/res/raw/level_1.txt" />
         <option value="$PROJECT_DIR$/src/com/example/Kill_Deathinator/MobileEnemy.java" />
         <option value="$PROJECT_DIR$/src/com/example/Kill_Deathinator/WorldObject.java" />
-        <option value="$PROJECT_DIR$/res/raw/level_1.txt" />
         <option value="$PROJECT_DIR$/src/com/example/Kill_Deathinator/DrawView.java" />
       </list>
     </option>
@@ -172,6 +171,9 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -260,9 +262,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="Scratches" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -465,11 +464,12 @@
       <updated>1461774454850</updated>
       <workItem from="1463208799696" duration="7033000" />
       <workItem from="1463216370572" duration="4296000" />
+      <workItem from="1463257992083" duration="5085000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="11329000" />
+    <option name="totallyTimeSpent" value="16414000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -492,7 +492,7 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32810867" sideWeight="0.50416666" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Android Monitor" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32810867" sideWeight="0.49583334" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33124346" sideWeight="0.49583334" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32810867" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32949308" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -615,7 +615,6 @@
             <element signature="e#532#545#0" expanded="true" />
             <element signature="method#getFileSize#0;class#DrawView#0" expanded="false" />
             <element signature="method#readFile#0;class#DrawView#0" expanded="false" />
-            <element signature="e#6205#6213#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -690,7 +689,6 @@
             <element signature="e#532#545#0" expanded="true" />
             <element signature="method#getFileSize#0;class#DrawView#0" expanded="false" />
             <element signature="method#readFile#0;class#DrawView#0" expanded="false" />
-            <element signature="e#6205#6213#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -733,7 +731,6 @@
             <element signature="e#532#545#0" expanded="true" />
             <element signature="method#getFileSize#0;class#DrawView#0" expanded="false" />
             <element signature="method#readFile#0;class#DrawView#0" expanded="false" />
-            <element signature="e#6205#6213#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -776,7 +773,6 @@
             <element signature="e#532#545#0" expanded="true" />
             <element signature="method#getFileSize#0;class#DrawView#0" expanded="false" />
             <element signature="method#readFile#0;class#DrawView#0" expanded="false" />
-            <element signature="e#6205#6213#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -811,7 +807,6 @@
             <element signature="e#532#545#0" expanded="true" />
             <element signature="method#getFileSize#0;class#DrawView#0" expanded="false" />
             <element signature="method#readFile#0;class#DrawView#0" expanded="false" />
-            <element signature="e#6205#6213#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -851,23 +846,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/example/Kill_Deathinator/SparseMatrix.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="62" column="5" selection-start-line="62" selection-start-column="5" selection-end-line="62" selection-end-column="5" />
-          <folding>
-            <element signature="e#3032#3033#0" expanded="false" />
-            <element signature="e#3123#3124#0" expanded="false" />
-            <element signature="e#4087#4088#0" expanded="false" />
-            <element signature="e#4160#4161#0" expanded="false" />
-            <element signature="e#4186#4187#0" expanded="false" />
-            <element signature="e#4250#4251#0" expanded="false" />
-            <element signature="e#4279#4280#0" expanded="false" />
-            <element signature="e#4342#4343#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/example/Kill_Deathinator/level_11.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -891,14 +869,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/example/Kill_Deathinator/StaticObject.java">
+    <entry file="file://$USER_HOME$/AppData/Local/Android/android-sdk/sources/android-15/java/lang/Integer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="25" selection-start-line="5" selection-start-column="25" selection-end-line="5" selection-end-column="25" />
-          <folding>
-            <marker date="1463217046695" expanded="false" signature="581:592" placeholder=" { " />
-            <marker date="1463217046695" expanded="false" signature="608:614" placeholder=" }" />
-          </folding>
+        <state relative-caret-position="205">
+          <caret line="137" column="0" selection-start-line="137" selection-start-column="0" selection-end-line="137" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Android/android-sdk/sources/android-15/android/view/View.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="205">
+          <caret line="9501" column="19" selection-start-line="9501" selection-start-column="19" selection-end-line="9501" selection-end-column="19" />
         </state>
       </provider>
     </entry>
@@ -910,18 +892,45 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/example/Kill_Deathinator/StaticObject.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="25" selection-start-line="5" selection-start-column="25" selection-end-line="5" selection-end-column="25" />
+          <folding>
+            <marker date="1463217046695" expanded="false" signature="581:592" placeholder=" { " />
+            <marker date="1463217046695" expanded="false" signature="608:614" placeholder=" }" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/example/Kill_Deathinator/WorldObject.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="116" selection-start-line="8" selection-start-column="116" selection-end-line="8" selection-end-column="116" />
+        <state relative-caret-position="501">
+          <caret line="53" column="5" selection-start-line="53" selection-start-column="5" selection-end-line="53" selection-end-column="5" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Android/android-sdk/sources/android-15/java/lang/Integer.java">
+    <entry file="file://$PROJECT_DIR$/src/com/example/Kill_Deathinator/SparseMatrix.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="205">
-          <caret line="137" column="0" selection-start-line="137" selection-start-column="0" selection-end-line="137" selection-end-column="0" />
+        <state relative-caret-position="-184">
+          <caret line="70" column="70" selection-start-line="70" selection-start-column="70" selection-end-line="70" selection-end-column="70" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/raw/level_1.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-643">
+          <caret line="4" column="23" selection-start-line="4" selection-start-column="23" selection-end-line="4" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/example/Kill_Deathinator/MobileEnemy.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="37" column="30" selection-start-line="37" selection-start-column="19" selection-end-line="37" selection-end-column="30" />
           <folding />
         </state>
       </provider>
@@ -934,39 +943,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Android/android-sdk/sources/android-15/android/view/View.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="205">
-          <caret line="9501" column="19" selection-start-line="9501" selection-start-column="19" selection-end-line="9501" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/raw/level_1.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" column="14" selection-start-line="12" selection-start-column="14" selection-end-line="12" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/example/Kill_Deathinator/MobileEnemy.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="18" column="26" selection-start-line="18" selection-start-column="26" selection-end-line="18" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/example/Kill_Deathinator/DrawView.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="172" column="102" selection-start-line="172" selection-start-column="102" selection-end-line="172" selection-end-column="102" />
+        <state relative-caret-position="272">
+          <caret line="182" column="66" selection-start-line="182" selection-start-column="66" selection-end-line="182" selection-end-column="66" />
           <folding>
             <element signature="e#532#545#0" expanded="true" />
             <element signature="method#getFileSize#0;class#DrawView#0" expanded="false" />
             <element signature="method#readFile#0;class#DrawView#0" expanded="false" />
-            <element signature="e#6205#6213#0" expanded="true" />
           </folding>
         </state>
       </provider>

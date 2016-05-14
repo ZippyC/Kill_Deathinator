@@ -43,5 +43,17 @@ public class WorldObject{
     public void setVision(int vision) {
         this.vision = vision;
     }
+    public int getXPos() {
+        return xPos;
+    }
+    public void setXPos(int xPos) {
+        this.xPos = xPos;
+    }
+    public int getYPos() {
+        return yPos;
+    }
+    public void setYPos(int yPos) {
+        this.yPos = yPos;
+    }
 }
 

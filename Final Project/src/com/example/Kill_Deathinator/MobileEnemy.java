@@ -5,8 +5,8 @@ package com.example.Kill_Deathinator;
  */
 public class MobileEnemy extends WorldObject{
     /*elements*/
-    private int eX;//starting X position
-    private int eY;//starting Y position
+    private int eX;//ending X position
+    private int eY;//ending Y position
     private boolean vertical;//if the unit moves up/down, or left/right(true=up/down)
     private boolean leaving;//if the unit is traveling away from, or towards their home location(true=away)
     private boolean living;//if the unit is still alive
@@ -35,19 +35,19 @@ public class MobileEnemy extends WorldObject{
     public void setEY(int eY) {
         this.eY = eY;
     }
-    public boolean isVertical() {
+    public boolean getVertical() {
         return vertical;
     }
     public void setVertical(boolean vertical) {
         this.vertical = vertical;
     }
-    public boolean isLeaving() {
+    public boolean getLeaving() {
         return leaving;
     }
     public void setLeaving(boolean leaving) {
         this.leaving = leaving;
     }
-    public boolean isLiving() {
+    public boolean getLiving() {
         return living;
     }
     public void setLiving(boolean living) {
