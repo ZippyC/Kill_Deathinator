@@ -24,12 +24,13 @@ public class DrawView extends SurfaceView {
     private Paint paint = new Paint();//paint used for text color
     private Paint paint2 = new Paint();
     private Bitmap background_1;//level 1 background image
+    private Bitmap grassPic;//grass
     private Bitmap archerPic;//archer
     private Bitmap playerPic;//player
-    private Bitmap scoutPic;
-    private Bitmap soldierPic;
-    private Bitmap treePic;
-    private Bitmap treasurePic;
+    private Bitmap scoutPic;//scout
+    private Bitmap soldierPic;//soldier
+    private Bitmap treePic;//tree
+    private Bitmap treasurePic;//treasure
     private boolean bavariaOn = false;//keeping track of if the bavaria song is playing
     private RectF upButton = new RectF(640, 640, 740, 740);
     private RectF leftButton = new RectF(540, 740, 640, 840);
@@ -86,6 +87,7 @@ public class DrawView extends SurfaceView {
         soldierPic=BitmapFactory.decodeResource(getResources(), R.drawable.soldier);
         treePic=BitmapFactory.decodeResource(getResources(), R.drawable.tree);
         treasurePic=BitmapFactory.decodeResource(getResources(), R.drawable.treasure);
+        grassPic=BitmapFactory.decodeResource(getResources(), R.drawable.grass);
         vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);//instantiate the vibrator
         bavaria = MediaPlayer.create(context, R.raw.meanwhile_in_bavaria);
         for(int r=0; r<paints.length; r++){
@@ -168,7 +170,12 @@ public class DrawView extends SurfaceView {
 
     //post: moves every enemy that can move 1 space forward form their current position
     private void move(){
-        for(int r=0; r<boardStatic.numRows(); r++){
+        int[] temp=getPlayerIndex();
+        if(temp[0]>0){
+            boardStatic.add(temp[0]-1, temp[1], boardStatic.get(temp[0], temp[1]).clone());
+            boardStatic.remove(temp[0], temp[1]);
+        }
+        /*for(int r=0; r<boardStatic.numRows(); r++){
             for(int c=0; c<boardStatic.numColumns(); c++){
                 if(boardStatic.get(r, c)!=null&&(boardStatic.get(r, c).getType()==6||boardStatic.get(r, c).getType()==7)){
                     if(boardStatic.get(r, c).getVertical()){//moving vertically
@@ -186,7 +193,7 @@ public class DrawView extends SurfaceView {
                             } else
                                 boardStatic.add(r + 1, c, new MobileEnemy(boardStatic.get(r, c).getXPos(), boardStatic.get(r, c).getYPos(), boardStatic.get(r, c).getType(), boardStatic.get(r, c).getVision(), true, false, true, true, true, boardStatic.get(r, c).getEX(), boardStatic.remove(r, c).getEY()));
                         }*/
-                    }
+                    /*}
                     /*else{//moving horizontally                //need to change things for moving hor/vert
                         if(boardStatic.get(r, c).getLeaving()){//moving away from starting position
                             if(c<boardStatic.get(r, c).getEY()){
@@ -202,10 +209,10 @@ public class DrawView extends SurfaceView {
                                 boardStatic.add(r, c+1, new MobileEnemy(boardStatic.get(r, c).getXPos(), boardStatic.get(r, c).getYPos(), boardStatic.get(r, c).getType(), boardStatic.get(r, c).getVision(), true, false, true, true, true, boardStatic.get(r, c).getEX(), boardStatic.remove(r, c).getEY()));
                         }
                     }*/
-                }
+                /*}
             }
         }
-        paint2.setColor(Color.GREEN);
+        paint2.setColor(Color.GREEN);*/
     }
 
     //pre: level>0 and the level being looked for exists
@@ -222,13 +229,13 @@ public class DrawView extends SurfaceView {
                     mobiles = false;
                 }
                 if(mobiles) {
-                    /*x = Integer.parseInt(temp.get(i).substring(1, 3));
+                    x = Integer.parseInt(temp.get(i).substring(1, 3));
                     y = Integer.parseInt(temp.get(i).substring(3, 5));
                     t = Integer.parseInt(temp.get(i).substring(5, 6));
                     v = Integer.parseInt(temp.get(i).substring(6, 7));
                     e = Boolean.parseBoolean(temp.get(t).substring(7, 11));
                     w = Boolean.parseBoolean(temp.get(i).substring(11, 15));
-                    boardStatic.add(x, y, (new MobileEnemy(x, y, t, v, e, w)));//add the Object to the sparseMatrix*/
+                    boardStatic.add(x, y, (new MobileEnemy(x, y, t, v, e, w, false, false, false, 0, 0)));//add the Object to the sparseMatrix
                 }
                 else {
                     x = Integer.parseInt(temp.get(i).substring(1, 3));
@@ -244,7 +251,7 @@ public class DrawView extends SurfaceView {
                 }
             }
         }
-    }
+    }                               //NEEDS TO BE FIXED
 
     //post: creates the 8x8 screen based on the size of the screen
     private void createScreen(){
@@ -270,25 +277,32 @@ public class DrawView extends SurfaceView {
                 if(boardStatic.get(r+viewX, c+viewY)!=null) {
                     switch (boardStatic.get(r+viewX, c+viewY).getType()) {
                         case 0:
+                            canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
                             canvas.drawBitmap(playerPic, null, board[r][c], null);//draw Player
                             break;
                         case 1:
+                            canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
                             canvas.drawBitmap(treasurePic, null, board[r][c], null);//drawTreasure
                             break;
                         case 2:
+                            canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
                             canvas.drawBitmap(treePic, null, board[r][c], null);//draw Tree
                             break;
                         case 3:
+                            canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
                             canvas.drawBitmap(archerPic, null, board[r][c], null);//draw Archer
                             break;
                         case 5:
+                            canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
                             canvas.drawBitmap(treePic, null, board[r][c], null);//draw Tree
                             canvas.drawBitmap(playerPic, null, board[r][c], null);//draw Player
                             break;
                         case 6:
+                            canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
                             canvas.drawBitmap(soldierPic, null, board[r][c], null);//draw Soldier
                             break;
                         case 7:
+                            canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
                             canvas.drawBitmap(scoutPic, null, board[r][c], null);//draw Scout
                             break;
                         default:
@@ -297,8 +311,7 @@ public class DrawView extends SurfaceView {
                     }
                 }
                 else {
-                    canvas.drawBitmap(background_1, null, board[r][c], null);//draw MacNabb
-                    //canvas.drawRect(board[r][c], paint2);
+                    canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
                 }
             }
         }

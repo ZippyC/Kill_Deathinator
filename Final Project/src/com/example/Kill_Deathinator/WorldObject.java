@@ -25,13 +25,13 @@ public class WorldObject{
     public void setType(int type) {
         this.type = type;
     }
-    public boolean isEnemy() {
+    public boolean getEnemy() {
         return enemy;
     }
     public void setEnemy(boolean enemy) {
         this.enemy = enemy;
     }
-    public boolean isWalkable() {
+    public boolean getWalkable() {
         return walkable;
     }
     public void setWalkable(boolean walkable) {
@@ -55,5 +55,6 @@ public class WorldObject{
     public void setYPos(int yPos) {
         this.yPos = yPos;
     }
+
 }
 

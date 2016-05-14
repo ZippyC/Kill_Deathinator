@@ -21,8 +21,11 @@ public class MobileEnemy extends WorldObject{
         leaving=Leaving;
     }
     /*methods*/
+    /*others*/
+    public MobileEnemy clone(){
+        return new MobileEnemy(this.getXPos(), this.getYPos(), this.getType(), this.getVision(), this.getEnemy(), this.getWalkable(), vertical, living, leaving, eX, eY);
+    }
     /*gets & sets*/
-
     public int getEX() {
         return eX;
     }
