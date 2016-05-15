@@ -18,6 +18,7 @@ import java.util.List;
 public class DrawView extends SurfaceView {
     private SparseMatrix<MobileEnemy> boardStatic = new SparseMatrix<MobileEnemy>(20, 20);
     private MediaPlayer bavaria;//media files of background music
+    private MediaPlayer fluteSong;//media file for the flute song
     private LoopThread loopThread;
     private long lastClick;//keeping track of last click
     private Vibrator vibrator;//vibrator
@@ -31,6 +32,11 @@ public class DrawView extends SurfaceView {
     private Bitmap soldierPic;//soldier
     private Bitmap treePic;//tree
     private Bitmap treasurePic;//treasure
+    private Bitmap arinPic;//arin as Sonic
+    private Bitmap rightArrowPic;
+    private Bitmap leftArrowPic;
+    private Bitmap upArrowPic;
+    private Bitmap downArrowPic;
     private boolean bavariaOn = false;//keeping track of if the bavaria song is playing
     private RectF upButton = new RectF(640, 640, 740, 740);
     private RectF leftButton = new RectF(540, 740, 640, 840);
@@ -41,10 +47,13 @@ public class DrawView extends SurfaceView {
     private int viewY;
     private Paint[][] paints=new Paint[20][20];
     private RectF[][] board=new RectF[8][8];
+    private RectF musicButton=new RectF(200, 1200, 300, 1300);
     private int canvasWidth=0;
     private boolean levelStarted=false;
     private int level=1;
-    private RectF moveButton=new RectF(700, 1000, 900, 1200);//button to move Objects
+    private RectF moveButton=new RectF(500, 1000, 900, 1600);//button to move Objects'
+    private int gameState=0;//0=start screen, 1=map, 2=fight
+    private int clicks=0;
 
     public DrawView(Context context){
         super(context);
@@ -88,8 +97,14 @@ public class DrawView extends SurfaceView {
         treePic=BitmapFactory.decodeResource(getResources(), R.drawable.tree);
         treasurePic=BitmapFactory.decodeResource(getResources(), R.drawable.treasure);
         grassPic=BitmapFactory.decodeResource(getResources(), R.drawable.grass);
+        arinPic=BitmapFactory.decodeResource(getResources(), R.drawable.im_sorry);
+        rightArrowPic=BitmapFactory.decodeResource(getResources(), R.drawable.right_arrow);
+        downArrowPic=BitmapFactory.decodeResource(getResources(), R.drawable.down_arrow);
+        leftArrowPic=BitmapFactory.decodeResource(getResources(), R.drawable.left_arrow);
+        upArrowPic=BitmapFactory.decodeResource(getResources(), R.drawable.up_arrow);
         vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);//instantiate the vibrator
         bavaria = MediaPlayer.create(context, R.raw.meanwhile_in_bavaria);
+        fluteSong = MediaPlayer.create(context, R.raw.flute_song);
         for(int r=0; r<paints.length; r++){
             for(int c=0; c<paints[0].length; c++){
                 paints[r][c] = new Paint();
@@ -175,45 +190,40 @@ public class DrawView extends SurfaceView {
             boardStatic.add(temp[0]-1, temp[1], boardStatic.get(temp[0], temp[1]).clone());
             boardStatic.remove(temp[0], temp[1]);
         }
-        /*for(int r=0; r<boardStatic.numRows(); r++){
+        for(int r=0; r<boardStatic.numRows(); r++){
             for(int c=0; c<boardStatic.numColumns(); c++){
-                if(boardStatic.get(r, c)!=null&&(boardStatic.get(r, c).getType()==6||boardStatic.get(r, c).getType()==7)){
-                    if(boardStatic.get(r, c).getVertical()){//moving vertically
-                        if(boardStatic.get(r, c).getLeaving()){//moving away from starting location
-                            if(r<boardStatic.get(r, c).getEX()){
-                                boardStatic.add(r+1, c, new MobileEnemy(boardStatic.get(r, c).getXPos(), boardStatic.get(r, c).getYPos(), boardStatic.get(r, c).getType(), boardStatic.get(r, c).getVision(), true, false, true, true, true, boardStatic.get(r, c).getEX(), boardStatic.get(r, c).getEY()));
+                if(boardStatic.get(r, c)!=null&&(boardStatic.get(r, c).getType()==6||boardStatic.get(r, c).getType()==7)) {
+                    if (boardStatic.get(r, c).getVertical()) {//moving vertically
+                        if (boardStatic.get(r, c).getLeaving()) {//moving away from starting location
+                            if (r < boardStatic.get(r, c).getEX()) {
+                                boardStatic.add(r + 1, c, new MobileEnemy(boardStatic.get(r, c).getXPos(), boardStatic.get(r, c).getYPos(), boardStatic.get(r, c).getType(), boardStatic.get(r, c).getVision(), true, false, true, true, true, boardStatic.get(r, c).getEX(), boardStatic.get(r, c).getEY()));
                                 boardStatic.remove(r, c);
-                            }
-                            else
-                                boardStatic.add(r-1, c, new MobileEnemy(boardStatic.get(r, c).getXPos(), boardStatic.get(r, c).getYPos(), boardStatic.get(r, c).getType(), boardStatic.get(r, c).getVision(), true, false, true, true, false, boardStatic.get(r, c).getEX(), boardStatic.remove(r, c).getEY()));
-                        }
-                        /*else {//moving towards starting location
+                            } else
+                                boardStatic.add(r - 1, c, new MobileEnemy(boardStatic.get(r, c).getXPos(), boardStatic.get(r, c).getYPos(), boardStatic.get(r, c).getType(), boardStatic.get(r, c).getVision(), true, false, true, true, false, boardStatic.get(r, c).getEX(), boardStatic.remove(r, c).getEY()));
+                        } else {//moving towards starting location
                             if (r > boardStatic.get(r, c).getXPos()) {
                                 boardStatic.add(r - 1, c, new MobileEnemy(boardStatic.get(r, c).getXPos(), boardStatic.get(r, c).getYPos(), boardStatic.get(r, c).getType(), boardStatic.get(r, c).getVision(), true, false, true, true, false, boardStatic.get(r, c).getEX(), boardStatic.remove(r, c).getEY()));
                             } else
                                 boardStatic.add(r + 1, c, new MobileEnemy(boardStatic.get(r, c).getXPos(), boardStatic.get(r, c).getYPos(), boardStatic.get(r, c).getType(), boardStatic.get(r, c).getVision(), true, false, true, true, true, boardStatic.get(r, c).getEX(), boardStatic.remove(r, c).getEY()));
-                        }*/
-                    /*}
-                    /*else{//moving horizontally                //need to change things for moving hor/vert
-                        if(boardStatic.get(r, c).getLeaving()){//moving away from starting position
-                            if(c<boardStatic.get(r, c).getEY()){
-                                boardStatic.add(r, c+1, new MobileEnemy(boardStatic.get(r, c).getXPos(), boardStatic.get(r, c).getYPos(), boardStatic.get(r, c).getType(), boardStatic.get(r, c).getVision(), true, false, true, true, true, boardStatic.get(r, c).getEX(), boardStatic.remove(r, c).getEY()));
-                            }
-                            else
-                                boardStatic.add(r, c-1, new MobileEnemy(boardStatic.get(r, c).getXPos(), boardStatic.get(r, c).getYPos(), boardStatic.get(r, c).getType(), boardStatic.get(r, c).getVision(), true, false, true, true, false, boardStatic.get(r, c).getEX(), boardStatic.remove(r, c).getEY()));
                         }
-                        else {//moving away from starting location
-                            if (c > boardStatic.get(r, c).getYPos()) {
-                                boardStatic.add(r, c-1, new MobileEnemy(boardStatic.get(r, c).getXPos(), boardStatic.get(r, c).getYPos(), boardStatic.get(r, c).getType(), boardStatic.get(r, c).getVision(), true, false, true, true, false, boardStatic.get(r, c).getEX(), boardStatic.remove(r, c).getEY()));
+                    } else {//moving horizontally                //need to change things for moving hor/vert
+                        if (boardStatic.get(r, c).getLeaving()) {//moving away from starting position
+                            if (c < boardStatic.get(r, c).getEY()) {
+                                boardStatic.add(r, c + 1, new MobileEnemy(boardStatic.get(r, c).getXPos(), boardStatic.get(r, c).getYPos(), boardStatic.get(r, c).getType(), boardStatic.get(r, c).getVision(), true, false, true, true, true, boardStatic.get(r, c).getEX(), boardStatic.remove(r, c).getEY()));
                             } else
-                                boardStatic.add(r, c+1, new MobileEnemy(boardStatic.get(r, c).getXPos(), boardStatic.get(r, c).getYPos(), boardStatic.get(r, c).getType(), boardStatic.get(r, c).getVision(), true, false, true, true, true, boardStatic.get(r, c).getEX(), boardStatic.remove(r, c).getEY()));
+                                boardStatic.add(r, c - 1, new MobileEnemy(boardStatic.get(r, c).getXPos(), boardStatic.get(r, c).getYPos(), boardStatic.get(r, c).getType(), boardStatic.get(r, c).getVision(), true, false, true, true, false, boardStatic.get(r, c).getEX(), boardStatic.remove(r, c).getEY()));
+                        } else {//moving away from starting location
+                            if (c > boardStatic.get(r, c).getYPos()) {
+                                boardStatic.add(r, c - 1, new MobileEnemy(boardStatic.get(r, c).getXPos(), boardStatic.get(r, c).getYPos(), boardStatic.get(r, c).getType(), boardStatic.get(r, c).getVision(), true, false, true, true, false, boardStatic.get(r, c).getEX(), boardStatic.remove(r, c).getEY()));
+                            } else
+                                boardStatic.add(r, c + 1, new MobileEnemy(boardStatic.get(r, c).getXPos(), boardStatic.get(r, c).getYPos(), boardStatic.get(r, c).getType(), boardStatic.get(r, c).getVision(), true, false, true, true, true, boardStatic.get(r, c).getEX(), boardStatic.remove(r, c).getEY()));
                         }
-                    }*/
-                /*}
+                    }
+                }
             }
         }
-        paint2.setColor(Color.GREEN);*/
-    }
+        paint2.setColor(Color.GREEN);
+    }                                               //ONLY A TEST SO FAR
 
     //pre: level>0 and the level being looked for exists
     //post: fill the board with all of the WorldObjects for a given level
@@ -264,63 +274,68 @@ public class DrawView extends SurfaceView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        if(canvasWidth==0) {
-            canvasWidth = canvas.getWidth();
-            createScreen();
+        if(gameState==0) {
+            canvas.drawText("This is the Start Screen", (canvas.getWidth() / 2) - 100, 300, paint);
         }
-        if(!levelStarted){
-            createLevel(1);
-        }
-        canvas.drawBitmap(background_1, 0, 0, paint);
-        for(int r=0; r<board.length; r++){
-            for(int c=0; c<board[0].length; c++){
-                if(boardStatic.get(r+viewX, c+viewY)!=null) {
-                    switch (boardStatic.get(r+viewX, c+viewY).getType()) {
-                        case 0:
-                            canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
-                            canvas.drawBitmap(playerPic, null, board[r][c], null);//draw Player
-                            break;
-                        case 1:
-                            canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
-                            canvas.drawBitmap(treasurePic, null, board[r][c], null);//drawTreasure
-                            break;
-                        case 2:
-                            canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
-                            canvas.drawBitmap(treePic, null, board[r][c], null);//draw Tree
-                            break;
-                        case 3:
-                            canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
-                            canvas.drawBitmap(archerPic, null, board[r][c], null);//draw Archer
-                            break;
-                        case 5:
-                            canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
-                            canvas.drawBitmap(treePic, null, board[r][c], null);//draw Tree
-                            canvas.drawBitmap(playerPic, null, board[r][c], null);//draw Player
-                            break;
-                        case 6:
-                            canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
-                            canvas.drawBitmap(soldierPic, null, board[r][c], null);//draw Soldier
-                            break;
-                        case 7:
-                            canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
-                            canvas.drawBitmap(scoutPic, null, board[r][c], null);//draw Scout
-                            break;
-                        default:
-                            canvas.drawBitmap(background_1, null, board[r][c], null);//draw MacNabb
-                            break;
+        if(gameState==1){
+            if (canvasWidth == 0) {
+                canvasWidth = canvas.getWidth();
+                createScreen();
+            }
+            if (!levelStarted) {
+                createLevel(1);
+            }
+            canvas.drawBitmap(background_1, 0, 0, paint);
+            for (int r = 0; r < board.length; r++) {
+                for (int c = 0; c < board[0].length; c++) {
+                    if (boardStatic.get(r + viewX, c + viewY) != null) {
+                        switch (boardStatic.get(r + viewX, c + viewY).getType()) {
+                            case 0:
+                                canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
+                                canvas.drawBitmap(playerPic, null, board[r][c], null);//draw Player
+                                break;
+                            case 1:
+                                canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
+                                canvas.drawBitmap(treasurePic, null, board[r][c], null);//drawTreasure
+                                break;
+                            case 2:
+                                canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
+                                canvas.drawBitmap(treePic, null, board[r][c], null);//draw Tree
+                                break;
+                            case 3:
+                                canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
+                                canvas.drawBitmap(archerPic, null, board[r][c], null);//draw Archer
+                                break;
+                            case 5:
+                                canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
+                                canvas.drawBitmap(treePic, null, board[r][c], null);//draw Tree
+                                canvas.drawBitmap(playerPic, null, board[r][c], null);//draw Player
+                                break;
+                            case 6:
+                                canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
+                                canvas.drawBitmap(soldierPic, null, board[r][c], null);//draw Soldier
+                                break;
+                            case 7:
+                                canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
+                                canvas.drawBitmap(scoutPic, null, board[r][c], null);//draw Scout
+                                break;
+                            default:
+                                canvas.drawBitmap(background_1, null, board[r][c], null);//draw MacNabb
+                                break;
+                        }
+                    } else {
+                        canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
                     }
                 }
-                else {
-                    canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
-                }
             }
+            canvas.drawBitmap(upArrowPic, null, upButton, null);
+            canvas.drawBitmap(downArrowPic, null, downButton, null);
+            canvas.drawBitmap(leftArrowPic, null, leftButton, null);
+            canvas.drawBitmap(rightArrowPic, null, rightButton, null);
+            canvas.drawText("x: " + viewX + " Y: " + viewY, (canvas.getWidth() / 2) - 100, 50, paint);//print screen location
+            canvas.drawBitmap(arinPic, null, moveButton, null);
+            canvas.drawRect(musicButton, paint);
         }
-        canvas.drawRect(upButton, paint2);
-        canvas.drawRect(leftButton, paint);
-        canvas.drawRect(downButton, paint);
-        canvas.drawRect(rightButton, paint);
-        canvas.drawText("x: "+viewX+" Y: "+viewY, (canvas.getWidth() / 2) - 100, 50, paint);//print screen location
-        canvas.drawRect(moveButton, paint2);
     }
 
     @Override
@@ -333,32 +348,43 @@ public class DrawView extends SurfaceView {
             lastClick = System.currentTimeMillis();
             float x = event.getX();
             float y = event.getY();
-
-            synchronized (getHolder()) {
-                if (upButton.contains(x, y)) {
-                    if(viewX>0) {
-                        viewX -= 2;
+            if (gameState == 0) {
+                gameState=1;
+            }
+            if (gameState == 1) {
+                synchronized (getHolder()) {
+                    if (upButton.contains(x, y)) {
+                        if (viewX > 0) {
+                            viewX -= 2;
+                        }
+                    } else if (downButton.contains(x, y)) {
+                        if (viewX < 12)
+                            viewX += 2;
+                    } else if (rightButton.contains(x, y)) {
+                        if (viewY < 12) {
+                            viewY += 2;
+                        }
+                    } else if (leftButton.contains(x, y))
+                        if (viewY > 0)
+                            viewY -= 2;
+                    if (moveButton.contains(x, y)) {
+                        move();
+                        clicks++;
                     }
-                }
-                else
-                if(downButton.contains(x, y)){
-                    if(viewX<12)
-                        viewX+=2;
-                }
-                else
-                if(rightButton.contains(x, y)){
-                    if(viewY<12){
-                        viewY+=2;
+                    if (musicButton.contains(x, y)) {
+                        if (bavariaOn) {
+                            bavariaOn = false;
+                            fluteSong.pause();
+                        } else {
+                            bavariaOn = true;
+                            fluteSong.start();
+                        }
                     }
-                }
-                else
-                if(leftButton.contains(x, y))
-                    if(viewY>0)
-                        viewY-=2;
-                if(moveButton.contains(x, y)){
-                    move();
                 }
             }
+        }
+        if(gameState==2){
+            gameState=1;
         }
         return true;
     }
