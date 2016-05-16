@@ -38,10 +38,14 @@ public class DrawView extends SurfaceView {
     private Bitmap upArrowPic;
     private Bitmap downArrowPic;
     private boolean bavariaOn = false;//keeping track of if the bavaria song is playing
-    private RectF upButton = new RectF(640, 640, 740, 740);
-    private RectF leftButton = new RectF(540, 740, 640, 840);
-    private RectF downButton = new RectF(640, 840, 740, 940);
-    private RectF rightButton = new RectF(740, 740, 840, 840);
+    private RectF upScreenButton = new RectF(640, 640, 740, 740);
+    private RectF leftScreenButton = new RectF(540, 740, 640, 840);
+    private RectF downScreenButton = new RectF(640, 840, 740, 940);
+    private RectF rightScreenButton = new RectF(740, 740, 840, 840);
+    private RectF upButton = new RectF(640, 950, 740, 1050);
+    private RectF leftButton = new RectF(540, 1050, 640, 1150);
+    private RectF downButton = new RectF(640, 1150, 740, 1250);
+    private RectF rightButton = new RectF(740, 1050, 840, 1150);
     private boolean moving=false;//control if the enemies are moving or not
     private int viewX;
     private int viewY;
@@ -183,13 +187,171 @@ public class DrawView extends SurfaceView {
         return temp;
     }
 
+    //pre: dir is greater than 0 and less than 4
+    //post: moves the player in the direction specified by dir
+    private void movePlayer(int dir){
+        int[] loc=getPlayerIndex();
+        boolean onTree=boardStatic.get(loc[0], loc[1]).getType()==5;//if the player is currently on a tree tile
+        switch(dir){
+            case 0://move up
+                if(loc[0]-1>=0)
+                    if (boardStatic.get(loc[0] - 1, loc[1]) == null) {
+                        if(!onTree)//regular movement
+                            boardStatic.add(loc[0] - 1, loc[1], boardStatic.remove(loc[0], loc[1]).clone());//move player, remove old player
+                        else {//if player is currently on a tree
+                            boardStatic.add(loc[0] - 1, loc[1], boardStatic.get(loc[0], loc[1]).clone());//add player to new location
+                            boardStatic.get(loc[0] - 1, loc[1]).setType(0);//set new location to just a player
+                            boardStatic.get(loc[0], loc[1]).setType(2);//make the old location just a tree
+                        }
+                    }
+                    else
+                    if(boardStatic.get(loc[0]-1, loc[1]).getWalkable()){
+                        if (!onTree) {//regular movement
+                            if (boardStatic.get(loc[0] - 1, loc[1]).getType() == 2) {//if moving onto a tree
+                                boardStatic.get(loc[0] - 1, loc[1]).setType(5);//set new location to player+tree
+                                boardStatic.remove(loc[0], loc[1]);//remove old player
+                            }
+                            else
+                            if(boardStatic.get(loc[0]-1, loc[1]).getType()==1){//if moving onto the treasure
+                                paint.setColor(Color.BLACK);//show treasure was hit
+                                boardStatic.add(loc[0] - 1, loc[1], boardStatic.remove(loc[0], loc[1]).clone());//move player to new location and remove player from old location
+                            }
+                        }
+                        else {//if player is currently on a tree
+                            if (boardStatic.get(loc[0] - 1, loc[1]).getType() == 2) {//if moving onto a tree
+                                boardStatic.get(loc[0] - 1, loc[1]).setType(5);//set new location to player+tree
+                                boardStatic.get(loc[0], loc[1]).setType(2);//make the old location just a tree
+                            }
+                            else
+                            if(boardStatic.get(loc[0]-1, loc[1]).getType()==1){//if moving onto the treasure
+                                paint.setColor(Color.BLACK);//show treasure was hit
+                                boardStatic.add(loc[0] - 1, loc[1], boardStatic.get(loc[0], loc[1]).clone());//move player to new location
+                                boardStatic.get(loc[0], loc[1]).setType(2);//make the old location just a tree
+                            }
+                        }
+                    }
+                break;
+            case 1://move left
+                if(loc[1]-1>=0)
+                    if (boardStatic.get(loc[0], loc[1]-1) == null) {
+                        if(!onTree)//regular movement
+                            boardStatic.add(loc[0], loc[1]-1, boardStatic.remove(loc[0], loc[1]).clone());//move player, remove old player
+                        else {//if player is currently on a tree
+                            boardStatic.add(loc[0], loc[1]-1, boardStatic.get(loc[0], loc[1]).clone());//add player to new location
+                            boardStatic.get(loc[0], loc[1]-1).setType(0);//set new location to just a player
+                            boardStatic.get(loc[0], loc[1]).setType(2);//make the old location just a tree
+                        }
+                    }
+                    else
+                    if(boardStatic.get(loc[0], loc[1]-1).getWalkable()){
+                        if (!onTree) {//regular movement
+                            if (boardStatic.get(loc[0], loc[1]-1).getType() == 2) {//if moving onto a tree
+                                boardStatic.get(loc[0], loc[1]-1).setType(5);//set new location to player+tree
+                                boardStatic.remove(loc[0], loc[1]);//remove old player
+                            }
+                            else
+                            if(boardStatic.get(loc[0], loc[1]-1).getType()==1){//if moving onto the treasure
+                                paint.setColor(Color.BLACK);//show treasure was hit
+                                boardStatic.add(loc[0], loc[1]-1, boardStatic.remove(loc[0], loc[1]).clone());//move player to new location and remove player from old location
+                            }
+                        }
+                        else {//if player is currently on a tree
+                            if (boardStatic.get(loc[0], loc[1]-1).getType() == 2) {//if moving onto a tree
+                                boardStatic.get(loc[0], loc[1]-1).setType(5);//set new location to player+tree
+                                boardStatic.get(loc[0], loc[1]).setType(2);//make the old location just a tree
+                            }
+                            else
+                            if(boardStatic.get(loc[0], loc[1]-1).getType()==1){//if moving onto the treasure
+                                paint.setColor(Color.BLACK);//show treasure was hit
+                                boardStatic.add(loc[0], loc[1]-1, boardStatic.get(loc[0], loc[1]).clone());//move player to new location
+                                boardStatic.get(loc[0], loc[1]).setType(2);//make the old location just a tree
+                            }
+                        }
+                    }
+                break;
+            case 2://move right
+                if(loc[1]+1<=19)
+                    if (boardStatic.get(loc[0], loc[1]+1) == null) {
+                        if(!onTree)//regular movement
+                            boardStatic.add(loc[0], loc[1]+1, boardStatic.remove(loc[0], loc[1]).clone());//move player, remove old player
+                        else {//if player is currently on a tree
+                            boardStatic.add(loc[0], loc[1]+1, boardStatic.get(loc[0], loc[1]).clone());//add player to new location
+                            boardStatic.get(loc[0], loc[1]+1).setType(0);//set new location to just a player
+                            boardStatic.get(loc[0], loc[1]).setType(2);//make the old location just a tree
+                        }
+                    }
+                    else
+                    if(boardStatic.get(loc[0], loc[1]+1).getWalkable()){
+                        if (!onTree) {//regular movement
+                            if (boardStatic.get(loc[0], loc[1]+1).getType() == 2) {//if moving onto a tree
+                                boardStatic.get(loc[0], loc[1]+1).setType(5);//set new location to player+tree
+                                boardStatic.remove(loc[0], loc[1]);//remove old player
+                            }
+                            else
+                            if(boardStatic.get(loc[0], loc[1]+1).getType()==1){//if moving onto the treasure
+                                paint.setColor(Color.BLACK);//show treasure was hit
+                                boardStatic.add(loc[0], loc[1]+1, boardStatic.remove(loc[0], loc[1]).clone());//move player to new location and remove player from old location
+                            }
+                        }
+                        else {//if player is currently on a tree
+                            if (boardStatic.get(loc[0], loc[1]+1).getType() == 2) {//if moving onto a tree
+                                boardStatic.get(loc[0], loc[1]+1).setType(5);//set new location to player+tree
+                                boardStatic.get(loc[0], loc[1]).setType(2);//make the old location just a tree
+                            }
+                            else
+                            if(boardStatic.get(loc[0], loc[1]+1).getType()==1){//if moving onto the treasure
+                                paint.setColor(Color.BLACK);//show treasure was hit
+                                boardStatic.add(loc[0], loc[1]+1, boardStatic.get(loc[0], loc[1]).clone());//move player to new location
+                                boardStatic.get(loc[0], loc[1]).setType(2);//make the old location just a tree
+                            }
+                        }
+                    }
+                break;
+            case 3://move down
+                if(loc[0]+1<=19)
+                    if (boardStatic.get(loc[0] + 1, loc[1]) == null) {
+                        if(!onTree)//regular movement
+                            boardStatic.add(loc[0] + 1, loc[1], boardStatic.remove(loc[0], loc[1]).clone());//move player, remove old player
+                        else {//if player is currently on a tree
+                            boardStatic.add(loc[0] + 1, loc[1], boardStatic.get(loc[0], loc[1]).clone());//add player to new location
+                            boardStatic.get(loc[0] + 1, loc[1]).setType(0);//set new location to just a player
+                            boardStatic.get(loc[0], loc[1]).setType(2);//make the old location just a tree
+                        }
+                    }
+                    else
+                    if(boardStatic.get(loc[0] + 1, loc[1]).getWalkable()){
+                        if (!onTree) {//regular movement
+                            if (boardStatic.get(loc[0] + 1, loc[1]).getType() == 2) {//if moving onto a tree
+                                boardStatic.get(loc[0] + 1, loc[1]).setType(5);//set new location to player+tree
+                                boardStatic.remove(loc[0], loc[1]);//remove old player
+                            }
+                            else
+                            if(boardStatic.get(loc[0] + 1, loc[1]).getType()==1){//if moving onto the treasure
+                                paint.setColor(Color.BLACK);//show treasure was hit
+                                boardStatic.add(loc[0] + 1, loc[1], boardStatic.remove(loc[0], loc[1]).clone());//move player to new location and remove player from old location
+                            }
+                        }
+                        else {//if player is currently on a tree
+                            if (boardStatic.get(loc[0] + 1, loc[1]).getType() == 2) {//if moving onto a tree
+                                boardStatic.get(loc[0] + 1, loc[1]).setType(5);//set new location to player+tree
+                                boardStatic.get(loc[0], loc[1]).setType(2);//make the old location just a tree
+                            }
+                            else
+                            if(boardStatic.get(loc[0] + 1, loc[1]).getType()==1){//if moving onto the treasure
+                                paint.setColor(Color.BLACK);//show treasure was hit
+                                boardStatic.add(loc[0] + 1, loc[1], boardStatic.get(loc[0], loc[1]).clone());//move player to new location
+                                boardStatic.get(loc[0], loc[1]).setType(2);//make the old location just a tree
+                            }
+                        }
+                    }
+                break;
+            default://gets sent an invalid number
+                break;
+        }
+    }
+
     //post: moves every enemy that can move 1 space forward form their current position
     private void move(){
-        int[] temp=getPlayerIndex();
-        if(temp[0]>0){
-            boardStatic.add(temp[0]-1, temp[1], boardStatic.get(temp[0], temp[1]).clone());
-            boardStatic.remove(temp[0], temp[1]);
-        }
         for(int r=0; r<boardStatic.numRows(); r++){
             for(int c=0; c<boardStatic.numColumns(); c++){
                 if(boardStatic.get(r, c)!=null&&(boardStatic.get(r, c).getType()==6||boardStatic.get(r, c).getType()==7)) {
@@ -231,7 +393,7 @@ public class DrawView extends SurfaceView {
         int x, y, t, v, ex, ey;//x=X index, y= Y index, t=Type, v=Vision, ex=endingX position, ey=endingY Position
         boolean e, w, vert;//e=Enemy, w=Walkable, vert=vertical
         boolean mobiles = true;//tells the loop if it should be reading in WorldObjects or MobileEnemys
-        ArrayList<String> temp = readFile("level_1.txt");
+        ArrayList<String> temp = readFile("level_"+level+".txt");
         if (temp != null) {
             paint.setColor(Color.LTGRAY);
             for (int i = 1; i < temp.size(); i++) {//define all the variables then add the Object to the sparseMatrix
@@ -284,6 +446,7 @@ public class DrawView extends SurfaceView {
             }
             if (!levelStarted) {
                 createLevel(1);
+                levelStarted=!levelStarted;
             }
             canvas.drawBitmap(background_1, 0, 0, paint);
             for (int r = 0; r < board.length; r++) {
@@ -332,8 +495,12 @@ public class DrawView extends SurfaceView {
             canvas.drawBitmap(downArrowPic, null, downButton, null);
             canvas.drawBitmap(leftArrowPic, null, leftButton, null);
             canvas.drawBitmap(rightArrowPic, null, rightButton, null);
+            canvas.drawBitmap(upArrowPic, null, upScreenButton, null);
+            canvas.drawBitmap(downArrowPic, null, downScreenButton, null);
+            canvas.drawBitmap(leftArrowPic, null, leftScreenButton, null);
+            canvas.drawBitmap(rightArrowPic, null, rightScreenButton, null);
             canvas.drawText("x: " + viewX + " Y: " + viewY, (canvas.getWidth() / 2) - 100, 50, paint);//print screen location
-            canvas.drawBitmap(arinPic, null, moveButton, null);
+            //canvas.drawBitmap(arinPic, null, moveButton, null);
             canvas.drawRect(musicButton, paint);
         }
     }
@@ -354,23 +521,30 @@ public class DrawView extends SurfaceView {
             if (gameState == 1) {
                 synchronized (getHolder()) {
                     if (upButton.contains(x, y)) {
+                        movePlayer(0);
+                    } else if (downButton.contains(x, y)) {
+                        movePlayer(3);
+                    } else if (rightButton.contains(x, y)) {
+                        movePlayer(2);
+                    } else if (leftButton.contains(x, y))
+                        movePlayer(1);
+                    if (upScreenButton.contains(x, y)) {
                         if (viewX > 0) {
                             viewX -= 2;
                         }
-                    } else if (downButton.contains(x, y)) {
+                    } else if (downScreenButton.contains(x, y)) {
                         if (viewX < 12)
                             viewX += 2;
-                    } else if (rightButton.contains(x, y)) {
+                    } else if (rightScreenButton.contains(x, y)) {
                         if (viewY < 12) {
                             viewY += 2;
                         }
-                    } else if (leftButton.contains(x, y))
+                    } else if (leftScreenButton.contains(x, y))
                         if (viewY > 0)
                             viewY -= 2;
-                    if (moveButton.contains(x, y)) {
-                        move();
-                        clicks++;
-                    }
+                    /*if (moveButton.contains(x, y)) {
+                        movePlayer(0);
+                    }*/
                     if (musicButton.contains(x, y)) {
                         if (bavariaOn) {
                             bavariaOn = false;
