@@ -57,13 +57,13 @@ public class DrawView extends SurfaceView {
     private int level=1;
     private RectF moveButton=new RectF(500, 1000, 900, 1600);//button to move Objects'
     private int gameState=0;//0=start screen, 1=map, 2=fight
-    private int clicks=0;
+    private int[] playerHome = new int[2];
 
     public DrawView(Context context){
         super(context);
         loopThread = new LoopThread(this);
         paint.setTextSize(50);//text size
-        paint.setColor(Color.rgb(0, 200, 160));//set colour to a blood red-ish type colour
+        paint.setColor(Color.rgb(0, 200, 160));
         paint2.setColor(Color.WHITE);
         viewX=12;
         viewY=12;
@@ -92,8 +92,6 @@ public class DrawView extends SurfaceView {
             public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
             }
         });
-
-        background_1 = BitmapFactory.decodeResource(getResources(), R.drawable.dirt);//instantiate the first backgound
         playerPic=BitmapFactory.decodeResource(getResources(), R.drawable.player);
         archerPic=BitmapFactory.decodeResource(getResources(), R.drawable.archer);
         scoutPic=BitmapFactory.decodeResource(getResources(), R.drawable.scout);
@@ -109,7 +107,7 @@ public class DrawView extends SurfaceView {
         vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);//instantiate the vibrator
         bavaria = MediaPlayer.create(context, R.raw.meanwhile_in_bavaria);
         fluteSong = MediaPlayer.create(context, R.raw.flute_song);
-        for(int r=0; r<paints.length; r++){
+        /*for(int r=0; r<paints.length; r++){
             for(int c=0; c<paints[0].length; c++){
                 paints[r][c] = new Paint();
                 paints[r][c].setColor(Color.rgb(200, 200, 160));
@@ -132,7 +130,7 @@ public class DrawView extends SurfaceView {
             for (int c = 0; c < board[0].length; c++) {
                 board[r][c] = new RectF(canvasWidth / 8 * c, canvasWidth / 8 * r, canvasWidth / 8 * (c + 1), canvasWidth / 8 * (r + 1));
             }
-        }
+        }*/
 
     }
 
@@ -141,7 +139,7 @@ public class DrawView extends SurfaceView {
         for(int r=0; r<boardStatic.numRows(); r++){
             for(int c=0; c<boardStatic.numColumns(); c++){
                 if(boardStatic.get(r, c)!=null&&(boardStatic.get(r, c).getType()==0||boardStatic.get(r, c).getType()==5)){
-                    return new int[]{r, c};
+                    return new int[]{r, c};//return player location if found
                 }
             }
         }
@@ -348,6 +346,8 @@ public class DrawView extends SurfaceView {
             default://gets sent an invalid number
                 break;
         }
+        //paint.setColor(Color.rgb(0, 200, 160));//after every move change paint to the default color
+        checkVision();//temporary to check if the vision check works
     }
 
     //post: moves every enemy that can move 1 space forward form their current position
@@ -355,6 +355,9 @@ public class DrawView extends SurfaceView {
         for(int r=0; r<boardStatic.numRows(); r++){
             for(int c=0; c<boardStatic.numColumns(); c++){
                 if(boardStatic.get(r, c)!=null&&(boardStatic.get(r, c).getType()==6||boardStatic.get(r, c).getType()==7)) {
+                    if(boardStatic.get(r, c).getEnemy()) {
+                        paint.setColor(Color.WHITE);
+                    }
                     if (boardStatic.get(r, c).getVertical()) {//moving vertically
                         if (boardStatic.get(r, c).getLeaving()) {//moving away from starting location
                             if (r < boardStatic.get(r, c).getEX()) {
@@ -395,7 +398,6 @@ public class DrawView extends SurfaceView {
         boolean mobiles = true;//tells the loop if it should be reading in WorldObjects or MobileEnemys
         ArrayList<String> temp = readFile("level_"+level+".txt");
         if (temp != null) {
-            paint.setColor(Color.LTGRAY);
             for (int i = 1; i < temp.size(); i++) {//define all the variables then add the Object to the sparseMatrix
                 if(Integer.parseInt(temp.get(i).substring(0, 1))==1) {                                 //SOME ERROR IS OCCURING HERE AND IDK WHAT IS MAKING IT HAPPEN, reads in the first set of lines of the text file and uses the ELSE code block instead of IF
                     mobiles = false;
@@ -423,7 +425,30 @@ public class DrawView extends SurfaceView {
                 }
             }
         }
+        playerHome=getPlayerIndex();
     }                               //NEEDS TO BE FIXED
+
+    //post: if the player is found in the vision of any of the enemies, then changes the colour of the text to white
+    private void checkVision(){
+        for(int r=0; r<boardStatic.numRows(); r++) {
+            for (int c = 0; c < boardStatic.numColumns(); c++) {
+                if(boardStatic.get(r, c)!=null&&boardStatic.get(r, c).getEnemy()){//if is an enemy
+                    paint.setColor(Color.WHITE);
+                    for(int R=r-boardStatic.get(r, c).getVision(); R<r+boardStatic.get(r, c).getVision(); R++){//for every index of boardStatic
+                        for(int C=c-boardStatic.get(r, c).getVision(); C<c+boardStatic.get(r, c).getVision(); C++){
+                            if(R>=0&&R<=19){//if R is a valid index
+                                if(C>=0&&C<=19){//if C is a valid index
+                                    if(boardStatic.get(R, C).getType()==0){//if the player is visible and within the vision range
+                                        paint.setColor(Color.WHITE);//change paint color to WHITE
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     //post: creates the 8x8 screen based on the size of the screen
     private void createScreen(){
@@ -448,7 +473,7 @@ public class DrawView extends SurfaceView {
                 createLevel(1);
                 levelStarted=!levelStarted;
             }
-            canvas.drawBitmap(background_1, 0, 0, paint);
+            //canvas.drawBitmap(background_1, 0, 0, paint);
             for (int r = 0; r < board.length; r++) {
                 for (int c = 0; c < board[0].length; c++) {
                     if (boardStatic.get(r + viewX, c + viewY) != null) {
@@ -542,9 +567,9 @@ public class DrawView extends SurfaceView {
                     } else if (leftScreenButton.contains(x, y))
                         if (viewY > 0)
                             viewY -= 2;
-                    /*if (moveButton.contains(x, y)) {
-                        movePlayer(0);
-                    }*/
+                    if (moveButton.contains(x, y)) {
+                        move();
+                    }
                     if (musicButton.contains(x, y)) {
                         if (bavariaOn) {
                             bavariaOn = false;
