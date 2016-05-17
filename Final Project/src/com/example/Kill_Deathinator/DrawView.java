@@ -58,6 +58,7 @@ public class DrawView extends SurfaceView {
     private RectF moveButton=new RectF(500, 1000, 900, 1600);//button to move Objects'
     private int gameState=0;//0=start screen, 1=map, 2=fight
     private int[] playerHome = new int[2];
+    private boolean candy=false;
 
     public DrawView(Context context){
         super(context);
@@ -223,6 +224,7 @@ public class DrawView extends SurfaceView {
                             else
                             if(boardStatic.get(loc[0]-1, loc[1]).getType()==1){//if moving onto the treasure
                                 paint.setColor(Color.BLACK);//show treasure was hit
+                                candy=true;
                                 boardStatic.add(loc[0] - 1, loc[1], boardStatic.get(loc[0], loc[1]).clone());//move player to new location
                                 boardStatic.get(loc[0], loc[1]).setType(2);//make the old location just a tree
                             }
@@ -261,6 +263,7 @@ public class DrawView extends SurfaceView {
                             else
                             if(boardStatic.get(loc[0], loc[1]-1).getType()==1){//if moving onto the treasure
                                 paint.setColor(Color.BLACK);//show treasure was hit
+                                candy=true;
                                 boardStatic.add(loc[0], loc[1]-1, boardStatic.get(loc[0], loc[1]).clone());//move player to new location
                                 boardStatic.get(loc[0], loc[1]).setType(2);//make the old location just a tree
                             }
@@ -299,6 +302,7 @@ public class DrawView extends SurfaceView {
                             else
                             if(boardStatic.get(loc[0], loc[1]+1).getType()==1){//if moving onto the treasure
                                 paint.setColor(Color.BLACK);//show treasure was hit
+                                candy=true;
                                 boardStatic.add(loc[0], loc[1]+1, boardStatic.get(loc[0], loc[1]).clone());//move player to new location
                                 boardStatic.get(loc[0], loc[1]).setType(2);//make the old location just a tree
                             }
@@ -337,6 +341,7 @@ public class DrawView extends SurfaceView {
                             else
                             if(boardStatic.get(loc[0] + 1, loc[1]).getType()==1){//if moving onto the treasure
                                 paint.setColor(Color.BLACK);//show treasure was hit
+                                candy=true;
                                 boardStatic.add(loc[0] + 1, loc[1], boardStatic.get(loc[0], loc[1]).clone());//move player to new location
                                 boardStatic.get(loc[0], loc[1]).setType(2);//make the old location just a tree
                             }
@@ -348,9 +353,15 @@ public class DrawView extends SurfaceView {
         }
         //paint.setColor(Color.rgb(0, 200, 160));//after every move change paint to the default color
         checkVision();//temporary to check if the vision check works
+        if(candy){
+            int[] i=getPlayerIndex();
+            if(i[0]==playerHome[0]&&i[1]==playerHome[1]){
+                paint.setColor(Color.GREEN);
+            }
+        }
     }
 
-    //post: moves every enemy that can move 1 space forward form their current position
+    //post: every enemy that can move moves 1 space forward form their current position
     private void move(){
         for(int r=0; r<boardStatic.numRows(); r++){
             for(int c=0; c<boardStatic.numColumns(); c++){
@@ -409,7 +420,7 @@ public class DrawView extends SurfaceView {
                     v = Integer.parseInt(temp.get(i).substring(6, 7));
                     e = Boolean.parseBoolean(temp.get(t).substring(7, 11));
                     w = Boolean.parseBoolean(temp.get(i).substring(11, 15));
-                    boardStatic.add(x, y, (new MobileEnemy(x, y, t, v, e, w, false, false, false, 0, 0)));//add the Object to the sparseMatrix
+                    boardStatic.add(x, y, (new MobileEnemy(x, y, t, v, e, w, false, false, false, 0, 0)));//add the MobileEnemy to the sparseMatrix
                 }
                 else {
                     x = Integer.parseInt(temp.get(i).substring(1, 3));
@@ -525,7 +536,7 @@ public class DrawView extends SurfaceView {
             canvas.drawBitmap(leftArrowPic, null, leftScreenButton, null);
             canvas.drawBitmap(rightArrowPic, null, rightScreenButton, null);
             canvas.drawText("x: " + viewX + " Y: " + viewY, (canvas.getWidth() / 2) - 100, 50, paint);//print screen location
-            //canvas.drawBitmap(arinPic, null, moveButton, null);
+            canvas.drawBitmap(arinPic, null, moveButton, null);
             canvas.drawRect(musicButton, paint);
         }
     }
@@ -533,10 +544,6 @@ public class DrawView extends SurfaceView {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (System.currentTimeMillis() - lastClick > 150) {//prevents spam tapping and accidentally pressing multiple times based on dragging
-            /*if(!bavariaOn) {
-                bavaria.start();
-                bavariaOn=true;
-            }*/
             lastClick = System.currentTimeMillis();
             float x = event.getX();
             float y = event.getY();
@@ -567,9 +574,9 @@ public class DrawView extends SurfaceView {
                     } else if (leftScreenButton.contains(x, y))
                         if (viewY > 0)
                             viewY -= 2;
-                    if (moveButton.contains(x, y)) {
+                    /*if (moveButton.contains(x, y)) {
                         move();
-                    }
+                    }*/
                     if (musicButton.contains(x, y)) {
                         if (bavariaOn) {
                             bavariaOn = false;
