@@ -55,7 +55,7 @@ public class DrawView extends SurfaceView {
     private int canvasWidth=0;
     private boolean levelStarted=false;
     private int level=1;
-    private RectF moveButton=new RectF(500, 1000, 900, 1600);//button to move Objects'
+    private RectF moveButton=new RectF(200, 1300, 300, 1400);//button to move Objects'
     private int gameState=0;//0=start screen, 1=map, 2=fight
     private int[] playerHome = new int[2];
     private boolean candy=false;
@@ -213,6 +213,7 @@ public class DrawView extends SurfaceView {
                             else
                             if(boardStatic.get(loc[0]-1, loc[1]).getType()==1){//if moving onto the treasure
                                 paint.setColor(Color.BLACK);//show treasure was hit
+                                candy=true;
                                 boardStatic.add(loc[0] - 1, loc[1], boardStatic.remove(loc[0], loc[1]).clone());//move player to new location and remove player from old location
                             }
                         }
@@ -252,6 +253,7 @@ public class DrawView extends SurfaceView {
                             else
                             if(boardStatic.get(loc[0], loc[1]-1).getType()==1){//if moving onto the treasure
                                 paint.setColor(Color.BLACK);//show treasure was hit
+                                candy=true;
                                 boardStatic.add(loc[0], loc[1]-1, boardStatic.remove(loc[0], loc[1]).clone());//move player to new location and remove player from old location
                             }
                         }
@@ -291,6 +293,7 @@ public class DrawView extends SurfaceView {
                             else
                             if(boardStatic.get(loc[0], loc[1]+1).getType()==1){//if moving onto the treasure
                                 paint.setColor(Color.BLACK);//show treasure was hit
+                                candy=true;
                                 boardStatic.add(loc[0], loc[1]+1, boardStatic.remove(loc[0], loc[1]).clone());//move player to new location and remove player from old location
                             }
                         }
@@ -330,6 +333,7 @@ public class DrawView extends SurfaceView {
                             else
                             if(boardStatic.get(loc[0] + 1, loc[1]).getType()==1){//if moving onto the treasure
                                 paint.setColor(Color.BLACK);//show treasure was hit
+                                candy=true;
                                 boardStatic.add(loc[0] + 1, loc[1], boardStatic.remove(loc[0], loc[1]).clone());//move player to new location and remove player from old location
                             }
                         }
@@ -351,9 +355,9 @@ public class DrawView extends SurfaceView {
             default://gets sent an invalid number
                 break;
         }
-        //paint.setColor(Color.rgb(0, 200, 160));//after every move change paint to the default color
+        paint.setColor(Color.rgb(0, 200, 160));//after every move change paint to the default color
         checkVision();//temporary to check if the vision check works
-        if(candy){
+        if(candy){//temporary check to see if the player can win
             int[] i=getPlayerIndex();
             if(i[0]==playerHome[0]&&i[1]==playerHome[1]){
                 paint.setColor(Color.GREEN);
@@ -365,7 +369,32 @@ public class DrawView extends SurfaceView {
     private void move(){
         for(int r=0; r<boardStatic.numRows(); r++){
             for(int c=0; c<boardStatic.numColumns(); c++){
-                if(boardStatic.get(r, c)!=null&&(boardStatic.get(r, c).getType()==6||boardStatic.get(r, c).getType()==7)) {
+                if(boardStatic.get(r, c)!=null&&(/*boardStatic.get(r, c).getType()==6||*/boardStatic.get(r, c).getType()==7)) {
+                    if(!boardStatic.get(r, c).getMoved()) {
+                        if (!boardStatic.get(r, c).getVertical()) {
+                            if (boardStatic.get(r, c).getLeaving()) {//leaving
+                                if (c < boardStatic.get(r, c).getEY()) {
+                                    if (boardStatic.get(r, c+1) == null) {
+                                        boardStatic.add(r, c + 1, new MobileEnemy(boardStatic.get(r, c).getXPos(), boardStatic.get(r, c).getYPos(), boardStatic.get(r, c).getType(), boardStatic.get(r, c).getVision(), true, false, false, true, true, boardStatic.get(r, c).getEX(), boardStatic.remove(r, c).getEY()));
+                                        boardStatic.get(r, c+1).setMoved(true);
+                                    }
+                                }
+                                else
+                                    boardStatic.get(r, c).setLeaving(false);
+                            }
+                            else{//not leaving
+                                if (c > boardStatic.get(r, c).getYPos()) {
+                                    if (boardStatic.get(r, c-1) == null) {
+                                        boardStatic.add(r, c - 1, new MobileEnemy(boardStatic.get(r, c).getXPos(), boardStatic.get(r, c).getYPos(), boardStatic.get(r, c).getType(), boardStatic.get(r, c).getVision(), true, false, false, true, false, boardStatic.get(r, c).getEX(), boardStatic.remove(r, c).getEY()));
+                                        boardStatic.get(r, c-1).setMoved(true);
+                                    }
+                                }
+                                else
+                                    boardStatic.get(r, c).setLeaving(true);
+                            }
+                        }
+                    }
+                    /*paint.setColor(Color.WHITE);
                     if(boardStatic.get(r, c).getEnemy()) {
                         paint.setColor(Color.WHITE);
                     }
@@ -394,7 +423,14 @@ public class DrawView extends SurfaceView {
                             } else
                                 boardStatic.add(r, c + 1, new MobileEnemy(boardStatic.get(r, c).getXPos(), boardStatic.get(r, c).getYPos(), boardStatic.get(r, c).getType(), boardStatic.get(r, c).getVision(), true, false, true, true, true, boardStatic.get(r, c).getEX(), boardStatic.remove(r, c).getEY()));
                         }
-                    }
+                    }*/
+                }
+            }
+        }
+        for(int r=0; r<boardStatic.numRows(); r++){//change all of the moved booleans to false to allow for future movement
+            for(int c=0; c<boardStatic.numColumns(); c++) {
+                if(boardStatic.get(r, c)!=null&&(boardStatic.get(r, c).getType()==6||boardStatic.get(r, c).getType()==7)){
+                    boardStatic.get(r, c).setMoved(false);
                 }
             }
         }
@@ -443,13 +479,12 @@ public class DrawView extends SurfaceView {
     private void checkVision(){
         for(int r=0; r<boardStatic.numRows(); r++) {
             for (int c = 0; c < boardStatic.numColumns(); c++) {
-                if(boardStatic.get(r, c)!=null&&boardStatic.get(r, c).getEnemy()){//if is an enemy
-                    paint.setColor(Color.WHITE);
-                    for(int R=r-boardStatic.get(r, c).getVision(); R<r+boardStatic.get(r, c).getVision(); R++){//for every index of boardStatic
-                        for(int C=c-boardStatic.get(r, c).getVision(); C<c+boardStatic.get(r, c).getVision(); C++){
+                if(boardStatic.get(r, c)!=null&&(boardStatic.get(r, c).getType()==7||boardStatic.get(r, c).getType()==6||boardStatic.get(r, c).getType()==3)/*boardStatic.get(r, c).getEnemy()*/){//if is an enemy
+                    for(int R=r-boardStatic.get(r, c).getVision(); R<=r+boardStatic.get(r, c).getVision(); R++){//for every index of boardStatic
+                        for(int C=c-boardStatic.get(r, c).getVision(); C<=c+boardStatic.get(r, c).getVision(); C++){
                             if(R>=0&&R<=19){//if R is a valid index
                                 if(C>=0&&C<=19){//if C is a valid index
-                                    if(boardStatic.get(R, C).getType()==0){//if the player is visible and within the vision range
+                                    if(boardStatic.get(R, C)!=null&&boardStatic.get(R, C).getType()==0){//if the player is visible and within the vision range
                                         paint.setColor(Color.WHITE);//change paint color to WHITE
                                     }
                                 }
@@ -459,7 +494,7 @@ public class DrawView extends SurfaceView {
                 }
             }
         }
-    }
+    }                                           //NEEDS TO BE FIXED(getEnemy()) DOESN'T WORK
 
     //post: creates the 8x8 screen based on the size of the screen
     private void createScreen(){
@@ -574,9 +609,9 @@ public class DrawView extends SurfaceView {
                     } else if (leftScreenButton.contains(x, y))
                         if (viewY > 0)
                             viewY -= 2;
-                    /*if (moveButton.contains(x, y)) {
+                    if (moveButton.contains(x, y)) {
                         move();
-                    }*/
+                    }
                     if (musicButton.contains(x, y)) {
                         if (bavariaOn) {
                             bavariaOn = false;
