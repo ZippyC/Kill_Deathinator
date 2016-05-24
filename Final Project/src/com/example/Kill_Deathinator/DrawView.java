@@ -108,31 +108,6 @@ public class DrawView extends SurfaceView {
         vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);//instantiate the vibrator
         bavaria = MediaPlayer.create(context, R.raw.meanwhile_in_bavaria);
         fluteSong = MediaPlayer.create(context, R.raw.flute_song);
-        /*for(int r=0; r<paints.length; r++){
-            for(int c=0; c<paints[0].length; c++){
-                paints[r][c] = new Paint();
-                paints[r][c].setColor(Color.rgb(200, 200, 160));
-                if(r%4==0) {
-                    paints[r][c].setColor(Color.rgb(0, 200, 160));
-                }
-                if(r%4==1) {
-                    paints[r][c].setColor(Color.rgb(200, 200, 160));
-                }
-                if(r%4==2) {
-                    paints[r][c].setColor(Color.rgb(0, 7, 160));
-                }
-                if(r%4==3) {
-                    paints[r][c].setColor(Color.rgb(50, 200, 8));
-                }
-            }
-        }
-        paints[4][2].setColor(Color.rgb(200, 0, 160));
-        for (int r = 0; r < board.length; r++) {
-            for (int c = 0; c < board[0].length; c++) {
-                board[r][c] = new RectF(canvasWidth / 8 * c, canvasWidth / 8 * r, canvasWidth / 8 * (c + 1), canvasWidth / 8 * (r + 1));
-            }
-        }*/
-
     }
 
     //post: returns the index of the player within the sparse matrix if the player is there
@@ -369,9 +344,9 @@ public class DrawView extends SurfaceView {
     private void move(){
         for(int r=0; r<boardStatic.numRows(); r++){
             for(int c=0; c<boardStatic.numColumns(); c++){
-                if(boardStatic.get(r, c)!=null&&(/*boardStatic.get(r, c).getType()==6||*/boardStatic.get(r, c).getType()==7)) {
+                if(boardStatic.get(r, c)!=null&&(boardStatic.get(r, c).getType()==6||boardStatic.get(r, c).getType()==7)) {//if Object is not null and is a soldier or a scout
                     if(!boardStatic.get(r, c).getMoved()) {
-                        if (!boardStatic.get(r, c).getVertical()) {
+                        if (!boardStatic.get(r, c).getVertical()) {//if moving horizontally
                             if (boardStatic.get(r, c).getLeaving()) {//leaving
                                 if (c < boardStatic.get(r, c).getEY()) {
                                     if (boardStatic.get(r, c+1) == null) {
@@ -379,8 +354,15 @@ public class DrawView extends SurfaceView {
                                         boardStatic.get(r, c+1).setMoved(true);
                                     }
                                 }
-                                else
+                                else {
                                     boardStatic.get(r, c).setLeaving(false);
+                                    if (c > boardStatic.get(r, c).getYPos()) {
+                                        if (boardStatic.get(r, c-1) == null) {
+                                            boardStatic.add(r, c - 1, new MobileEnemy(boardStatic.get(r, c).getXPos(), boardStatic.get(r, c).getYPos(), boardStatic.get(r, c).getType(), boardStatic.get(r, c).getVision(), true, false, false, true, false, boardStatic.get(r, c).getEX(), boardStatic.remove(r, c).getEY()));
+                                            boardStatic.get(r, c-1).setMoved(true);
+                                        }
+                                    }
+                                }
                             }
                             else{//not leaving
                                 if (c > boardStatic.get(r, c).getYPos()) {
@@ -389,41 +371,54 @@ public class DrawView extends SurfaceView {
                                         boardStatic.get(r, c-1).setMoved(true);
                                     }
                                 }
-                                else
+                                else {
                                     boardStatic.get(r, c).setLeaving(true);
+                                    if (c < boardStatic.get(r, c).getEY()) {
+                                        if (boardStatic.get(r, c+1) == null) {
+                                            boardStatic.add(r, c + 1, new MobileEnemy(boardStatic.get(r, c).getXPos(), boardStatic.get(r, c).getYPos(), boardStatic.get(r, c).getType(), boardStatic.get(r, c).getVision(), true, false, false, true, true, boardStatic.get(r, c).getEX(), boardStatic.remove(r, c).getEY()));
+                                            boardStatic.get(r, c+1).setMoved(true);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else{//if moving vertically
+                            if (boardStatic.get(r, c).getLeaving()) {//leaving
+                                if (r < boardStatic.get(r, c).getEX()) {
+                                    if (boardStatic.get(r+1, c) == null) {
+                                        boardStatic.add(r+1, c, new MobileEnemy(boardStatic.get(r, c).getXPos(), boardStatic.get(r, c).getYPos(), boardStatic.get(r, c).getType(), boardStatic.get(r, c).getVision(), true, false, true, true, true, boardStatic.get(r, c).getEX(), boardStatic.remove(r, c).getEY()));
+                                        boardStatic.get(r+1, c).setMoved(true);
+                                    }
+                                }
+                                else {
+                                    boardStatic.get(r, c).setLeaving(false);
+                                    if (r > boardStatic.get(r, c).getXPos()) {
+                                        if (boardStatic.get(r-1, c) == null) {
+                                            boardStatic.add(r-1, c, new MobileEnemy(boardStatic.get(r, c).getXPos(), boardStatic.get(r, c).getYPos(), boardStatic.get(r, c).getType(), boardStatic.get(r, c).getVision(), true, false, true, true, false, boardStatic.get(r, c).getEX(), boardStatic.remove(r, c).getEY()));
+                                            boardStatic.get(r-1, c).setMoved(true);
+                                        }
+                                    }
+                                }
+                            }
+                            else{//not leaving
+                                if (r > boardStatic.get(r, c).getXPos()) {
+                                    if (boardStatic.get(r-1, c) == null) {
+                                        boardStatic.add(r-1, c, new MobileEnemy(boardStatic.get(r, c).getXPos(), boardStatic.get(r, c).getYPos(), boardStatic.get(r, c).getType(), boardStatic.get(r, c).getVision(), true, false, true, true, false, boardStatic.get(r, c).getEX(), boardStatic.remove(r, c).getEY()));
+                                        boardStatic.get(r-1, c).setMoved(true);
+                                    }
+                                }
+                                else {
+                                    boardStatic.get(r, c).setLeaving(true);
+                                    if (r < boardStatic.get(r, c).getEX()) {
+                                        if (boardStatic.get(r+1, c) == null) {
+                                            boardStatic.add(r+1, c, new MobileEnemy(boardStatic.get(r, c).getXPos(), boardStatic.get(r, c).getYPos(), boardStatic.get(r, c).getType(), boardStatic.get(r, c).getVision(), true, false, true, true, true, boardStatic.get(r, c).getEX(), boardStatic.remove(r, c).getEY()));
+                                            boardStatic.get(r+1, c).setMoved(true);
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
-                    /*paint.setColor(Color.WHITE);
-                    if(boardStatic.get(r, c).getEnemy()) {
-                        paint.setColor(Color.WHITE);
-                    }
-                    if (boardStatic.get(r, c).getVertical()) {//moving vertically
-                        if (boardStatic.get(r, c).getLeaving()) {//moving away from starting location
-                            if (r < boardStatic.get(r, c).getEX()) {
-                                boardStatic.add(r + 1, c, new MobileEnemy(boardStatic.get(r, c).getXPos(), boardStatic.get(r, c).getYPos(), boardStatic.get(r, c).getType(), boardStatic.get(r, c).getVision(), true, false, true, true, true, boardStatic.get(r, c).getEX(), boardStatic.get(r, c).getEY()));
-                                boardStatic.remove(r, c);
-                            } else
-                                boardStatic.add(r - 1, c, new MobileEnemy(boardStatic.get(r, c).getXPos(), boardStatic.get(r, c).getYPos(), boardStatic.get(r, c).getType(), boardStatic.get(r, c).getVision(), true, false, true, true, false, boardStatic.get(r, c).getEX(), boardStatic.remove(r, c).getEY()));
-                        } else {//moving towards starting location
-                            if (r > boardStatic.get(r, c).getXPos()) {
-                                boardStatic.add(r - 1, c, new MobileEnemy(boardStatic.get(r, c).getXPos(), boardStatic.get(r, c).getYPos(), boardStatic.get(r, c).getType(), boardStatic.get(r, c).getVision(), true, false, true, true, false, boardStatic.get(r, c).getEX(), boardStatic.remove(r, c).getEY()));
-                            } else
-                                boardStatic.add(r + 1, c, new MobileEnemy(boardStatic.get(r, c).getXPos(), boardStatic.get(r, c).getYPos(), boardStatic.get(r, c).getType(), boardStatic.get(r, c).getVision(), true, false, true, true, true, boardStatic.get(r, c).getEX(), boardStatic.remove(r, c).getEY()));
-                        }
-                    } else {//moving horizontally                //need to change things for moving hor/vert
-                        if (boardStatic.get(r, c).getLeaving()) {//moving away from starting position
-                            if (c < boardStatic.get(r, c).getEY()) {
-                                boardStatic.add(r, c + 1, new MobileEnemy(boardStatic.get(r, c).getXPos(), boardStatic.get(r, c).getYPos(), boardStatic.get(r, c).getType(), boardStatic.get(r, c).getVision(), true, false, true, true, true, boardStatic.get(r, c).getEX(), boardStatic.remove(r, c).getEY()));
-                            } else
-                                boardStatic.add(r, c - 1, new MobileEnemy(boardStatic.get(r, c).getXPos(), boardStatic.get(r, c).getYPos(), boardStatic.get(r, c).getType(), boardStatic.get(r, c).getVision(), true, false, true, true, false, boardStatic.get(r, c).getEX(), boardStatic.remove(r, c).getEY()));
-                        } else {//moving away from starting location
-                            if (c > boardStatic.get(r, c).getYPos()) {
-                                boardStatic.add(r, c - 1, new MobileEnemy(boardStatic.get(r, c).getXPos(), boardStatic.get(r, c).getYPos(), boardStatic.get(r, c).getType(), boardStatic.get(r, c).getVision(), true, false, true, true, false, boardStatic.get(r, c).getEX(), boardStatic.remove(r, c).getEY()));
-                            } else
-                                boardStatic.add(r, c + 1, new MobileEnemy(boardStatic.get(r, c).getXPos(), boardStatic.get(r, c).getYPos(), boardStatic.get(r, c).getType(), boardStatic.get(r, c).getVision(), true, false, true, true, true, boardStatic.get(r, c).getEX(), boardStatic.remove(r, c).getEY()));
-                        }
-                    }*/
                 }
             }
         }
@@ -434,52 +429,59 @@ public class DrawView extends SurfaceView {
                 }
             }
         }
-        paint2.setColor(Color.GREEN);
-    }                                               //ONLY A TEST SO FAR
+    }
 
     //pre: level>0 and the level being looked for exists
     //post: fill the board with all of the WorldObjects for a given level
     private void createLevel(int level) {
-        int x, y, t, v, ex, ey;//x=X index, y= Y index, t=Type, v=Vision, ex=endingX position, ey=endingY Position
+        int x, y, t, v, ex, ey, tX, tY;//x=X index, y= Y index, t=Type, v=Vision, ex=endingX position, ey=endingY Position
         boolean e, w, vert;//e=Enemy, w=Walkable, vert=vertical
-        boolean mobiles = true;//tells the loop if it should be reading in WorldObjects or MobileEnemys
+        //boolean mobiles = true;//tells the loop if it should be reading in WorldObjects or MobileEnemys
         ArrayList<String> temp = readFile("level_"+level+".txt");
         if (temp != null) {
             for (int i = 1; i < temp.size(); i++) {//define all the variables then add the Object to the sparseMatrix
-                if(Integer.parseInt(temp.get(i).substring(0, 1))==1) {                                 //SOME ERROR IS OCCURING HERE AND IDK WHAT IS MAKING IT HAPPEN, reads in the first set of lines of the text file and uses the ELSE code block instead of IF
-                    mobiles = false;
+                x = Integer.parseInt(temp.get(i).substring(0, 2));
+                y = Integer.parseInt(temp.get(i).substring(2, 4));
+                t = Integer.parseInt(temp.get(i).substring(4, 5));
+                v = Integer.parseInt(temp.get(i).substring(5, 6));
+                e=false;
+                if(temp.get(i).substring(6, 7).equals("T"))
+                    e=true;
+                w=false;
+                if(temp.get(i).substring(7, 8).equals("T"))
+                    w=true;
+                vert=false;
+                if(temp.get(i).substring(8, 9).equals("T"))
+                    vert=true;
+                ex = Integer.parseInt(temp.get(i).substring(9, 11));
+                ey = Integer.parseInt(temp.get(i).substring(11));
+                if(x>ex) {
+                    tX=x;
+                    tY=y;
+                    x=ex;
+                    y=ey;
+                    boardStatic.add(tX, tY, (new MobileEnemy(x, y, t, v, e, w, vert, true, true, ex, ey)));//add the MobileEnemy to the board
                 }
-                if(mobiles) {
-                    x = Integer.parseInt(temp.get(i).substring(1, 3));
-                    y = Integer.parseInt(temp.get(i).substring(3, 5));
-                    t = Integer.parseInt(temp.get(i).substring(5, 6));
-                    v = Integer.parseInt(temp.get(i).substring(6, 7));
-                    e = Boolean.parseBoolean(temp.get(t).substring(7, 11));
-                    w = Boolean.parseBoolean(temp.get(i).substring(11, 15));
-                    boardStatic.add(x, y, (new MobileEnemy(x, y, t, v, e, w, false, false, false, 0, 0)));//add the MobileEnemy to the sparseMatrix
+                else
+                if(y>ey) {//FIX THIS PART!
+                    tX=x;
+                    tY=y;
+                    x=ex;
+                    y=ey;
+                    boardStatic.add(tX, tY, (new MobileEnemy(x, y, t, v, e, w, vert, true, true, ex, ey)));//add the MobileEnemy to the board
                 }
-                else {
-                    x = Integer.parseInt(temp.get(i).substring(1, 3));
-                    y = Integer.parseInt(temp.get(i).substring(3, 5));
-                    t = Integer.parseInt(temp.get(i).substring(5, 6));
-                    v = Integer.parseInt(temp.get(i).substring(6, 7));
-                    e = Boolean.parseBoolean(temp.get(t).substring(7, 11));
-                    w = Boolean.parseBoolean(temp.get(i).substring(11, 15));
-                    vert = Boolean.parseBoolean(temp.get(t).substring(15, 19));
-                    ex = Integer.parseInt(temp.get(i).substring(19, 21));
-                    ey = Integer.parseInt(temp.get(i).substring(21));
+                else
                     boardStatic.add(x, y, (new MobileEnemy(x, y, t, v, e, w, vert, true, true, ex, ey)));//add the MobileEnemy to the board
-                }
             }
         }
         playerHome=getPlayerIndex();
-    }                               //NEEDS TO BE FIXED
+    }
 
     //post: if the player is found in the vision of any of the enemies, then changes the colour of the text to white
     private void checkVision(){
         for(int r=0; r<boardStatic.numRows(); r++) {
             for (int c = 0; c < boardStatic.numColumns(); c++) {
-                if(boardStatic.get(r, c)!=null&&(boardStatic.get(r, c).getType()==7||boardStatic.get(r, c).getType()==6||boardStatic.get(r, c).getType()==3)/*boardStatic.get(r, c).getEnemy()*/){//if is an enemy
+                if(boardStatic.get(r, c)!=null&&(boardStatic.get(r, c).getEnemy()/*getType()==7||boardStatic.get(r, c).getType()==6||boardStatic.get(r, c).getType()==3*/)){//if is an enemy
                     for(int R=r-boardStatic.get(r, c).getVision(); R<=r+boardStatic.get(r, c).getVision(); R++){//for every index of boardStatic
                         for(int C=c-boardStatic.get(r, c).getVision(); C<=c+boardStatic.get(r, c).getVision(); C++){
                             if(R>=0&&R<=19){//if R is a valid index
@@ -494,7 +496,7 @@ public class DrawView extends SurfaceView {
                 }
             }
         }
-    }                                           //NEEDS TO BE FIXED(getEnemy()) DOESN'T WORK
+    }
 
     //post: creates the 8x8 screen based on the size of the screen
     private void createScreen(){
