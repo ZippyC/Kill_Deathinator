@@ -455,26 +455,30 @@ public class DrawView extends SurfaceView {
                     vert=true;
                 ex = Integer.parseInt(temp.get(i).substring(9, 11));
                 ey = Integer.parseInt(temp.get(i).substring(11));
-                if(x>ex) {
+                if(x>ex) {//if the final movement location is lower than the starting location, change the variables so movement works
                     tX=x;
                     tY=y;
                     x=ex;
                     y=ey;
+                    ex=tX;
+                    ey=tY;
                     boardStatic.add(tX, tY, (new MobileEnemy(x, y, t, v, e, w, vert, true, true, ex, ey)));//add the MobileEnemy to the board
                 }
                 else
-                if(y>ey) {//FIX THIS PART!
+                if(y>ey) {//if the final movement location is lower than the starting location, change the variables so movement works
                     tX=x;
                     tY=y;
                     x=ex;
                     y=ey;
+                    ex=tX;
+                    ey=tY;
                     boardStatic.add(tX, tY, (new MobileEnemy(x, y, t, v, e, w, vert, true, true, ex, ey)));//add the MobileEnemy to the board
                 }
-                else
+                else//normal condition
                     boardStatic.add(x, y, (new MobileEnemy(x, y, t, v, e, w, vert, true, true, ex, ey)));//add the MobileEnemy to the board
             }
         }
-        playerHome=getPlayerIndex();
+        playerHome=getPlayerIndex();//set the player home to the location of the player after spawn
     }
 
     //post: if the player is found in the vision of any of the enemies, then changes the colour of the text to white
@@ -589,14 +593,19 @@ public class DrawView extends SurfaceView {
             }
             if (gameState == 1) {
                 synchronized (getHolder()) {
-                    if (upButton.contains(x, y)) {
+                    if (upButton.contains(x, y)) {//move player up and move enemies 1
                         movePlayer(0);
-                    } else if (downButton.contains(x, y)) {
+                        move();
+                    } else if (downButton.contains(x, y)) {//move player down and move enemies 1
                         movePlayer(3);
-                    } else if (rightButton.contains(x, y)) {
+                        move();
+                    } else if (rightButton.contains(x, y)) {//move player right and move enemies 1
                         movePlayer(2);
-                    } else if (leftButton.contains(x, y))
+                        move();
+                    } else if (leftButton.contains(x, y)) {//move player left and move enemies 1
                         movePlayer(1);
+                        move();
+                    }
                     if (upScreenButton.contains(x, y)) {
                         if (viewX > 0) {
                             viewX -= 2;
@@ -611,9 +620,9 @@ public class DrawView extends SurfaceView {
                     } else if (leftScreenButton.contains(x, y))
                         if (viewY > 0)
                             viewY -= 2;
-                    if (moveButton.contains(x, y)) {
+                    /*if (moveButton.contains(x, y)) {
                         move();
-                    }
+                    }*/
                     if (musicButton.contains(x, y)) {
                         if (bavariaOn) {
                             bavariaOn = false;
