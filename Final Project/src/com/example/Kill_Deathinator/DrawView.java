@@ -58,6 +58,7 @@ public class DrawView extends SurfaceView {
     private RectF moveButton=new RectF(200, 1300, 300, 1400);//button to move Objects'
     private int gameState=0;//0=start screen, 1=map, 2=fight
     private int[] playerHome = new int[2];
+    private int[] playerLocation=new int[2];
     private boolean candy=false;
     private int playerHealth=20;
 
@@ -112,7 +113,7 @@ public class DrawView extends SurfaceView {
     }
 
     //post: returns the index of the player within the sparse matrix if the player is there
-    private int[] getPlayerIndex() {
+    /*private int[] getPlayerIndex() {
         for(int r=0; r<boardStatic.numRows(); r++){
             for(int c=0; c<boardStatic.numColumns(); c++){
                 if(boardStatic.get(r, c)!=null&&(boardStatic.get(r, c).getType()==0||boardStatic.get(r, c).getType()==5)){
@@ -121,7 +122,7 @@ public class DrawView extends SurfaceView {
             }
         }
         return null;//should never be reached
-    }
+    }*/
 
     //pre:  "fileName" is the name of a real file containing lines of text
     //post: returns the number of lines in fileName O(n)
@@ -170,21 +171,64 @@ public class DrawView extends SurfaceView {
     //pre: dir is greater than 0 and less than 4
     //post: moves the player in the direction specified by dir
     private void movePlayer(int dir){
-        int[] loc=getPlayerIndex();
-        boolean onTree=boardStatic.get(loc[0], loc[1]).getType()==5;//if the player is currently on a tree tile
         switch(dir){
             case 0://move up
-                if(loc[0]-1>=0)
-                    if (boardStatic.get(loc[0] - 1, loc[1]) == null) {
-                        if(!onTree)//regular movement
-                            boardStatic.add(loc[0] - 1, loc[1], boardStatic.remove(loc[0], loc[1]).clone());//move player, remove old player
-                        else {//if player is currently on a tree
-                            boardStatic.add(loc[0] - 1, loc[1], boardStatic.get(loc[0], loc[1]).clone());//add player to new location
-                            boardStatic.get(loc[0] - 1, loc[1]).setType(0);//set new location to just a player
-                            boardStatic.get(loc[0], loc[1]).setType(2);//make the old location just a tree
-                        }
+                if(playerLocation[0]-1>=0)
+                    if (boardStatic.get(playerLocation[0] - 1, playerLocation[1]) == null) {
+                        playerLocation[0]=playerLocation[0]-1;
                     }
                     else
+                    if(boardStatic.get(playerLocation[0] - 1, playerLocation[1]).getWalkable()){
+                        if(boardStatic.get(playerLocation[0] - 1, playerLocation[1]).getType()==1){
+                            candy=true;
+                            boardStatic.remove(playerLocation[0] - 1, playerLocation[1]);
+                        }
+                        playerLocation[0]=playerLocation[0]-1;
+                    }
+                break;
+            case 1://move left
+                if(playerLocation[1]-1>=0)
+                    if (boardStatic.get(playerLocation[0], playerLocation[1]-1) == null) {
+                        playerLocation[1]=playerLocation[1]-1;
+                    }
+                    else
+                    if(boardStatic.get(playerLocation[0], playerLocation[1]-1).getWalkable()){
+                        if(boardStatic.get(playerLocation[0], playerLocation[1]-1).getType()==1){
+                            candy=true;
+                            boardStatic.remove(playerLocation[0], playerLocation[1]-1);
+                        }
+                        playerLocation[1]=playerLocation[1]-1;
+                    }
+                break;
+            case 2://move right
+                if(playerLocation[1]+1<=19)
+                    if (boardStatic.get(playerLocation[0], playerLocation[1]+1) == null) {
+                        playerLocation[1]=playerLocation[1]+1;
+                    }
+                    else
+                    if(boardStatic.get(playerLocation[0], playerLocation[1]+1).getWalkable()){
+                        if(boardStatic.get(playerLocation[0], playerLocation[1]+1).getType()==1){
+                            candy=true;
+                            boardStatic.remove(playerLocation[0], playerLocation[1]+1);
+                        }
+                        playerLocation[1]=playerLocation[1]+1;
+                    }
+                break;
+            case 3://move down
+                if(playerLocation[0]+1<=19)
+                    if (boardStatic.get(playerLocation[0] + 1, playerLocation[1]) == null) {
+                        playerLocation[0]=playerLocation[0]+1;
+                    }
+                    else
+                    if(boardStatic.get(playerLocation[0] + 1, playerLocation[1]).getWalkable()){
+                        if(boardStatic.get(playerLocation[0] + 1, playerLocation[1]).getType()==1){
+                            candy=true;
+                            boardStatic.remove(playerLocation[0] + 1, playerLocation[1]);
+                        }
+                        playerLocation[0]=playerLocation[0]+1;
+                    }
+                break;
+                    /*else
                     if(boardStatic.get(loc[0]-1, loc[1]).getWalkable()){
                         if (!onTree) {//regular movement
                             if (boardStatic.get(loc[0] - 1, loc[1]).getType() == 2) {//if moving onto a tree
@@ -332,14 +376,14 @@ public class DrawView extends SurfaceView {
                             }
                         }
                     }
-                break;
+                break;*/
             default://gets sent an invalid number
                 break;
         }
         paint.setColor(Color.rgb(0, 200, 160));//after every move change paint to the default color
         checkVision();//temporary to check if the vision check works
         if(candy){//temporary check to see if the player can win
-            int[] i=getPlayerIndex();
+            int[] i=playerLocation;
             if(i[0]==playerHome[0]&&i[1]==playerHome[1]){
                 paint.setColor(Color.GREEN);
                 level++;
@@ -447,7 +491,8 @@ public class DrawView extends SurfaceView {
         ArrayList<String> temp = readFile(/*"level_"+level+".txt"*/);
         boardStatic.clear();//clear the board so the board is ready for a new level
         if (temp != null) {
-            for (int i = 1; i < temp.size(); i++) {//define all the variables then add the Object to the sparseMatrix
+            playerLocation=new int[]{Integer.parseInt(temp.get(1).substring(0, 2)), Integer.parseInt(temp.get(1).substring(2))};
+            for (int i = 2; i < temp.size(); i++) {//define all the variables then add the Object to the sparseMatrix
                 x = Integer.parseInt(temp.get(i).substring(0, 2));
                 y = Integer.parseInt(temp.get(i).substring(2, 4));
                 t = Integer.parseInt(temp.get(i).substring(4, 5));
@@ -487,7 +532,7 @@ public class DrawView extends SurfaceView {
             }
         }
         candy=false;
-        playerHome=getPlayerIndex();//set the player home to the location of the player after spawn
+        playerHome=playerLocation.clone();
     }
 
     //post: if the player is found in the vision of any of the enemies, then changes the colour of the text to white
@@ -499,7 +544,7 @@ public class DrawView extends SurfaceView {
                         for(int C=c-boardStatic.get(r, c).getVision(); C<=c+boardStatic.get(r, c).getVision(); C++){
                             if(R>=0&&R<=19){//if R is a valid index
                                 if(C>=0&&C<=19){//if C is a valid index
-                                    if(boardStatic.get(R, C)!=null&&boardStatic.get(R, C).getType()==0){//if the player is visible and within the vision range
+                                    if(R==playerLocation[0]&&C==playerLocation[1]){//if the player is visible and within the vision range
                                         paint.setColor(Color.rgb(232, 31, 12));//change paint color to WHITE
                                         playerHealth--;//remove 1 health from player
                                         if(playerHealth<=0){//if player is dead
@@ -579,6 +624,12 @@ public class DrawView extends SurfaceView {
                             canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
                         }
                     }
+                }
+                if((playerLocation[0]>viewX&&playerLocation[0]<viewX+8)&&(playerLocation[1]>viewY&&playerLocation[1]<viewY+8)) {//player is within bounds of the screen
+                    if(playerLocation[0]<8&&playerLocation[1]<8){
+                        canvas.drawBitmap(playerPic, null, board[playerLocation[0]][playerLocation[1] ], null);//draw Player
+                    }
+                    canvas.drawBitmap(playerPic, null, board[(playerLocation[0]-viewX)][(playerLocation[1]-viewY)], null);//draw Player
                 }
                 canvas.drawBitmap(upArrowPic, null, upButton, null);
                 canvas.drawBitmap(downArrowPic, null, downButton, null);

@@ -1,5 +1,5 @@
  static or mobile, X index, y index, type, vision, isEnemy, isWalkable, -- isVertical, eX, eY
-171700FFF0000
+1717
 060710FTF0000
 000720FTF0000
 001620FTF0000
