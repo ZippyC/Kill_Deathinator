@@ -1,0 +1,3 @@
+ static or mobile, X index, y index, type, vision, isEnemy, isWalkable, -- isVertical, eX, eY
+171700FFF0000
+060710FTF0000

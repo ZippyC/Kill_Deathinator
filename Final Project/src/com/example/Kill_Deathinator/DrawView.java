@@ -59,6 +59,7 @@ public class DrawView extends SurfaceView {
     private int gameState=0;//0=start screen, 1=map, 2=fight
     private int[] playerHome = new int[2];
     private boolean candy=false;
+    private int playerHealth=20;
 
     public DrawView(Context context){
         super(context);
@@ -124,8 +125,7 @@ public class DrawView extends SurfaceView {
 
     //pre:  "fileName" is the name of a real file containing lines of text
     //post: returns the number of lines in fileName O(n)
-    public static int getFileSize(String fileName)throws IOException
-    {
+    public static int getFileSize(String fileName)throws IOException {
         Scanner input = new Scanner(new FileReader(fileName));
         int size=0;
         while (input.hasNextLine())				//while there is another line in the file
@@ -137,15 +137,21 @@ public class DrawView extends SurfaceView {
         return size;
     }
 
-    //pre:  "fileName" is the name of a real file containing lines of text - the first line intended to be unused
     //post:returns a String array of all the elements in <filename>.txt, with index 0 unused (heap) O(n)
-    public ArrayList<String> readFile(String textFile){
+    public ArrayList<String> readFile(){
         ArrayList<String> temp= new ArrayList<String>();
         InputStream fis;
         final StringBuffer storedString = new StringBuffer();
 
         try {
-            fis = getResources().openRawResource(R.raw.level_1);
+            switch(level) {
+                case 1:fis = getResources().openRawResource(R.raw.level_1);
+                    break;
+                case 2: fis = getResources().openRawResource(R.raw.level_2);
+                    break;
+                default : fis = getResources().openRawResource(R.raw.level_1);
+                    break;
+            }
             DataInputStream dataIO = new DataInputStream(fis);
             String strLine = null;
 
@@ -336,6 +342,8 @@ public class DrawView extends SurfaceView {
             int[] i=getPlayerIndex();
             if(i[0]==playerHome[0]&&i[1]==playerHome[1]){
                 paint.setColor(Color.GREEN);
+                level++;
+                createLevel();
             }
         }
     }
@@ -431,13 +439,13 @@ public class DrawView extends SurfaceView {
         }
     }
 
-    //pre: level>0 and the level being looked for exists
     //post: fill the board with all of the WorldObjects for a given level
-    private void createLevel(int level) {
+    private void createLevel() {
         int x, y, t, v, ex, ey, tX, tY;//x=X index, y= Y index, t=Type, v=Vision, ex=endingX position, ey=endingY Position
         boolean e, w, vert;//e=Enemy, w=Walkable, vert=vertical
         //boolean mobiles = true;//tells the loop if it should be reading in WorldObjects or MobileEnemys
-        ArrayList<String> temp = readFile("level_"+level+".txt");
+        ArrayList<String> temp = readFile(/*"level_"+level+".txt"*/);
+        boardStatic.clear();//clear the board so the board is ready for a new level
         if (temp != null) {
             for (int i = 1; i < temp.size(); i++) {//define all the variables then add the Object to the sparseMatrix
                 x = Integer.parseInt(temp.get(i).substring(0, 2));
@@ -478,6 +486,7 @@ public class DrawView extends SurfaceView {
                     boardStatic.add(x, y, (new MobileEnemy(x, y, t, v, e, w, vert, true, true, ex, ey)));//add the MobileEnemy to the board
             }
         }
+        candy=false;
         playerHome=getPlayerIndex();//set the player home to the location of the player after spawn
     }
 
@@ -491,7 +500,11 @@ public class DrawView extends SurfaceView {
                             if(R>=0&&R<=19){//if R is a valid index
                                 if(C>=0&&C<=19){//if C is a valid index
                                     if(boardStatic.get(R, C)!=null&&boardStatic.get(R, C).getType()==0){//if the player is visible and within the vision range
-                                        paint.setColor(Color.WHITE);//change paint color to WHITE
+                                        paint.setColor(Color.rgb(232, 31, 12));//change paint color to WHITE
+                                        playerHealth--;//remove 1 health from player
+                                        if(playerHealth<=0){//if player is dead
+                                            gameState=2;//send to death screen
+                                        }
                                     }
                                 }
                             }
@@ -515,70 +528,75 @@ public class DrawView extends SurfaceView {
     protected void onDraw(Canvas canvas) {
         if(gameState==0) {
             canvas.drawText("This is the Start Screen", (canvas.getWidth() / 2) - 100, 300, paint);
-        }
-        if(gameState==1){
-            if (canvasWidth == 0) {
-                canvasWidth = canvas.getWidth();
-                createScreen();
-            }
-            if (!levelStarted) {
-                createLevel(1);
-                levelStarted=!levelStarted;
-            }
-            //canvas.drawBitmap(background_1, 0, 0, paint);
-            for (int r = 0; r < board.length; r++) {
-                for (int c = 0; c < board[0].length; c++) {
-                    if (boardStatic.get(r + viewX, c + viewY) != null) {
-                        switch (boardStatic.get(r + viewX, c + viewY).getType()) {
-                            case 0:
-                                canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
-                                canvas.drawBitmap(playerPic, null, board[r][c], null);//draw Player
-                                break;
-                            case 1:
-                                canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
-                                canvas.drawBitmap(treasurePic, null, board[r][c], null);//drawTreasure
-                                break;
-                            case 2:
-                                canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
-                                canvas.drawBitmap(treePic, null, board[r][c], null);//draw Tree
-                                break;
-                            case 3:
-                                canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
-                                canvas.drawBitmap(archerPic, null, board[r][c], null);//draw Archer
-                                break;
-                            case 5:
-                                canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
-                                canvas.drawBitmap(treePic, null, board[r][c], null);//draw Tree
-                                canvas.drawBitmap(playerPic, null, board[r][c], null);//draw Player
-                                break;
-                            case 6:
-                                canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
-                                canvas.drawBitmap(soldierPic, null, board[r][c], null);//draw Soldier
-                                break;
-                            case 7:
-                                canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
-                                canvas.drawBitmap(scoutPic, null, board[r][c], null);//draw Scout
-                                break;
-                            default:
-                                canvas.drawBitmap(background_1, null, board[r][c], null);//draw MacNabb
-                                break;
+        } else {
+            if (gameState == 1) {
+                if (canvasWidth == 0) {
+                    canvasWidth = canvas.getWidth();
+                    createScreen();
+                }
+                if (!levelStarted) {
+                    createLevel();
+                    levelStarted = !levelStarted;
+                }
+                for (int r = 0; r < board.length; r++) {
+                    for (int c = 0; c < board[0].length; c++) {
+                        if (boardStatic.get(r + viewX, c + viewY) != null) {
+                            switch (boardStatic.get(r + viewX, c + viewY).getType()) {
+                                case 0:
+                                    canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
+                                    canvas.drawBitmap(playerPic, null, board[r][c], null);//draw Player
+                                    break;
+                                case 1:
+                                    canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
+                                    canvas.drawBitmap(treasurePic, null, board[r][c], null);//drawTreasure
+                                    break;
+                                case 2:
+                                    canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
+                                    canvas.drawBitmap(treePic, null, board[r][c], null);//draw Tree
+                                    break;
+                                case 3:
+                                    canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
+                                    canvas.drawBitmap(archerPic, null, board[r][c], null);//draw Archer
+                                    break;
+                                case 5:
+                                    canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
+                                    canvas.drawBitmap(treePic, null, board[r][c], null);//draw Tree
+                                    canvas.drawBitmap(playerPic, null, board[r][c], null);//draw Player
+                                    break;
+                                case 6:
+                                    canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
+                                    canvas.drawBitmap(soldierPic, null, board[r][c], null);//draw Soldier
+                                    break;
+                                case 7:
+                                    canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
+                                    canvas.drawBitmap(scoutPic, null, board[r][c], null);//draw Scout
+                                    break;
+                                default:
+                                    canvas.drawBitmap(background_1, null, board[r][c], null);//draw MacNabb
+                                    break;
+                            }
+                        } else {
+                            canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
                         }
-                    } else {
-                        canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
                     }
                 }
+                canvas.drawBitmap(upArrowPic, null, upButton, null);
+                canvas.drawBitmap(downArrowPic, null, downButton, null);
+                canvas.drawBitmap(leftArrowPic, null, leftButton, null);
+                canvas.drawBitmap(rightArrowPic, null, rightButton, null);
+                canvas.drawBitmap(upArrowPic, null, upScreenButton, null);
+                canvas.drawBitmap(downArrowPic, null, downScreenButton, null);
+                canvas.drawBitmap(leftArrowPic, null, leftScreenButton, null);
+                canvas.drawBitmap(rightArrowPic, null, rightScreenButton, null);
+                canvas.drawText("x: " + viewX + " Y: " + viewY + " Health: " + playerHealth, (canvas.getWidth() / 2) - 100, 50, paint);//print screen location
+                canvas.drawBitmap(arinPic, null, moveButton, null);
+                canvas.drawRect(musicButton, paint);
+            } else {
+                if (gameState == 2) {
+                    canvas.drawRect(new RectF(0, 0, canvas.getWidth(), canvas.getHeight()), new Paint(Color.BLACK));
+                    canvas.drawText("You have died", (canvas.getWidth() / 2) - 100, 300, paint);
+                }
             }
-            canvas.drawBitmap(upArrowPic, null, upButton, null);
-            canvas.drawBitmap(downArrowPic, null, downButton, null);
-            canvas.drawBitmap(leftArrowPic, null, leftButton, null);
-            canvas.drawBitmap(rightArrowPic, null, rightButton, null);
-            canvas.drawBitmap(upArrowPic, null, upScreenButton, null);
-            canvas.drawBitmap(downArrowPic, null, downScreenButton, null);
-            canvas.drawBitmap(leftArrowPic, null, leftScreenButton, null);
-            canvas.drawBitmap(rightArrowPic, null, rightScreenButton, null);
-            canvas.drawText("x: " + viewX + " Y: " + viewY, (canvas.getWidth() / 2) - 100, 50, paint);//print screen location
-            canvas.drawBitmap(arinPic, null, moveButton, null);
-            canvas.drawRect(musicButton, paint);
         }
     }
 
@@ -586,10 +604,10 @@ public class DrawView extends SurfaceView {
     public boolean onTouchEvent(MotionEvent event) {
         if (System.currentTimeMillis() - lastClick > 150) {//prevents spam tapping and accidentally pressing multiple times based on dragging
             lastClick = System.currentTimeMillis();
-            float x = event.getX();
-            float y = event.getY();
+            float x = event.getX();//x location of touch
+            float y = event.getY();//y location of touch
             if (gameState == 0) {
-                gameState=1;
+                gameState=1;//"start" game
             }
             if (gameState == 1) {
                 synchronized (getHolder()) {
@@ -606,37 +624,39 @@ public class DrawView extends SurfaceView {
                         movePlayer(1);
                         move();
                     }
-                    if (upScreenButton.contains(x, y)) {
+                    if (upScreenButton.contains(x, y)) {//move screen up 2
                         if (viewX > 0) {
                             viewX -= 2;
                         }
-                    } else if (downScreenButton.contains(x, y)) {
+                    } else if (downScreenButton.contains(x, y)) {//move screen down 2
                         if (viewX < 12)
                             viewX += 2;
-                    } else if (rightScreenButton.contains(x, y)) {
+                    } else if (rightScreenButton.contains(x, y)) {//move screen right 2
                         if (viewY < 12) {
                             viewY += 2;
                         }
-                    } else if (leftScreenButton.contains(x, y))
+                    } else if (leftScreenButton.contains(x, y))//move screen left 2
                         if (viewY > 0)
                             viewY -= 2;
-                    /*if (moveButton.contains(x, y)) {
-                        move();
-                    }*/
-                    if (musicButton.contains(x, y)) {
-                        if (bavariaOn) {
+                    if (moveButton.contains(x, y)) {
+                        gameState=2;
+                    }
+                    if (musicButton.contains(x, y)) {//play/pause the music
+                        if (bavariaOn) {//pause if on
                             bavariaOn = false;
                             fluteSong.pause();
-                        } else {
+                        } else {//play if off
                             bavariaOn = true;
                             fluteSong.start();
                         }
                     }
                 }
             }
-        }
-        if(gameState==2){
-            gameState=1;
+            if(gameState==2){
+                if(musicButton.contains(x, y)){
+                    gameState=1;
+                }
+            }
         }
         return true;
     }
