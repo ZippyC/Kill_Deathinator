@@ -476,7 +476,7 @@ public class DrawView extends SurfaceView {
                         }
                     }
                 }
-                if((playerLocation[0]>viewX&&playerLocation[0]<viewX+8)&&(playerLocation[1]>viewY&&playerLocation[1]<viewY+8)) {//player is within bounds of the screen
+                if((playerLocation[0]>=viewX&&playerLocation[0]<viewX+8)&&(playerLocation[1]>=viewY&&playerLocation[1]<viewY+8)) {//player is within bounds of the screen
                     if(playerLocation[0]<8&&playerLocation[1]<8){
                         canvas.drawBitmap(playerPic, null, board[playerLocation[0]][playerLocation[1] ], null);//draw Player
                     }
@@ -493,6 +493,21 @@ public class DrawView extends SurfaceView {
                 canvas.drawText("x: " + viewX + " Y: " + viewY + " Health: " + playerHealth, (canvas.getWidth() / 2) - 100, 50, paint);//print screen location
                 canvas.drawBitmap(arinPic, null, moveButton, null);
                 canvas.drawRect(musicButton, paint);
+                /*for(int r=0; r<boardStatic.numRows(); r++) {
+                    for (int c = 0; c < boardStatic.numColumns(); c++) {
+                        if(boardStatic.get(r, c)!=null&&(boardStatic.get(r, c).getEnemy())){//if is an enemy
+                            for(int R=r-boardStatic.get(r, c).getVision(); R<=r+boardStatic.get(r, c).getVision(); R++){//for every index of boardStatic
+                                for(int C=c-boardStatic.get(r, c).getVision(); C<=c+boardStatic.get(r, c).getVision(); C++){
+                                    if(R>=0&&R<=19){//if R is a valid index
+                                        if(C>=0&&C<=19){//if C is a valid index
+                                            canvas.drawBitmap(rightArrowPic, null, rightScreenButton, null);//draw the danger bitmap
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }*/
             } else {
                 if (gameState == 2) {
                     canvas.drawRect(new RectF(0, 0, canvas.getWidth(), canvas.getHeight()), new Paint(Color.BLACK));
