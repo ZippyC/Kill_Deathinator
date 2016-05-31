@@ -42,10 +42,11 @@
       <file leaf-file-name="DrawView.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/example/Kill_Deathinator/DrawView.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="131">
-              <caret line="473" column="32" selection-start-line="473" selection-start-column="32" selection-end-line="473" selection-end-column="32" />
+            <state relative-caret-position="199">
+              <caret line="468" column="42" selection-start-line="468" selection-start-column="42" selection-end-line="468" selection-end-column="42" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="method#DrawView#0;class#DrawView#0" expanded="false" />
                 <element signature="method#getFileSize#0;class#DrawView#0" expanded="false" />
                 <element signature="method#readFile#0;class#DrawView#0" expanded="false" />
                 <element signature="method#movePlayer#0;class#DrawView#0" expanded="false" />
@@ -194,6 +195,10 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Kill_Deathinator" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -594,7 +599,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="13" />
+      <option name="time" value="16" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -672,6 +677,7 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="method#DrawView#0;class#DrawView#0" expanded="false" />
             <element signature="method#getFileSize#0;class#DrawView#0" expanded="false" />
             <element signature="method#readFile#0;class#DrawView#0" expanded="false" />
             <element signature="method#movePlayer#0;class#DrawView#0" expanded="false" />
@@ -723,6 +729,7 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="method#DrawView#0;class#DrawView#0" expanded="false" />
             <element signature="method#getFileSize#0;class#DrawView#0" expanded="false" />
             <element signature="method#readFile#0;class#DrawView#0" expanded="false" />
             <element signature="method#movePlayer#0;class#DrawView#0" expanded="false" />
@@ -774,6 +781,7 @@
           <caret line="65" column="24" selection-start-line="65" selection-start-column="24" selection-end-line="65" selection-end-column="24" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="method#DrawView#0;class#DrawView#0" expanded="false" />
             <element signature="method#getFileSize#0;class#DrawView#0" expanded="false" />
             <element signature="method#readFile#0;class#DrawView#0" expanded="false" />
             <element signature="method#movePlayer#0;class#DrawView#0" expanded="false" />
@@ -814,6 +822,7 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="method#DrawView#0;class#DrawView#0" expanded="false" />
             <element signature="method#getFileSize#0;class#DrawView#0" expanded="false" />
             <element signature="method#readFile#0;class#DrawView#0" expanded="false" />
             <element signature="method#movePlayer#0;class#DrawView#0" expanded="false" />
@@ -1005,10 +1014,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/example/Kill_Deathinator/DrawView.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="131">
-          <caret line="473" column="32" selection-start-line="473" selection-start-column="32" selection-end-line="473" selection-end-column="32" />
+        <state relative-caret-position="199">
+          <caret line="468" column="42" selection-start-line="468" selection-start-column="42" selection-end-line="468" selection-end-column="42" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="method#DrawView#0;class#DrawView#0" expanded="false" />
             <element signature="method#getFileSize#0;class#DrawView#0" expanded="false" />
             <element signature="method#readFile#0;class#DrawView#0" expanded="false" />
             <element signature="method#movePlayer#0;class#DrawView#0" expanded="false" />

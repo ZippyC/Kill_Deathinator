@@ -37,6 +37,7 @@ public class DrawView extends SurfaceView {
     private Bitmap leftArrowPic;
     private Bitmap upArrowPic;
     private Bitmap downArrowPic;
+    private Bitmap visionMarker;//shows user where the enemies can see
     private boolean bavariaOn = false;//keeping track of if the bavaria song is playing
     private RectF upScreenButton = new RectF(640, 640, 740, 740);
     private RectF leftScreenButton = new RectF(540, 740, 640, 840);
@@ -61,6 +62,7 @@ public class DrawView extends SurfaceView {
     private int[] playerLocation=new int[2];
     private boolean candy=false;
     private int playerHealth=20;
+    private int[][] enemyVision = new int[20][20];
 
     public DrawView(Context context){
         super(context);
@@ -110,19 +112,8 @@ public class DrawView extends SurfaceView {
         vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);//instantiate the vibrator
         bavaria = MediaPlayer.create(context, R.raw.meanwhile_in_bavaria);
         fluteSong = MediaPlayer.create(context, R.raw.flute_song);
+        visionMarker=BitmapFactory.decodeResource(getResources(), R.drawable.grass_danger);
     }
-
-    //post: returns the index of the player within the sparse matrix if the player is there
-    /*private int[] getPlayerIndex() {
-        for(int r=0; r<boardStatic.numRows(); r++){
-            for(int c=0; c<boardStatic.numColumns(); c++){
-                if(boardStatic.get(r, c)!=null&&(boardStatic.get(r, c).getType()==0||boardStatic.get(r, c).getType()==5)){
-                    return new int[]{r, c};//return player location if found
-                }
-            }
-        }
-        return null;//should never be reached
-    }*/
 
     //pre:  "fileName" is the name of a real file containing lines of text
     //post: returns the number of lines in fileName O(n)
@@ -232,8 +223,15 @@ public class DrawView extends SurfaceView {
                 break;
         }
         paint.setColor(Color.rgb(0, 200, 160));//after every move change paint to the default color
-        checkVision();//temporary to check if the vision check works
-        if(candy){//temporary check to see if the player can win
+        checkVision();//update the current vision
+        if(enemyVision[playerLocation[0]][playerLocation[1]]==1){//check if the player is within the vision of an enemy
+            playerHealth--;
+            paint.setColor(Color.rgb(256, 0, 0));//make text color red
+            if(playerHealth<=0){
+                gameState=2;//send to death screen
+            }
+        }
+        if(candy){//if at home space with treasure, open next level
             int[] i=playerLocation;
             if(i[0]==playerHome[0]&&i[1]==playerHome[1]){
                 paint.setColor(Color.GREEN);
@@ -384,24 +382,20 @@ public class DrawView extends SurfaceView {
         }
         candy=false;
         playerHome=playerLocation.clone();
+        checkVision();
     }
 
     //post: if the player is found in the vision of any of the enemies, then changes the colour of the text to white
     private void checkVision(){
+        enemyVision=new int[20][20];//refresh the enemyVision array
         for(int r=0; r<boardStatic.numRows(); r++) {
             for (int c = 0; c < boardStatic.numColumns(); c++) {
-                if(boardStatic.get(r, c)!=null&&(boardStatic.get(r, c).getEnemy()/*getType()==7||boardStatic.get(r, c).getType()==6||boardStatic.get(r, c).getType()==3*/)){//if is an enemy
+                if(boardStatic.get(r, c)!=null&&(boardStatic.get(r, c).getEnemy())){//if is an enemy
                     for(int R=r-boardStatic.get(r, c).getVision(); R<=r+boardStatic.get(r, c).getVision(); R++){//for every index of boardStatic
                         for(int C=c-boardStatic.get(r, c).getVision(); C<=c+boardStatic.get(r, c).getVision(); C++){
                             if(R>=0&&R<=19){//if R is a valid index
                                 if(C>=0&&C<=19){//if C is a valid index
-                                    if((R==playerLocation[0]&&C==playerLocation[1])&&((boardStatic.get(R, C)==null)||boardStatic.get(R, C).getType()!=2)){//if the player is visible and within the vision range
-                                        paint.setColor(Color.rgb(232, 31, 12));//change paint color to WHITE
-                                        playerHealth--;//remove 1 health from player
-                                        if(playerHealth<=0){//if player is dead
-                                            gameState=2;//send to death screen
-                                        }
-                                    }
+                                    enemyVision[R][C]=1;//mark this spot as within enemy vision
                                 }
                             }
                         }
@@ -440,10 +434,16 @@ public class DrawView extends SurfaceView {
                             switch (boardStatic.get(r + viewX, c + viewY).getType()) {
                                 case 0:
                                     canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
+                                    if(enemyVision[r+viewX][c+viewY]==1){
+                                        canvas.drawBitmap(visionMarker, null, board[r][c], null);//draw vision marker
+                                    }
                                     canvas.drawBitmap(playerPic, null, board[r][c], null);//draw Player
                                     break;
                                 case 1:
                                     canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
+                                    if(enemyVision[r+viewX][c+viewY]==1){
+                                        canvas.drawBitmap(visionMarker, null, board[r][c], null);//draw vision marker
+                                    }
                                     canvas.drawBitmap(treasurePic, null, board[r][c], null);//drawTreasure
                                     break;
                                 case 2:
@@ -473,6 +473,9 @@ public class DrawView extends SurfaceView {
                             }
                         } else {
                             canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
+                            if(enemyVision[r+viewX][c+viewY]==1){
+                                canvas.drawBitmap(visionMarker, null, board[r][c], null);//draw vision marker
+                            }
                         }
                     }
                 }
@@ -493,21 +496,6 @@ public class DrawView extends SurfaceView {
                 canvas.drawText("x: " + viewX + " Y: " + viewY + " Health: " + playerHealth, (canvas.getWidth() / 2) - 100, 50, paint);//print screen location
                 canvas.drawBitmap(arinPic, null, moveButton, null);
                 canvas.drawRect(musicButton, paint);
-                /*for(int r=0; r<boardStatic.numRows(); r++) {
-                    for (int c = 0; c < boardStatic.numColumns(); c++) {
-                        if(boardStatic.get(r, c)!=null&&(boardStatic.get(r, c).getEnemy())){//if is an enemy
-                            for(int R=r-boardStatic.get(r, c).getVision(); R<=r+boardStatic.get(r, c).getVision(); R++){//for every index of boardStatic
-                                for(int C=c-boardStatic.get(r, c).getVision(); C<=c+boardStatic.get(r, c).getVision(); C++){
-                                    if(R>=0&&R<=19){//if R is a valid index
-                                        if(C>=0&&C<=19){//if C is a valid index
-                                            canvas.drawBitmap(rightArrowPic, null, rightScreenButton, null);//draw the danger bitmap
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }*/
             } else {
                 if (gameState == 2) {
                     canvas.drawRect(new RectF(0, 0, canvas.getWidth(), canvas.getHeight()), new Paint(Color.BLACK));
