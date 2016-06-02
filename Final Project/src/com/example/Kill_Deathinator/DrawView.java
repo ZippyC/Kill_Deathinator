@@ -33,36 +33,36 @@ public class DrawView extends SurfaceView {
     private Bitmap treePic;//tree
     private Bitmap treasurePic;//treasure
     private Bitmap arinPic;//arin as Sonic
-    private Bitmap rightArrowPic;
-    private Bitmap leftArrowPic;
-    private Bitmap upArrowPic;
-    private Bitmap downArrowPic;
+    private Bitmap rightArrowPic;//right arrow
+    private Bitmap leftArrowPic;//left arrow
+    private Bitmap upArrowPic;//up arrow
+    private Bitmap downArrowPic;//down arrow
     private Bitmap visionMarker;//shows user where the enemies can see
-    private boolean bavariaOn = false;//keeping track of if the bavaria song is playing
-    private RectF upScreenButton = new RectF(640, 640, 740, 740);
-    private RectF leftScreenButton = new RectF(540, 740, 640, 840);
-    private RectF downScreenButton = new RectF(640, 840, 740, 940);
-    private RectF rightScreenButton = new RectF(740, 740, 840, 840);
-    private RectF upButton = new RectF(640, 950, 740, 1050);
-    private RectF leftButton = new RectF(540, 1050, 640, 1150);
-    private RectF downButton = new RectF(640, 1150, 740, 1250);
-    private RectF rightButton = new RectF(740, 1050, 840, 1150);
+    private boolean bavariaOn = false;//keeping track of if the song is playing
+    private RectF upScreenButton = new RectF(640, 640, 740, 740);//up button for the screen
+    private RectF leftScreenButton = new RectF(540, 740, 640, 840);//left button for the screen
+    private RectF downScreenButton = new RectF(640, 840, 740, 940);//down button for the screen
+    private RectF rightScreenButton = new RectF(740, 740, 840, 840);//right button for the screen
+    private RectF upButton = new RectF(640, 950, 740, 1050);//up button
+    private RectF leftButton = new RectF(540, 1050, 640, 1150);//left button
+    private RectF downButton = new RectF(640, 1150, 740, 1250);//down button
+    private RectF rightButton = new RectF(740, 1050, 840, 1150);//right button
     private boolean moving=false;//control if the enemies are moving or not
-    private int viewX;
-    private int viewY;
-    private Paint[][] paints=new Paint[20][20];
-    private RectF[][] board=new RectF[8][8];
-    private RectF musicButton=new RectF(200, 1200, 300, 1300);
-    private int canvasWidth=0;
-    private boolean levelStarted=false;
-    private int level=1;
-    private RectF moveButton=new RectF(200, 1300, 300, 1400);//button to move Objects'
-    private int gameState=0;//0=start screen, 1=map, 2=fight
-    private int[] playerHome = new int[2];
-    private int[] playerLocation=new int[2];
-    private boolean candy=false;
-    private int playerHealth=20;
-    private int[][] enemyVision = new int[20][20];
+    private int viewX;//lowest box shown on screen
+    private int viewY;//lowest box shown on screen
+    private RectF[][] board=new RectF[8][8];//array list holding the boxes to draw objects onto
+    private RectF musicButton=new RectF(200, 1200, 300, 1300);//button to turn music on and off
+    private int canvasWidth=0;//records width of canvas for scaling size of boxes
+    private boolean levelStarted=false;//keeps track of if a level is currently going
+    private int level=1;//level currently on
+    private RectF moveButton=new RectF(200, 1300, 300, 1400);//button to move Objects
+    private int gameState=0;//0=start screen, 1=map, 2=death, 3=victory
+    private int[] playerHome = new int[2];//location of player's home
+    private int[] playerLocation=new int[2];//location of player
+    private boolean candy=false;//whether or not the player has obtained the treasure for current level
+    private int playerHealth=20;//health
+    private int[][] enemyVision = new int[20][20];//array to allow the enemy's vision to be displayed on the board for ease of use
+    private RectF fullscreenBox;//box for use of drawing the entire screen
 
     public DrawView(Context context){
         super(context);
@@ -135,24 +135,26 @@ public class DrawView extends SurfaceView {
         InputStream fis;
         final StringBuffer storedString = new StringBuffer();
 
-        try {
+        try {//change which file based on current number of level
             switch(level) {
-                case 1:fis = getResources().openRawResource(R.raw.level_1);
+                case 1:fis = getResources().openRawResource(R.raw.level_1);//load level 1
                     break;
-                case 2: fis = getResources().openRawResource(R.raw.level_2);
+                case 2: fis = getResources().openRawResource(R.raw.level_2);//load level 2
                     break;
-                default : fis = getResources().openRawResource(R.raw.level_1);
+                case 3: fis = getResources().openRawResource(R.raw.level_3);//load level 3
+                    break;
+                default : fis = getResources().openRawResource(R.raw.level_1);//load level 1 if the player has beaten the game
                     break;
             }
             DataInputStream dataIO = new DataInputStream(fis);
             String strLine = null;
 
-            while ((strLine = dataIO.readLine()) != null) {
+            while ((strLine = dataIO.readLine()) != null) {//add line to the arrayList
                 temp.add(strLine);
             }
 
             dataIO.close();
-            fis.close();
+            fis.close();//close file
         }
         catch  (Exception e) {
         }
@@ -165,66 +167,66 @@ public class DrawView extends SurfaceView {
         switch(dir){
             case 0://move up
                 if(playerLocation[0]-1>=0)
-                    if (boardStatic.get(playerLocation[0] - 1, playerLocation[1]) == null) {
-                        playerLocation[0]=playerLocation[0]-1;
+                    if (boardStatic.get(playerLocation[0] - 1, playerLocation[1]) == null) {//if moving to an empty location
+                        playerLocation[0]=playerLocation[0]-1;//update player location
                     }
-                    else
-                    if(boardStatic.get(playerLocation[0] - 1, playerLocation[1]).getWalkable()){
-                        if(boardStatic.get(playerLocation[0] - 1, playerLocation[1]).getType()==1){
-                            candy=true;
-                            boardStatic.remove(playerLocation[0] - 1, playerLocation[1]);
+                    else//if moving to a location with an object
+                        if(boardStatic.get(playerLocation[0] - 1, playerLocation[1]).getWalkable()){
+                            if(boardStatic.get(playerLocation[0] - 1, playerLocation[1]).getType()==1){
+                                candy=true;//mark that treasure has been obtained
+                                boardStatic.remove(playerLocation[0] - 1, playerLocation[1]);//remove treasure
+                            }
+                            playerLocation[0]=playerLocation[0]-1;//update player location
                         }
-                        playerLocation[0]=playerLocation[0]-1;
-                    }
                 break;
             case 1://move left
                 if(playerLocation[1]-1>=0)
-                    if (boardStatic.get(playerLocation[0], playerLocation[1]-1) == null) {
-                        playerLocation[1]=playerLocation[1]-1;
+                    if (boardStatic.get(playerLocation[0], playerLocation[1]-1) == null) {//if moving to an empty location
+                        playerLocation[1]=playerLocation[1]-1;//update player location
                     }
-                    else
-                    if(boardStatic.get(playerLocation[0], playerLocation[1]-1).getWalkable()){
-                        if(boardStatic.get(playerLocation[0], playerLocation[1]-1).getType()==1){
-                            candy=true;
-                            boardStatic.remove(playerLocation[0], playerLocation[1]-1);
+                    else//if moving to a location with an object
+                        if(boardStatic.get(playerLocation[0], playerLocation[1]-1).getWalkable()){
+                            if(boardStatic.get(playerLocation[0], playerLocation[1]-1).getType()==1){
+                                candy=true;//mark that treasure has been obtained
+                                boardStatic.remove(playerLocation[0], playerLocation[1]-1);//remove treasure
+                            }
+                            playerLocation[1]=playerLocation[1]-1;//update player location
                         }
-                        playerLocation[1]=playerLocation[1]-1;
-                    }
                 break;
             case 2://move right
                 if(playerLocation[1]+1<=19)
-                    if (boardStatic.get(playerLocation[0], playerLocation[1]+1) == null) {
-                        playerLocation[1]=playerLocation[1]+1;
+                    if (boardStatic.get(playerLocation[0], playerLocation[1]+1) == null) {//if moving to an empty location
+                        playerLocation[1]=playerLocation[1]+1;//update player location
                     }
-                    else
-                    if(boardStatic.get(playerLocation[0], playerLocation[1]+1).getWalkable()){
-                        if(boardStatic.get(playerLocation[0], playerLocation[1]+1).getType()==1){
-                            candy=true;
-                            boardStatic.remove(playerLocation[0], playerLocation[1]+1);
+                    else//if moving to a location with an object
+                        if(boardStatic.get(playerLocation[0], playerLocation[1]+1).getWalkable()){
+                            if(boardStatic.get(playerLocation[0], playerLocation[1]+1).getType()==1){
+                                candy=true;//mark that treasure has been obtained
+                                boardStatic.remove(playerLocation[0], playerLocation[1]+1);//remove treasure
+                            }
+                            playerLocation[1]=playerLocation[1]+1;//update player location
                         }
-                        playerLocation[1]=playerLocation[1]+1;
-                    }
                 break;
             case 3://move down
                 if(playerLocation[0]+1<=19)
-                    if (boardStatic.get(playerLocation[0] + 1, playerLocation[1]) == null) {
-                        playerLocation[0]=playerLocation[0]+1;
+                    if (boardStatic.get(playerLocation[0] + 1, playerLocation[1]) == null) {//if moving to an empty location
+                        playerLocation[0]=playerLocation[0]+1;//update player location
                     }
-                    else
-                    if(boardStatic.get(playerLocation[0] + 1, playerLocation[1]).getWalkable()){
-                        if(boardStatic.get(playerLocation[0] + 1, playerLocation[1]).getType()==1){
-                            candy=true;
-                            boardStatic.remove(playerLocation[0] + 1, playerLocation[1]);
+                    else//if moving to a location with an object
+                        if(boardStatic.get(playerLocation[0] + 1, playerLocation[1]).getWalkable()){
+                            if(boardStatic.get(playerLocation[0] + 1, playerLocation[1]).getType()==1){
+                                candy=true;//mark that treasure has been obtained
+                                boardStatic.remove(playerLocation[0] + 1, playerLocation[1]);//remove treasure
+                            }
+                            playerLocation[0]=playerLocation[0]+1;//update player location
                         }
-                        playerLocation[0]=playerLocation[0]+1;
-                    }
                 break;
             default://gets sent an invalid number
                 break;
         }
         paint.setColor(Color.rgb(0, 200, 160));//after every move change paint to the default color
         checkVision();//update the current vision
-        if(enemyVision[playerLocation[0]][playerLocation[1]]==1){//check if the player is within the vision of an enemy
+        if(enemyVision[playerLocation[0]][playerLocation[1]]==1&&(boardStatic.get(playerLocation[0], playerLocation[1])==null)){//check if the player is within the vision of an enemy
             playerHealth--;
             paint.setColor(Color.rgb(256, 0, 0));//make text color red
             if(playerHealth<=0){
@@ -232,11 +234,11 @@ public class DrawView extends SurfaceView {
             }
         }
         if(candy){//if at home space with treasure, open next level
-            int[] i=playerLocation;
-            if(i[0]==playerHome[0]&&i[1]==playerHome[1]){
-                paint.setColor(Color.GREEN);
-                level++;
-                createLevel();
+            int[] i=playerLocation;//
+            if(i[0]==playerHome[0]&&i[1]==playerHome[1]){//if player has beaten level
+                paint.setColor(Color.GREEN);//change color to alert player of victory
+                level++;//up level
+                createLevel();//create the next level
             }
         }
     }
@@ -342,21 +344,21 @@ public class DrawView extends SurfaceView {
         if (temp != null) {
             playerLocation=new int[]{Integer.parseInt(temp.get(1).substring(0, 2)), Integer.parseInt(temp.get(1).substring(2))};
             for (int i = 2; i < temp.size(); i++) {//define all the variables then add the Object to the sparseMatrix
-                x = Integer.parseInt(temp.get(i).substring(0, 2));
-                y = Integer.parseInt(temp.get(i).substring(2, 4));
-                t = Integer.parseInt(temp.get(i).substring(4, 5));
-                v = Integer.parseInt(temp.get(i).substring(5, 6));
-                e=false;
+                x = Integer.parseInt(temp.get(i).substring(0, 2));//x cord
+                y = Integer.parseInt(temp.get(i).substring(2, 4));//y cord
+                t = Integer.parseInt(temp.get(i).substring(4, 5));//type of object
+                v = Integer.parseInt(temp.get(i).substring(5, 6));//range of vision
+                e=false;//set enemy to false by default
                 if(temp.get(i).substring(6, 7).equals("T"))
-                    e=true;
-                w=false;
+                    e=true;//set enemy to true
+                w=false;//set walkable to false by default
                 if(temp.get(i).substring(7, 8).equals("T"))
-                    w=true;
-                vert=false;
+                    w=true;//set walkable to true
+                vert=false;//set vertical to false by default
                 if(temp.get(i).substring(8, 9).equals("T"))
-                    vert=true;
-                ex = Integer.parseInt(temp.get(i).substring(9, 11));
-                ey = Integer.parseInt(temp.get(i).substring(11));
+                    vert=true;//set vertical to true
+                ex = Integer.parseInt(temp.get(i).substring(9, 11));//ending x location if they move
+                ey = Integer.parseInt(temp.get(i).substring(11));//ending y location if they move
                 if(x>ex) {//if the final movement location is lower than the starting location, change the variables so movement works
                     tX=x;
                     tY=y;
@@ -380,9 +382,9 @@ public class DrawView extends SurfaceView {
                     boardStatic.add(x, y, (new MobileEnemy(x, y, t, v, e, w, vert, true, true, ex, ey)));//add the MobileEnemy to the board
             }
         }
-        candy=false;
-        playerHome=playerLocation.clone();
-        checkVision();
+        candy=false;//has not obtained treasuse for new level
+        playerHome=playerLocation.clone();//update player home
+        checkVision();//reload the vision for the enemies to display on board
     }
 
     //post: if the player is found in the vision of any of the enemies, then changes the colour of the text to white
@@ -405,73 +407,75 @@ public class DrawView extends SurfaceView {
         }
     }
 
-    //post: creates the 8x8 screen based on the size of the screen
-    private void createScreen(){
+    //pre: canvas needs to be the valid canvas of the device
+    //post: creates the 8x8 screen based on the size of the screen and the box to draw across entire screen for death
+    private void createScreen(Canvas canvas){
         for (int r = 0; r < board.length; r++) {//create the 8x8 array of the screen
             for (int c = 0; c < board[0].length; c++) {
-                board[r][c] = new RectF(canvasWidth / 8 * c, canvasWidth / 8 * r, canvasWidth / 8 * (c + 1), canvasWidth / 8 * (r + 1));
+                board[r][c] = new RectF(canvasWidth / 8 * c, canvasWidth / 8 * r, canvasWidth / 8 * (c + 1), canvasWidth / 8 * (r + 1));//create board based on width
             }
         }
+        fullscreenBox=new RectF(0, 0, canvas.getWidth(), canvas.getHeight());
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        if(gameState==0) {
+        if(gameState==0) {//start screen
             canvas.drawText("This is the Start Screen", (canvas.getWidth() / 2) - 100, 300, paint);
         } else {
-            if (gameState == 1) {
-                if (canvasWidth == 0) {
+            if (gameState == 1) {//on map
+                if (canvasWidth == 0) {//if the canvas' width has not been defined, set it
                     canvasWidth = canvas.getWidth();
-                    createScreen();
+                    createScreen(canvas);//make the screen
                 }
-                if (!levelStarted) {
+                if (!levelStarted) {//if the level has not been created yet
                     createLevel();
                     levelStarted = !levelStarted;
                 }
-                for (int r = 0; r < board.length; r++) {
+                for (int r = 0; r < board.length; r++) {//draw all objects on map within the screen
                     for (int c = 0; c < board[0].length; c++) {
                         if (boardStatic.get(r + viewX, c + viewY) != null) {
                             switch (boardStatic.get(r + viewX, c + viewY).getType()) {
-                                case 0:
+                                case 0://player (unused)
                                     canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
                                     if(enemyVision[r+viewX][c+viewY]==1){
                                         canvas.drawBitmap(visionMarker, null, board[r][c], null);//draw vision marker
                                     }
                                     canvas.drawBitmap(playerPic, null, board[r][c], null);//draw Player
                                     break;
-                                case 1:
+                                case 1://treasure
                                     canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
                                     if(enemyVision[r+viewX][c+viewY]==1){
                                         canvas.drawBitmap(visionMarker, null, board[r][c], null);//draw vision marker
                                     }
                                     canvas.drawBitmap(treasurePic, null, board[r][c], null);//drawTreasure
                                     break;
-                                case 2:
+                                case 2://tree
                                     canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
                                     canvas.drawBitmap(treePic, null, board[r][c], null);//draw Tree
                                     break;
-                                case 3:
+                                case 3://archer
                                     canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
                                     canvas.drawBitmap(archerPic, null, board[r][c], null);//draw Archer
                                     break;
-                                case 5:
+                                case 5://tree and player (unused)
                                     canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
                                     canvas.drawBitmap(treePic, null, board[r][c], null);//draw Tree
                                     canvas.drawBitmap(playerPic, null, board[r][c], null);//draw Player
                                     break;
-                                case 6:
+                                case 6://soldier
                                     canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
                                     canvas.drawBitmap(soldierPic, null, board[r][c], null);//draw Soldier
                                     break;
-                                case 7:
+                                case 7://scout
                                     canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
                                     canvas.drawBitmap(scoutPic, null, board[r][c], null);//draw Scout
                                     break;
-                                default:
+                                default://if there is a incorrect number(should never appear)
                                     canvas.drawBitmap(background_1, null, board[r][c], null);//draw MacNabb
                                     break;
                             }
-                        } else {
+                        } else {//draw grass on every space with no object
                             canvas.drawBitmap(grassPic, null, board[r][c], null);//draw grass
                             if(enemyVision[r+viewX][c+viewY]==1){
                                 canvas.drawBitmap(visionMarker, null, board[r][c], null);//draw vision marker
@@ -480,9 +484,10 @@ public class DrawView extends SurfaceView {
                     }
                 }
                 if((playerLocation[0]>=viewX&&playerLocation[0]<viewX+8)&&(playerLocation[1]>=viewY&&playerLocation[1]<viewY+8)) {//player is within bounds of the screen
-                    if(playerLocation[0]<8&&playerLocation[1]<8){
+                    /*if(playerLocation[0]<8&&playerLocation[1]<8){
                         canvas.drawBitmap(playerPic, null, board[playerLocation[0]][playerLocation[1] ], null);//draw Player
                     }
+                    else*/
                     canvas.drawBitmap(playerPic, null, board[(playerLocation[0]-viewX)][(playerLocation[1]-viewY)], null);//draw Player
                 }
                 canvas.drawBitmap(upArrowPic, null, upButton, null);
@@ -494,12 +499,12 @@ public class DrawView extends SurfaceView {
                 canvas.drawBitmap(leftArrowPic, null, leftScreenButton, null);
                 canvas.drawBitmap(rightArrowPic, null, rightScreenButton, null);
                 canvas.drawText("x: " + viewX + " Y: " + viewY + " Health: " + playerHealth, (canvas.getWidth() / 2) - 100, 50, paint);//print screen location
-                canvas.drawBitmap(arinPic, null, moveButton, null);
+                //canvas.drawBitmap(arinPic, null, moveButton, null);
                 canvas.drawRect(musicButton, paint);
             } else {
-                if (gameState == 2) {
-                    canvas.drawRect(new RectF(0, 0, canvas.getWidth(), canvas.getHeight()), new Paint(Color.BLACK));
-                    canvas.drawText("You have died", (canvas.getWidth() / 2) - 100, 300, paint);
+                if (gameState == 2) {//death screen
+                    canvas.drawRect(fullscreenBox, paint2);//draw the box across whole screen covering whatever was there before
+                    canvas.drawText("You have died", (canvas.getWidth() / 2) - 100, 300, paint);//text to let player know this is death screen
                 }
             }
         }
