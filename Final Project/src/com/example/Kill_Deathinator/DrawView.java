@@ -131,7 +131,7 @@ public class DrawView extends SurfaceView {
 
     //post:returns a String array of all the elements in <filename>.txt, with index 0 unused (heap) O(n)
     public ArrayList<String> readFile(){
-        ArrayList<String> temp= new ArrayList<String>();
+        ArrayList<String> temp= new ArrayList<String>();//will hold all of the found Strings
         InputStream fis;
         final StringBuffer storedString = new StringBuffer();
 
