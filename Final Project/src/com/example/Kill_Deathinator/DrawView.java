@@ -36,6 +36,8 @@ public class DrawView extends SurfaceView {
     private Bitmap leftArrowPic;//left arrow
     private Bitmap upArrowPic;//up arrow
     private Bitmap downArrowPic;//down arrow
+    private Bitmap moveIndicatorPic;//move indicator
+    private Bitmap screenIndicatorPic;//screen movement indicator
     private Bitmap visionMarker;//shows user where the enemies can see
     private boolean bavariaOn = false;//keeping track of if the song is playing
     private RectF upScreenButton;//up button for the screen
@@ -114,7 +116,9 @@ public class DrawView extends SurfaceView {
         vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);//instantiate the vibrator
         bavaria = MediaPlayer.create(context, R.raw.meanwhile_in_bavaria);
         fluteSong = MediaPlayer.create(context, R.raw.flute_song);
-        visionMarker=BitmapFactory.decodeResource(getResources(), R.drawable.grass_danger);
+        visionMarker=BitmapFactory.decodeResource(getResources(), R.drawable.warning_tile);
+        moveIndicatorPic=BitmapFactory.decodeResource(getResources(), R.drawable.move_button);
+        screenIndicatorPic=BitmapFactory.decodeResource(getResources(), R.drawable.screen_button);
     }
 
     //pre:  "fileName" is the name of a real file containing lines of text
@@ -548,6 +552,8 @@ public class DrawView extends SurfaceView {
                 canvas.drawBitmap(downArrowPic, null, downScreenButton, null);
                 canvas.drawBitmap(leftArrowPic, null, leftScreenButton, null);
                 canvas.drawBitmap(rightArrowPic, null, rightScreenButton, null);
+                canvas.drawBitmap(screenIndicatorPic, null, middleScreenButton, null);
+                canvas.drawBitmap(moveIndicatorPic, null, middleButton, null);
                 canvas.drawText("x: " + viewX + " Y: " + viewY + " Health: " + playerHealth, (canvas.getWidth() / 2) - 100, 50, paint);//print screen location
                 //canvas.drawBitmap(arinPic, null, moveButton, null);
                 canvas.drawRect(musicButton, paint);
