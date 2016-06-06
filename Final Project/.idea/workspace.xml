@@ -42,8 +42,8 @@
       <file leaf-file-name="DrawView.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/example/Kill_Deathinator/DrawView.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="39" selection-start-line="0" selection-start-column="39" selection-end-line="0" selection-end-column="39" />
+            <state relative-caret-position="186">
+              <caret line="440" column="5" selection-start-line="440" selection-start-column="5" selection-end-line="440" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#DrawView#0;class#DrawView#0" expanded="false" />
@@ -54,7 +54,6 @@
                 <element signature="method#createLevel#0;class#DrawView#0" expanded="false" />
                 <element signature="method#checkVision#0;class#DrawView#0" expanded="false" />
                 <element signature="method#createScreen#0;class#DrawView#0" expanded="false" />
-                <element signature="method#onDraw#0;class#DrawView#0" expanded="false" />
                 <element signature="method#onTouchEvent#0;class#DrawView#0" expanded="false" />
               </folding>
             </state>
@@ -144,6 +143,9 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -214,9 +216,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -527,7 +526,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1296" height="1000" extended-state="7" />
+    <frame x="-8" y="-8" width="1296" height="1000" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -538,7 +537,7 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32810867" sideWeight="0.50416666" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25115207" sideWeight="0.49583334" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25691244" sideWeight="0.49583334" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2983871" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32949308" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -590,7 +589,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="39" column="38" selection-start-line="39" selection-start-column="38" selection-end-line="39" selection-end-column="38" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -619,10 +617,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#1228#1229#0" expanded="true" />
-            <element signature="e#1256#1257#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -655,7 +649,6 @@
             <element signature="method#createLevel#0;class#DrawView#0" expanded="false" />
             <element signature="method#checkVision#0;class#DrawView#0" expanded="false" />
             <element signature="method#createScreen#0;class#DrawView#0" expanded="false" />
-            <element signature="method#onDraw#0;class#DrawView#0" expanded="false" />
             <element signature="method#onTouchEvent#0;class#DrawView#0" expanded="false" />
           </folding>
         </state>
@@ -672,10 +665,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-          <folding>
-            <element signature="e#1228#1229#0" expanded="true" />
-            <element signature="e#1256#1257#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -708,7 +697,6 @@
             <element signature="method#createLevel#0;class#DrawView#0" expanded="false" />
             <element signature="method#checkVision#0;class#DrawView#0" expanded="false" />
             <element signature="method#createScreen#0;class#DrawView#0" expanded="false" />
-            <element signature="method#onDraw#0;class#DrawView#0" expanded="false" />
             <element signature="method#onTouchEvent#0;class#DrawView#0" expanded="false" />
           </folding>
         </state>
@@ -725,10 +713,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-          <folding>
-            <element signature="e#1228#1229#0" expanded="true" />
-            <element signature="e#1256#1257#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -761,7 +745,6 @@
             <element signature="method#createLevel#0;class#DrawView#0" expanded="false" />
             <element signature="method#checkVision#0;class#DrawView#0" expanded="false" />
             <element signature="method#createScreen#0;class#DrawView#0" expanded="false" />
-            <element signature="method#onDraw#0;class#DrawView#0" expanded="false" />
             <element signature="method#onTouchEvent#0;class#DrawView#0" expanded="false" />
           </folding>
         </state>
@@ -803,7 +786,6 @@
             <element signature="method#createLevel#0;class#DrawView#0" expanded="false" />
             <element signature="method#checkVision#0;class#DrawView#0" expanded="false" />
             <element signature="method#createScreen#0;class#DrawView#0" expanded="false" />
-            <element signature="method#onDraw#0;class#DrawView#0" expanded="false" />
             <element signature="method#onTouchEvent#0;class#DrawView#0" expanded="false" />
           </folding>
         </state>
@@ -925,7 +907,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="46">
           <caret line="68" column="77" selection-start-line="68" selection-start-column="77" selection-end-line="68" selection-end-column="77" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -947,10 +928,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="401">
           <caret line="32" column="18" selection-start-line="32" selection-start-column="18" selection-end-line="32" selection-end-column="18" />
-          <folding>
-            <element signature="e#1228#1229#0" expanded="true" />
-            <element signature="e#1256#1257#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -958,7 +935,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="561">
           <caret line="33" column="23" selection-start-line="0" selection-start-column="0" selection-end-line="72" selection-end-column="23" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -966,7 +942,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="282">
           <caret line="58" column="0" selection-start-line="58" selection-start-column="0" selection-end-line="58" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -974,7 +949,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="425">
           <caret line="25" column="13" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -982,7 +956,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="415">
           <caret line="94" column="13" selection-start-line="94" selection-start-column="13" selection-end-line="94" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -996,8 +969,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/example/Kill_Deathinator/DrawView.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="39" selection-start-line="0" selection-start-column="39" selection-end-line="0" selection-end-column="39" />
+        <state relative-caret-position="186">
+          <caret line="440" column="5" selection-start-line="440" selection-start-column="5" selection-end-line="440" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#DrawView#0;class#DrawView#0" expanded="false" />
@@ -1008,7 +981,6 @@
             <element signature="method#createLevel#0;class#DrawView#0" expanded="false" />
             <element signature="method#checkVision#0;class#DrawView#0" expanded="false" />
             <element signature="method#createScreen#0;class#DrawView#0" expanded="false" />
-            <element signature="method#onDraw#0;class#DrawView#0" expanded="false" />
             <element signature="method#onTouchEvent#0;class#DrawView#0" expanded="false" />
           </folding>
         </state>

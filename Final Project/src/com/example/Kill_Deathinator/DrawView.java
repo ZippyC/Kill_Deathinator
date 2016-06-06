@@ -1,4 +1,4 @@
-package com.example.Kill_Deathinator;//add victory screen -- add instructions -- fix graphics of buttons
+package com.example.Kill_Deathinator;//add instructions -- fix graphics of buttons
 import android.content.Context;
 import android.graphics.*;
 import android.media.MediaPlayer;
@@ -9,7 +9,6 @@ import android.view.SurfaceView;
 import android.view.View;
 import java.io.*;
 import java.util.*;
-
 import java.util.ArrayList;
 import java.util.List;
 /**
@@ -39,14 +38,16 @@ public class DrawView extends SurfaceView {
     private Bitmap downArrowPic;//down arrow
     private Bitmap visionMarker;//shows user where the enemies can see
     private boolean bavariaOn = false;//keeping track of if the song is playing
-    private RectF upScreenButton = new RectF(640, 640, 740, 740);//up button for the screen
-    private RectF leftScreenButton = new RectF(540, 740, 640, 840);//left button for the screen
-    private RectF downScreenButton = new RectF(640, 840, 740, 940);//down button for the screen
-    private RectF rightScreenButton = new RectF(740, 740, 840, 840);//right button for the screen
-    private RectF upButton = new RectF(640, 950, 740, 1050);//up button
-    private RectF leftButton = new RectF(540, 1050, 640, 1150);//left button
-    private RectF downButton = new RectF(640, 1150, 740, 1250);//down button
-    private RectF rightButton = new RectF(740, 1050, 840, 1150);//right button
+    private RectF upScreenButton;//up button for the screen
+    private RectF leftScreenButton;//left button for the screen
+    private RectF downScreenButton;//down button for the screen
+    private RectF rightScreenButton;//right button for the screen
+    private RectF middleScreenButton;//button to go in the middle of the arrows
+    private RectF upButton;//up button
+    private RectF leftButton;//left button
+    private RectF downButton;//down button
+    private RectF rightButton;//right button
+    private RectF middleButton;//button to go in the middle of the arrows
     private boolean moving=false;//control if the enemies are moving or not
     private int viewX;//lowest box shown on screen
     private int viewY;//lowest box shown on screen
@@ -56,7 +57,7 @@ public class DrawView extends SurfaceView {
     private boolean levelStarted=false;//keeps track of if a level is currently going
     private int level=1;//level currently on
     private RectF moveButton=new RectF(200, 1300, 300, 1400);//button to move Objects
-    private int gameState=0;//0=start screen, 1=map, 2=death, 3=victory
+    private int gameState=0;//0=start screen, 1=map, 2=death, 3=fight, 4=victory
     private int[] playerHome = new int[2];//location of player's home
     private int[] playerLocation=new int[2];//location of player
     private boolean candy=false;//whether or not the player has obtained the treasure for current level
@@ -236,9 +237,15 @@ public class DrawView extends SurfaceView {
         if(candy){//if at home space with treasure, open next level
             int[] i=playerLocation;//
             if(i[0]==playerHome[0]&&i[1]==playerHome[1]){//if player has beaten level
-                paint.setColor(Color.GREEN);//change color to alert player of victory
-                level++;//up level
-                createLevel();//create the next level
+                if(level<4) {
+                    paint.setColor(Color.GREEN);//change color to alert player of victory
+                    level++;//up level
+                    createLevel();//create the next level
+                }
+                else{
+                    level=4;
+                    gameState=10;//set to victory screen
+                }
             }
         }
     }
@@ -408,30 +415,47 @@ public class DrawView extends SurfaceView {
     }
 
     //pre: canvas needs to be the valid canvas of the device
-    //post: creates the 8x8 screen based on the size of the screen and the box to draw across entire screen for death
+    //post: creates and recreates objects required for the game to be shown on screen
     private void createScreen(Canvas canvas){
         for (int r = 0; r < board.length; r++) {//create the 8x8 array of the screen
             for (int c = 0; c < board[0].length; c++) {
                 board[r][c] = new RectF(canvasWidth / 8 * c, canvasWidth / 8 * r, canvasWidth / 8 * (c + 1), canvasWidth / 8 * (r + 1));//create board based on width
             }
         }
-        fullscreenBox=new RectF(0, 0, canvas.getWidth(), canvas.getHeight());
+        int canvasWidth=canvas.getWidth();
+        int canvasHeight=canvas.getHeight();
+        fullscreenBox=new RectF(0, 0, canvas.getWidth(), canvas.getHeight());//create the box that is used to cover the whole screen
+
+        //recreate all of the buttons to be scaled to the screen
+        upButton=new RectF(canvasWidth/12+(canvasWidth/12*7), canvasHeight-(canvasWidth/12*5), canvasWidth/12+(canvasWidth/12*8), canvasHeight-(canvasWidth/12*4));
+        downButton=new RectF(canvasWidth/12+(canvasWidth/12*7), canvasHeight-(canvasWidth/12*3), canvasWidth/12+(canvasWidth/12*8), canvasHeight-(canvasWidth/12*2));
+        leftButton=new RectF(canvasWidth/12+(canvasWidth/12*6), canvasHeight-(canvasWidth/12*4), canvasWidth/12+(canvasWidth/12*7), canvasHeight-(canvasWidth/12*3));
+        rightButton=new RectF(canvasWidth/12+(canvasWidth/12*8), canvasHeight-(canvasWidth/12*4), canvasWidth/12+(canvasWidth/12*9), canvasHeight-(canvasWidth/12*3));
+        middleButton=new RectF(canvasWidth/12+(canvasWidth/12*7), canvasHeight-(canvasWidth/12*4), canvasWidth/12+(canvasWidth/12*8), canvasHeight-(canvasWidth/12*3));
+        upScreenButton=new RectF(canvasWidth/12+(canvasWidth/12*2), canvasHeight-(canvasWidth/12*5), canvasWidth/12+(canvasWidth/12*3), canvasHeight-(canvasWidth/12*4));
+        downScreenButton=new RectF(canvasWidth/12+(canvasWidth/12*2), canvasHeight-(canvasWidth/12*3), canvasWidth/12+(canvasWidth/12*3), canvasHeight-(canvasWidth/12*2));
+        leftScreenButton=new RectF(canvasWidth/12+(canvasWidth/12), canvasHeight-(canvasWidth/12*4), canvasWidth/12+(canvasWidth/12*2), canvasHeight-(canvasWidth/12*3));
+        rightScreenButton=new RectF(canvasWidth/12+(canvasWidth/12*3), canvasHeight-(canvasWidth/12*4), canvasWidth/12+(canvasWidth/12*4), canvasHeight-(canvasWidth/12*3));
+        middleScreenButton=new RectF(canvasWidth/12+(canvasWidth/12*2), canvasHeight-(canvasWidth/12*4), canvasWidth/12+(canvasWidth/12*3), canvasHeight-(canvasWidth/12*3));
+        musicButton=new RectF(canvasWidth/12+(canvasWidth/12), canvasHeight-(canvasWidth/12), canvasWidth/12+(canvasWidth/12*2), canvasHeight-(canvasWidth/12*2));
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         if(gameState==0) {//start screen
+            if (canvasWidth == 0) {//if the canvas' width has not been defined, set it
+                canvasWidth = canvas.getWidth();
+                createScreen(canvas);//make the screen
+            }
+            canvas.drawRect(fullscreenBox, paint2);//draw the box across whole screen covering whatever was there before
             canvas.drawText("This is the Start Screen", (canvas.getWidth() / 2) - 100, 300, paint);
         } else {
             if (gameState == 1) {//on map
-                if (canvasWidth == 0) {//if the canvas' width has not been defined, set it
-                    canvasWidth = canvas.getWidth();
-                    createScreen(canvas);//make the screen
-                }
                 if (!levelStarted) {//if the level has not been created yet
                     createLevel();
                     levelStarted = !levelStarted;
                 }
+                canvas.drawRect(fullscreenBox, paint2);//draw the box across whole screen covering whatever was there before
                 for (int r = 0; r < board.length; r++) {//draw all objects on map within the screen
                     for (int c = 0; c < board[0].length; c++) {
                         if (boardStatic.get(r + viewX, c + viewY) != null) {
@@ -484,10 +508,6 @@ public class DrawView extends SurfaceView {
                     }
                 }
                 if((playerLocation[0]>=viewX&&playerLocation[0]<viewX+8)&&(playerLocation[1]>=viewY&&playerLocation[1]<viewY+8)) {//player is within bounds of the screen
-                    /*if(playerLocation[0]<8&&playerLocation[1]<8){
-                        canvas.drawBitmap(playerPic, null, board[playerLocation[0]][playerLocation[1] ], null);//draw Player
-                    }
-                    else*/
                     canvas.drawBitmap(playerPic, null, board[(playerLocation[0]-viewX)][(playerLocation[1]-viewY)], null);//draw Player
                 }
                 canvas.drawBitmap(upArrowPic, null, upButton, null);
@@ -505,6 +525,14 @@ public class DrawView extends SurfaceView {
                 if (gameState == 2) {//death screen
                     canvas.drawRect(fullscreenBox, paint2);//draw the box across whole screen covering whatever was there before
                     canvas.drawText("You have died", (canvas.getWidth() / 2) - 100, 300, paint);//text to let player know this is death screen
+                    canvas.drawRect(musicButton, paint);
+                }
+                else{
+                    if(gameState==4){//victory screen
+                        canvas.drawRect(fullscreenBox, paint2);//draw the box across whole screen covering whatever was there before
+                        canvas.drawText("Victory, click to restart", (canvas.getWidth() / 4), (canvas.getHeight()/2)-100, paint);//text to say you won
+                        canvas.drawRect(musicButton, paint);
+                    }
                 }
             }
         }
@@ -517,54 +545,73 @@ public class DrawView extends SurfaceView {
             float x = event.getX();//x location of touch
             float y = event.getY();//y location of touch
             if (gameState == 0) {
-                gameState=1;//"start" game
-            }
-            if (gameState == 1) {
-                synchronized (getHolder()) {
-                    if (upButton.contains(x, y)) {//move player up and move enemies 1
-                        move();
-                        movePlayer(0);
-                    } else if (downButton.contains(x, y)) {//move player down and move enemies 1
-                        move();
-                        movePlayer(3);
-                    } else if (rightButton.contains(x, y)) {//move player right and move enemies 1
-                        move();
-                        movePlayer(2);
-                    } else if (leftButton.contains(x, y)) {//move player left and move enemies 1
-                        move();
-                        movePlayer(1);
-                    }
-                    if (upScreenButton.contains(x, y)) {//move screen up 2
-                        if (viewX > 0) {
-                            viewX -= 2;
+                gameState = 1;//"start" game
+            } else {
+                if (gameState == 1) {
+                    synchronized (getHolder()) {
+                        if (upButton.contains(x, y)) {//move player up and move enemies 1
+                            move();
+                            movePlayer(0);
+                        } else if (downButton.contains(x, y)) {//move player down and move enemies 1
+                            move();
+                            movePlayer(3);
+                        } else if (rightButton.contains(x, y)) {//move player right and move enemies 1
+                            move();
+                            movePlayer(2);
+                        } else if (leftButton.contains(x, y)) {//move player left and move enemies 1
+                            move();
+                            movePlayer(1);
                         }
-                    } else if (downScreenButton.contains(x, y)) {//move screen down 2
-                        if (viewX < 12)
-                            viewX += 2;
-                    } else if (rightScreenButton.contains(x, y)) {//move screen right 2
-                        if (viewY < 12) {
-                            viewY += 2;
+                        if (upScreenButton.contains(x, y)) {//move screen up 2
+                            if (viewX > 0) {
+                                viewX -= 2;
+                            }
+                        } else if (downScreenButton.contains(x, y)) {//move screen down 2
+                            if (viewX < 12)
+                                viewX += 2;
+                        } else if (rightScreenButton.contains(x, y)) {//move screen right 2
+                            if (viewY < 12) {
+                                viewY += 2;
+                            }
+                        } else if (leftScreenButton.contains(x, y))//move screen left 2
+                            if (viewY > 0)
+                                viewY -= 2;
+                        if (moveButton.contains(x, y)) {
+                            gameState = 4;
                         }
-                    } else if (leftScreenButton.contains(x, y))//move screen left 2
-                        if (viewY > 0)
-                            viewY -= 2;
-                    if (moveButton.contains(x, y)) {
-                        gameState=2;
-                    }
-                    if (musicButton.contains(x, y)) {//play/pause the music
-                        if (bavariaOn) {//pause if on
-                            bavariaOn = false;
-                            fluteSong.pause();
-                        } else {//play if off
-                            bavariaOn = true;
-                            fluteSong.start();
+                        if (musicButton.contains(x, y)) {//play/pause the music
+                            if (bavariaOn) {//pause if on
+                                bavariaOn = false;
+                                fluteSong.pause();
+                            } else {//play if off
+                                bavariaOn = true;
+                                fluteSong.start();
+                            }
                         }
                     }
-                }
-            }
-            if(gameState==2){
-                if(musicButton.contains(x, y)){
-                    gameState=1;
+                } else {
+                    if (gameState == 2) {//death screen
+                        if (musicButton.contains(x, y)) {//restart game
+                            gameState = 0;//start screen
+                            playerHealth=20;//refresh health
+                            level=1;
+                            createLevel();//create level 1 again
+                            viewX=12;//reset view
+                            viewY=12;//reset view
+                        }
+                    }
+                    else{
+                        if(gameState==4){
+                            if(musicButton.contains(x, y)){//restart game
+                                gameState = 0;//start screen
+                                playerHealth=20;//refresh health
+                                level=1;
+                                createLevel();//create level 1 again
+                                viewX=12;//reset view
+                                viewY=12;//reset view
+                            }
+                        }
+                    }
                 }
             }
         }
