@@ -1,4 +1,4 @@
-package com.example.Kill_Deathinator;//add instructions -- fix graphics of buttons
+package com.example.Kill_Deathinator;//add instructions
 import android.content.Context;
 import android.graphics.*;
 import android.media.MediaPlayer;
@@ -64,6 +64,7 @@ public class DrawView extends SurfaceView {
     private int playerHealth=20;//health
     private int[][] enemyVision = new int[20][20];//array to allow the enemy's vision to be displayed on the board for ease of use
     private RectF fullscreenBox;//box for use of drawing the entire screen
+    private int[] enemyLocation=new int[2];//used to store the location of the enemy being fought
 
     public DrawView(Context context){
         super(context);
@@ -171,56 +172,77 @@ public class DrawView extends SurfaceView {
                     if (boardStatic.get(playerLocation[0] - 1, playerLocation[1]) == null) {//if moving to an empty location
                         playerLocation[0]=playerLocation[0]-1;//update player location
                     }
-                    else//if moving to a location with an object
-                        if(boardStatic.get(playerLocation[0] - 1, playerLocation[1]).getWalkable()){
-                            if(boardStatic.get(playerLocation[0] - 1, playerLocation[1]).getType()==1){
-                                candy=true;//mark that treasure has been obtained
+                    else {//if moving to a location with an object
+                        if (boardStatic.get(playerLocation[0] - 1, playerLocation[1]).getWalkable()) {
+                            if (boardStatic.get(playerLocation[0] - 1, playerLocation[1]).getType() == 1) {
+                                candy = true;//mark that treasure has been obtained
                                 boardStatic.remove(playerLocation[0] - 1, playerLocation[1]);//remove treasure
                             }
-                            playerLocation[0]=playerLocation[0]-1;//update player location
+                            playerLocation[0] = playerLocation[0] - 1;//update player location
+                        } else {
+                            enemyLocation[0]=playerLocation[0]-1;
+                            enemyLocation[1]=playerLocation[1];
+                            gameState=3;//start fight
                         }
+                    }
                 break;
             case 1://move left
                 if(playerLocation[1]-1>=0)
                     if (boardStatic.get(playerLocation[0], playerLocation[1]-1) == null) {//if moving to an empty location
                         playerLocation[1]=playerLocation[1]-1;//update player location
                     }
-                    else//if moving to a location with an object
+                    else{//if moving to a location with an object
                         if(boardStatic.get(playerLocation[0], playerLocation[1]-1).getWalkable()){
                             if(boardStatic.get(playerLocation[0], playerLocation[1]-1).getType()==1){
                                 candy=true;//mark that treasure has been obtained
                                 boardStatic.remove(playerLocation[0], playerLocation[1]-1);//remove treasure
                             }
                             playerLocation[1]=playerLocation[1]-1;//update player location
+                        } else {
+                            enemyLocation[0] = playerLocation[0];
+                            enemyLocation[1] = playerLocation[1] - 1;
+                            gameState = 3;//start fight
                         }
+                    }
                 break;
             case 2://move right
                 if(playerLocation[1]+1<=19)
                     if (boardStatic.get(playerLocation[0], playerLocation[1]+1) == null) {//if moving to an empty location
                         playerLocation[1]=playerLocation[1]+1;//update player location
                     }
-                    else//if moving to a location with an object
-                        if(boardStatic.get(playerLocation[0], playerLocation[1]+1).getWalkable()){
-                            if(boardStatic.get(playerLocation[0], playerLocation[1]+1).getType()==1){
-                                candy=true;//mark that treasure has been obtained
-                                boardStatic.remove(playerLocation[0], playerLocation[1]+1);//remove treasure
+                    else {//if moving to a location with an object
+                        if (boardStatic.get(playerLocation[0], playerLocation[1] + 1).getWalkable()) {
+                            if (boardStatic.get(playerLocation[0], playerLocation[1] + 1).getType() == 1) {
+                                candy = true;//mark that treasure has been obtained
+                                boardStatic.remove(playerLocation[0], playerLocation[1] + 1);//remove treasure
                             }
-                            playerLocation[1]=playerLocation[1]+1;//update player location
+                            playerLocation[1] = playerLocation[1] + 1;//update player location
+                        } else {
+                            enemyLocation[0] = playerLocation[0];
+                            enemyLocation[1] = playerLocation[1] + 1;
+                            gameState = 3;//start fight
                         }
+                    }
                 break;
             case 3://move down
                 if(playerLocation[0]+1<=19)
                     if (boardStatic.get(playerLocation[0] + 1, playerLocation[1]) == null) {//if moving to an empty location
                         playerLocation[0]=playerLocation[0]+1;//update player location
                     }
-                    else//if moving to a location with an object
-                        if(boardStatic.get(playerLocation[0] + 1, playerLocation[1]).getWalkable()){
-                            if(boardStatic.get(playerLocation[0] + 1, playerLocation[1]).getType()==1){
-                                candy=true;//mark that treasure has been obtained
+                    else {//if moving to a location with an object
+                        if (boardStatic.get(playerLocation[0] + 1, playerLocation[1]).getWalkable()) {
+                            if (boardStatic.get(playerLocation[0] + 1, playerLocation[1]).getType() == 1) {
+                                candy = true;//mark that treasure has been obtained
                                 boardStatic.remove(playerLocation[0] + 1, playerLocation[1]);//remove treasure
                             }
-                            playerLocation[0]=playerLocation[0]+1;//update player location
+                            playerLocation[0] = playerLocation[0] + 1;//update player location
+                        } else {
+                            enemyLocation[0] = playerLocation[0] + 1;
+                            enemyLocation[1] = playerLocation[1];
+                            gameState = 3;//start fight
                         }
+                    }
+
                 break;
             default://gets sent an invalid number
                 break;
@@ -440,6 +462,14 @@ public class DrawView extends SurfaceView {
         musicButton=new RectF(canvasWidth/12+(canvasWidth/12), canvasHeight-(canvasWidth/12), canvasWidth/12+(canvasWidth/12*2), canvasHeight-(canvasWidth/12*2));
     }
 
+    private String enemyTurn(MobileEnemy enemy){
+        return "";//temp
+    }
+
+    private String playerTurn(MobileEnemy enemy){
+        return "";//temp
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         if(gameState==0) {//start screen
@@ -527,11 +557,36 @@ public class DrawView extends SurfaceView {
                     canvas.drawText("You have died", (canvas.getWidth() / 2) - 100, 300, paint);//text to let player know this is death screen
                     canvas.drawRect(musicButton, paint);
                 }
-                else{
-                    if(gameState==4){//victory screen
+                else {
+                    if (gameState == 3) {//fight screen
                         canvas.drawRect(fullscreenBox, paint2);//draw the box across whole screen covering whatever was there before
-                        canvas.drawText("Victory, click to restart", (canvas.getWidth() / 4), (canvas.getHeight()/2)-100, paint);//text to say you won
-                        canvas.drawRect(musicButton, paint);
+                        if(boardStatic.get(enemyLocation[0], enemyLocation[1])!=null){
+                            switch(boardStatic.get(enemyLocation[0], enemyLocation[1]).getType()){
+                                case 3://archer
+                                    canvas.drawBitmap(grassPic, null, board[4][2], null);//draw grass
+                                    canvas.drawBitmap(archerPic, null, board[4][2], null);//draw Archer
+                                    break;
+                                case 6://soldier
+                                    canvas.drawBitmap(grassPic, null, board[4][2], null);//draw grass
+                                    canvas.drawBitmap(soldierPic, null, board[4][2], null);//draw Soldier
+                                    break;
+                                case 7://scout
+                                    canvas.drawBitmap(grassPic, null, board[4][2], null);//draw grass
+                                    canvas.drawBitmap(scoutPic, null, board[4][2], null);//draw Scout
+                                    break;
+                                default://if there is a incorrect number(should never appear)
+                                    canvas.drawBitmap(background_1, null, board[4][2], null);//draw MacNabb
+                                    break;
+                            }
+                        }
+                        canvas.drawBitmap(grassPic, null, board[4][6], null);//draw grass
+                        canvas.drawBitmap(playerPic, null, board[4][6], null);//draw Player
+                    } else {
+                        if (gameState == 4) {//victory screen
+                            canvas.drawRect(fullscreenBox, paint2);//draw the box across whole screen covering whatever was there before
+                            canvas.drawText("Victory, click to restart", (canvas.getWidth() / 4), (canvas.getHeight() / 2) - 100, paint);//text to say you won
+                            canvas.drawRect(musicButton, paint);
+                        }
                     }
                 }
             }
@@ -576,10 +631,10 @@ public class DrawView extends SurfaceView {
                         } else if (leftScreenButton.contains(x, y))//move screen left 2
                             if (viewY > 0)
                                 viewY -= 2;
-                        if (moveButton.contains(x, y)) {
-                            gameState = 4;
+                        if (musicButton.contains(x, y)) {
+                            gameState = 3;
                         }
-                        if (musicButton.contains(x, y)) {//play/pause the music
+                        /*if (musicButton.contains(x, y)) {//play/pause the music
                             if (bavariaOn) {//pause if on
                                 bavariaOn = false;
                                 fluteSong.pause();
@@ -587,7 +642,7 @@ public class DrawView extends SurfaceView {
                                 bavariaOn = true;
                                 fluteSong.start();
                             }
-                        }
+                        }*/
                     }
                 } else {
                     if (gameState == 2) {//death screen
@@ -601,14 +656,21 @@ public class DrawView extends SurfaceView {
                         }
                     }
                     else{
-                        if(gameState==4){
-                            if(musicButton.contains(x, y)){//restart game
-                                gameState = 0;//start screen
-                                playerHealth=20;//refresh health
-                                level=1;
-                                createLevel();//create level 1 again
-                                viewX=12;//reset view
-                                viewY=12;//reset view
+                        if(gameState==3){//fight screen
+                            if(musicButton.contains(x, y)){
+                                gameState=1;
+                            }
+                        }
+                        else{
+                            if(gameState==4) {//victory screen
+                                if (musicButton.contains(x, y)) {//restart game
+                                    gameState = 0;//start screen
+                                    playerHealth = 20;//refresh health
+                                    level = 1;
+                                    createLevel();//create level 1 again
+                                    viewX = 12;//reset view
+                                    viewY = 12;//reset view
+                                }
                             }
                         }
                     }

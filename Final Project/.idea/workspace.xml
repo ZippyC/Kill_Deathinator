@@ -42,19 +42,23 @@
       <file leaf-file-name="DrawView.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/example/Kill_Deathinator/DrawView.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="186">
-              <caret line="440" column="5" selection-start-line="440" selection-start-column="5" selection-end-line="440" selection-end-column="5" />
+            <state relative-caret-position="381">
+              <caret line="417" column="0" selection-start-line="417" selection-start-column="0" selection-end-line="417" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#DrawView#0;class#DrawView#0" expanded="false" />
                 <element signature="method#getFileSize#0;class#DrawView#0" expanded="false" />
                 <element signature="method#readFile#0;class#DrawView#0" expanded="false" />
-                <element signature="method#movePlayer#0;class#DrawView#0" expanded="false" />
                 <element signature="method#move#0;class#DrawView#0" expanded="false" />
                 <element signature="method#createLevel#0;class#DrawView#0" expanded="false" />
                 <element signature="method#checkVision#0;class#DrawView#0" expanded="false" />
-                <element signature="method#createScreen#0;class#DrawView#0" expanded="false" />
+                <element signature="e#28211#28212#0" expanded="true" />
+                <element signature="e#28242#28243#0" expanded="true" />
+                <element signature="e#28293#28294#0" expanded="true" />
+                <element signature="e#28324#28325#0" expanded="true" />
                 <element signature="method#onTouchEvent#0;class#DrawView#0" expanded="false" />
+                <marker date="1465220317216" expanded="false" signature="25684:28162" placeholder="{...}" />
+                <marker date="1465220317216" expanded="false" signature="28382:36872" placeholder="{...}" />
               </folding>
             </state>
           </provider>
@@ -537,7 +541,7 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32810867" sideWeight="0.50416666" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25691244" sideWeight="0.49583334" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25691244" sideWeight="0.49583334" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2983871" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32949308" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -644,12 +648,16 @@
             <element signature="method#DrawView#0;class#DrawView#0" expanded="false" />
             <element signature="method#getFileSize#0;class#DrawView#0" expanded="false" />
             <element signature="method#readFile#0;class#DrawView#0" expanded="false" />
-            <element signature="method#movePlayer#0;class#DrawView#0" expanded="false" />
             <element signature="method#move#0;class#DrawView#0" expanded="false" />
             <element signature="method#createLevel#0;class#DrawView#0" expanded="false" />
             <element signature="method#checkVision#0;class#DrawView#0" expanded="false" />
-            <element signature="method#createScreen#0;class#DrawView#0" expanded="false" />
+            <element signature="e#28211#28212#0" expanded="true" />
+            <element signature="e#28242#28243#0" expanded="true" />
+            <element signature="e#28293#28294#0" expanded="true" />
+            <element signature="e#28324#28325#0" expanded="true" />
             <element signature="method#onTouchEvent#0;class#DrawView#0" expanded="false" />
+            <marker date="1465220317216" expanded="false" signature="25684:28162" placeholder="{...}" />
+            <marker date="1465220317216" expanded="false" signature="28382:36872" placeholder="{...}" />
           </folding>
         </state>
       </provider>
@@ -692,12 +700,16 @@
             <element signature="method#DrawView#0;class#DrawView#0" expanded="false" />
             <element signature="method#getFileSize#0;class#DrawView#0" expanded="false" />
             <element signature="method#readFile#0;class#DrawView#0" expanded="false" />
-            <element signature="method#movePlayer#0;class#DrawView#0" expanded="false" />
             <element signature="method#move#0;class#DrawView#0" expanded="false" />
             <element signature="method#createLevel#0;class#DrawView#0" expanded="false" />
             <element signature="method#checkVision#0;class#DrawView#0" expanded="false" />
-            <element signature="method#createScreen#0;class#DrawView#0" expanded="false" />
+            <element signature="e#28211#28212#0" expanded="true" />
+            <element signature="e#28242#28243#0" expanded="true" />
+            <element signature="e#28293#28294#0" expanded="true" />
+            <element signature="e#28324#28325#0" expanded="true" />
             <element signature="method#onTouchEvent#0;class#DrawView#0" expanded="false" />
+            <marker date="1465220317216" expanded="false" signature="25684:28162" placeholder="{...}" />
+            <marker date="1465220317216" expanded="false" signature="28382:36872" placeholder="{...}" />
           </folding>
         </state>
       </provider>
@@ -740,12 +752,16 @@
             <element signature="method#DrawView#0;class#DrawView#0" expanded="false" />
             <element signature="method#getFileSize#0;class#DrawView#0" expanded="false" />
             <element signature="method#readFile#0;class#DrawView#0" expanded="false" />
-            <element signature="method#movePlayer#0;class#DrawView#0" expanded="false" />
             <element signature="method#move#0;class#DrawView#0" expanded="false" />
             <element signature="method#createLevel#0;class#DrawView#0" expanded="false" />
             <element signature="method#checkVision#0;class#DrawView#0" expanded="false" />
-            <element signature="method#createScreen#0;class#DrawView#0" expanded="false" />
+            <element signature="e#28211#28212#0" expanded="true" />
+            <element signature="e#28242#28243#0" expanded="true" />
+            <element signature="e#28293#28294#0" expanded="true" />
+            <element signature="e#28324#28325#0" expanded="true" />
             <element signature="method#onTouchEvent#0;class#DrawView#0" expanded="false" />
+            <marker date="1465220317216" expanded="false" signature="25684:28162" placeholder="{...}" />
+            <marker date="1465220317216" expanded="false" signature="28382:36872" placeholder="{...}" />
           </folding>
         </state>
       </provider>
@@ -781,12 +797,16 @@
             <element signature="method#DrawView#0;class#DrawView#0" expanded="false" />
             <element signature="method#getFileSize#0;class#DrawView#0" expanded="false" />
             <element signature="method#readFile#0;class#DrawView#0" expanded="false" />
-            <element signature="method#movePlayer#0;class#DrawView#0" expanded="false" />
             <element signature="method#move#0;class#DrawView#0" expanded="false" />
             <element signature="method#createLevel#0;class#DrawView#0" expanded="false" />
             <element signature="method#checkVision#0;class#DrawView#0" expanded="false" />
-            <element signature="method#createScreen#0;class#DrawView#0" expanded="false" />
+            <element signature="e#28211#28212#0" expanded="true" />
+            <element signature="e#28242#28243#0" expanded="true" />
+            <element signature="e#28293#28294#0" expanded="true" />
+            <element signature="e#28324#28325#0" expanded="true" />
             <element signature="method#onTouchEvent#0;class#DrawView#0" expanded="false" />
+            <marker date="1465220317216" expanded="false" signature="25684:28162" placeholder="{...}" />
+            <marker date="1465220317216" expanded="false" signature="28382:36872" placeholder="{...}" />
           </folding>
         </state>
       </provider>
@@ -969,19 +989,23 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/example/Kill_Deathinator/DrawView.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="186">
-          <caret line="440" column="5" selection-start-line="440" selection-start-column="5" selection-end-line="440" selection-end-column="5" />
+        <state relative-caret-position="381">
+          <caret line="417" column="0" selection-start-line="417" selection-start-column="0" selection-end-line="417" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#DrawView#0;class#DrawView#0" expanded="false" />
             <element signature="method#getFileSize#0;class#DrawView#0" expanded="false" />
             <element signature="method#readFile#0;class#DrawView#0" expanded="false" />
-            <element signature="method#movePlayer#0;class#DrawView#0" expanded="false" />
             <element signature="method#move#0;class#DrawView#0" expanded="false" />
             <element signature="method#createLevel#0;class#DrawView#0" expanded="false" />
             <element signature="method#checkVision#0;class#DrawView#0" expanded="false" />
-            <element signature="method#createScreen#0;class#DrawView#0" expanded="false" />
+            <element signature="e#28211#28212#0" expanded="true" />
+            <element signature="e#28242#28243#0" expanded="true" />
+            <element signature="e#28293#28294#0" expanded="true" />
+            <element signature="e#28324#28325#0" expanded="true" />
             <element signature="method#onTouchEvent#0;class#DrawView#0" expanded="false" />
+            <marker date="1465220317216" expanded="false" signature="25684:28162" placeholder="{...}" />
+            <marker date="1465220317216" expanded="false" signature="28382:36872" placeholder="{...}" />
           </folding>
         </state>
       </provider>
