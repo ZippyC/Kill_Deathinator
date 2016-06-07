@@ -50,6 +50,10 @@ public class DrawView extends SurfaceView {
     private RectF downButton;//down button
     private RectF rightButton;//right button
     private RectF middleButton;//button to go in the middle of the arrows
+    private RectF homeButton; //button to go to the home screen
+    private RectF levelButton;//button to increase the level
+    private RectF startButton;//begins the game
+    private Bitmap homeButtonPic;//picture for the homeButton
     private boolean moving=false;//control if the enemies are moving or not
     private int viewX;//lowest box shown on screen
     private int viewY;//lowest box shown on screen
@@ -119,6 +123,7 @@ public class DrawView extends SurfaceView {
         visionMarker=BitmapFactory.decodeResource(getResources(), R.drawable.warning_tile);
         moveIndicatorPic=BitmapFactory.decodeResource(getResources(), R.drawable.move_button);
         screenIndicatorPic=BitmapFactory.decodeResource(getResources(), R.drawable.screen_button);
+        homeButtonPic=BitmapFactory.decodeResource(getResources(), R.drawable.home_button);
     }
 
     //pre:  "fileName" is the name of a real file containing lines of text
@@ -464,6 +469,9 @@ public class DrawView extends SurfaceView {
         rightScreenButton=new RectF(canvasWidth/12+(canvasWidth/12*3), canvasHeight-(canvasWidth/12*4), canvasWidth/12+(canvasWidth/12*4), canvasHeight-(canvasWidth/12*3));
         middleScreenButton=new RectF(canvasWidth/12+(canvasWidth/12*2), canvasHeight-(canvasWidth/12*4), canvasWidth/12+(canvasWidth/12*3), canvasHeight-(canvasWidth/12*3));
         musicButton=new RectF(canvasWidth/12+(canvasWidth/12), canvasHeight-(canvasWidth/12), canvasWidth/12+(canvasWidth/12*2), canvasHeight-(canvasWidth/12*2));
+        homeButton=new RectF(canvasWidth/12+(canvasWidth/12*9), canvasHeight-(canvasWidth/12*2), canvasWidth/12+(canvasWidth/12*10), canvasHeight-(canvasWidth/12));
+        startButton=new RectF(canvasWidth/6+(canvasWidth/6*2), canvasHeight-(canvasWidth/6*2), canvasWidth/6+(canvasWidth/6*3), canvasHeight-(canvasWidth/6));
+        levelButton=new RectF(canvasWidth/6+(canvasWidth/6*2), canvasHeight-(canvasWidth/6*4), canvasWidth/6+(canvasWidth/6*3), canvasHeight-(canvasWidth/6*3));
     }
 
     private String enemyTurn(MobileEnemy enemy){
@@ -482,7 +490,9 @@ public class DrawView extends SurfaceView {
                 createScreen(canvas);//make the screen
             }
             canvas.drawRect(fullscreenBox, paint2);//draw the box across whole screen covering whatever was there before
-            canvas.drawText("This is the Start Screen", (canvas.getWidth() / 2) - 100, 300, paint);
+            canvas.drawBitmap(visionMarker, null, levelButton, null);
+            canvas.drawBitmap(playerPic, null, startButton, null);
+            canvas.drawText("level: "+level, (canvas.getWidth() / 2) - 100, 300, paint);
         } else {
             if (gameState == 1) {//on map
                 if (!levelStarted) {//if the level has not been created yet
@@ -554,9 +564,10 @@ public class DrawView extends SurfaceView {
                 canvas.drawBitmap(rightArrowPic, null, rightScreenButton, null);
                 canvas.drawBitmap(screenIndicatorPic, null, middleScreenButton, null);
                 canvas.drawBitmap(moveIndicatorPic, null, middleButton, null);
+                canvas.drawRect(musicButton, paint);
+                canvas.drawBitmap(homeButtonPic, null, homeButton, null);
                 canvas.drawText("x: " + viewX + " Y: " + viewY + " Health: " + playerHealth, (canvas.getWidth() / 2) - 100, 50, paint);//print screen location
                 //canvas.drawBitmap(arinPic, null, moveButton, null);
-                canvas.drawRect(musicButton, paint);
             } else {
                 if (gameState == 2) {//death screen
                     canvas.drawRect(fullscreenBox, paint2);//draw the box across whole screen covering whatever was there before
@@ -587,11 +598,13 @@ public class DrawView extends SurfaceView {
                         }
                         canvas.drawBitmap(grassPic, null, board[4][6], null);//draw grass
                         canvas.drawBitmap(playerPic, null, board[4][6], null);//draw Player
+                        canvas.drawBitmap(homeButtonPic, null, homeButton, null);
                     } else {
                         if (gameState == 4) {//victory screen
                             canvas.drawRect(fullscreenBox, paint2);//draw the box across whole screen covering whatever was there before
                             canvas.drawText("Victory, click to restart", (canvas.getWidth() / 4), (canvas.getHeight() / 2) - 100, paint);//text to say you won
                             canvas.drawRect(musicButton, paint);
+                            canvas.drawBitmap(homeButtonPic, null, homeButton, null);
                         }
                     }
                 }
@@ -606,7 +619,17 @@ public class DrawView extends SurfaceView {
             float x = event.getX();//x location of touch
             float y = event.getY();//y location of touch
             if (gameState == 0) {
-                gameState = 1;//"start" game
+                if(levelButton.contains(x, y)){
+                    if(level<3){
+                        level++;
+                    }
+                    else
+                        level=1;
+                }
+                if(startButton.contains(x, y)){
+                    createLevel();
+                    gameState=1;
+                }
             } else {
                 if (gameState == 1) {
                     synchronized (getHolder()) {
@@ -640,6 +663,13 @@ public class DrawView extends SurfaceView {
                         if (musicButton.contains(x, y)) {
                             gameState = 3;
                         }
+                        if(homeButton.contains(x, y)){
+                            gameState=0;
+                            level=1;
+                            playerHealth=20;
+                            viewX=12;
+                            viewY=12;
+                        }
                         /*if (musicButton.contains(x, y)) {//play/pause the music
                             if (bavariaOn) {//pause if on
                                 bavariaOn = false;
@@ -660,11 +690,25 @@ public class DrawView extends SurfaceView {
                             viewX=12;//reset view
                             viewY=12;//reset view
                         }
+                        if(homeButton.contains(x, y)){
+                            gameState=0;
+                            level=1;
+                            playerHealth=20;
+                            viewX=12;
+                            viewY=12;
+                        }
                     }
                     else{
                         if(gameState==3){//fight screen
                             if(musicButton.contains(x, y)){
                                 gameState=1;
+                            }
+                            if(homeButton.contains(x, y)){
+                                gameState=0;
+                                level=1;
+                                playerHealth=20;
+                                viewX=12;
+                                viewY=12;
                             }
                         }
                         else{
@@ -676,6 +720,13 @@ public class DrawView extends SurfaceView {
                                     createLevel();//create level 1 again
                                     viewX = 12;//reset view
                                     viewY = 12;//reset view
+                                }
+                                if(homeButton.contains(x, y)){
+                                    gameState=0;
+                                    level=1;
+                                    playerHealth=20;
+                                    viewX=12;
+                                    viewY=12;
                                 }
                             }
                         }

@@ -39,29 +39,28 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="DrawView.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="DrawView.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/example/Kill_Deathinator/DrawView.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="530" column="42" selection-start-line="530" selection-start-column="42" selection-end-line="530" selection-end-column="42" />
+            <state vertical-scroll-proportion="0.5770349">
+              <caret line="626" column="32" selection-start-line="626" selection-start-column="32" selection-end-line="626" selection-end-column="32" />
               <folding>
                 <element signature="method#readFile#0;class#DrawView#0" expanded="false" />
                 <element signature="method#movePlayer#0;class#DrawView#0" expanded="false" />
                 <element signature="method#move#0;class#DrawView#0" expanded="false" />
                 <element signature="method#createLevel#0;class#DrawView#0" expanded="false" />
                 <element signature="method#checkVision#0;class#DrawView#0" expanded="false" />
-                <element signature="method#createScreen#0;class#DrawView#0" expanded="false" />
-                <element signature="method#onTouchEvent#0;class#DrawView#0" expanded="false" />
+                <element signature="method#onDraw#0;class#DrawView#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AndroidManifest.xml" pinned="false" current-in-tab="true">
+      <file leaf-file-name="AndroidManifest.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.19767442">
-              <caret line="8" column="49" selection-start-line="8" selection-start-column="33" selection-end-line="8" selection-end-column="49" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="6" column="86" selection-start-line="6" selection-start-column="86" selection-end-line="6" selection-end-column="86" />
               <folding />
             </state>
           </provider>
@@ -152,8 +151,6 @@
     </navigator>
     <panes>
       <pane id="PackagesPane" />
-      <pane id="Scratches" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -224,6 +221,8 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -460,7 +459,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2977528" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32949308" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32958803" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32958803" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1390625" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Memory Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -572,8 +571,7 @@
             <element signature="method#move#0;class#DrawView#0" expanded="false" />
             <element signature="method#createLevel#0;class#DrawView#0" expanded="false" />
             <element signature="method#checkVision#0;class#DrawView#0" expanded="false" />
-            <element signature="method#createScreen#0;class#DrawView#0" expanded="false" />
-            <element signature="method#onTouchEvent#0;class#DrawView#0" expanded="false" />
+            <element signature="method#onDraw#0;class#DrawView#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -616,8 +614,7 @@
             <element signature="method#move#0;class#DrawView#0" expanded="false" />
             <element signature="method#createLevel#0;class#DrawView#0" expanded="false" />
             <element signature="method#checkVision#0;class#DrawView#0" expanded="false" />
-            <element signature="method#createScreen#0;class#DrawView#0" expanded="false" />
-            <element signature="method#onTouchEvent#0;class#DrawView#0" expanded="false" />
+            <element signature="method#onDraw#0;class#DrawView#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -660,8 +657,7 @@
             <element signature="method#move#0;class#DrawView#0" expanded="false" />
             <element signature="method#createLevel#0;class#DrawView#0" expanded="false" />
             <element signature="method#checkVision#0;class#DrawView#0" expanded="false" />
-            <element signature="method#createScreen#0;class#DrawView#0" expanded="false" />
-            <element signature="method#onTouchEvent#0;class#DrawView#0" expanded="false" />
+            <element signature="method#onDraw#0;class#DrawView#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -697,8 +693,7 @@
             <element signature="method#move#0;class#DrawView#0" expanded="false" />
             <element signature="method#createLevel#0;class#DrawView#0" expanded="false" />
             <element signature="method#checkVision#0;class#DrawView#0" expanded="false" />
-            <element signature="method#createScreen#0;class#DrawView#0" expanded="false" />
-            <element signature="method#onTouchEvent#0;class#DrawView#0" expanded="false" />
+            <element signature="method#onDraw#0;class#DrawView#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -861,27 +856,26 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/example/Kill_Deathinator/DrawView.java">
+    <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="530" column="42" selection-start-line="530" selection-start-column="42" selection-end-line="530" selection-end-column="42" />
+          <caret line="6" column="86" selection-start-line="6" selection-start-column="86" selection-end-line="6" selection-end-column="86" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/example/Kill_Deathinator/DrawView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5770349">
+          <caret line="626" column="32" selection-start-line="626" selection-start-column="32" selection-end-line="626" selection-end-column="32" />
           <folding>
             <element signature="method#readFile#0;class#DrawView#0" expanded="false" />
             <element signature="method#movePlayer#0;class#DrawView#0" expanded="false" />
             <element signature="method#move#0;class#DrawView#0" expanded="false" />
             <element signature="method#createLevel#0;class#DrawView#0" expanded="false" />
             <element signature="method#checkVision#0;class#DrawView#0" expanded="false" />
-            <element signature="method#createScreen#0;class#DrawView#0" expanded="false" />
-            <element signature="method#onTouchEvent#0;class#DrawView#0" expanded="false" />
+            <element signature="method#onDraw#0;class#DrawView#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.19767442">
-          <caret line="8" column="49" selection-start-line="8" selection-start-column="33" selection-end-line="8" selection-end-column="49" />
-          <folding />
         </state>
       </provider>
     </entry>
