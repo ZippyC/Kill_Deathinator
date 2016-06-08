@@ -71,6 +71,9 @@ public class DrawView extends SurfaceView {
     private int[][] enemyVision = new int[20][20];//array to allow the enemy's vision to be displayed on the board for ease of use
     private RectF fullscreenBox;//box for use of drawing the entire screen
     private int[] enemyLocation=new int[2];//used to store the location of the enemy being fought
+    private int enemyHealth=20;//health of the currently being fought enemy(gets reset each time you get into a fight)
+    private String enemyText="";//displays for the fight
+    private String playerText="";//displays for the fight
 
     public DrawView(Context context){
         super(context);
@@ -268,14 +271,14 @@ public class DrawView extends SurfaceView {
         if(candy){//if at home space with treasure, open next level
             int[] i=playerLocation;//
             if(i[0]==playerHome[0]&&i[1]==playerHome[1]){//if player has beaten level
-                if(level<4) {
-                    paint.setColor(Color.GREEN);//change color to alert player of victory
+                if(level<3) {
+                    //paint.setColor(Color.GREEN);//change color to alert player of victory
                     level++;//up level
                     createLevel();//create the next level
                 }
                 else{
-                    level=4;
-                    gameState=10;//set to victory screen
+                    level=1;
+                    gameState=4;//set to victory screen
                 }
             }
         }
@@ -290,34 +293,34 @@ public class DrawView extends SurfaceView {
                         if (!boardStatic.get(r, c).getVertical()) {//if moving horizontally
                             if (boardStatic.get(r, c).getLeaving()) {//leaving
                                 if (c < boardStatic.get(r, c).getEY()) {
-                                    if (boardStatic.get(r, c+1) == null) {
+                                    if (boardStatic.get(r, c+1) == null) {//if there is no object in the spot to move to
                                         boardStatic.add(r, c + 1, new MobileEnemy(boardStatic.get(r, c).getXPos(), boardStatic.get(r, c).getYPos(), boardStatic.get(r, c).getType(), boardStatic.get(r, c).getVision(), true, false, false, true, true, boardStatic.get(r, c).getEX(), boardStatic.remove(r, c).getEY()));
-                                        boardStatic.get(r, c+1).setMoved(true);
+                                        boardStatic.get(r, c+1).setMoved(true);//set the state of the currently selected enemy to having been moved
                                     }
                                 }
-                                else {
+                                else {//if at the end of the path
                                     boardStatic.get(r, c).setLeaving(false);
                                     if (c > boardStatic.get(r, c).getYPos()) {
-                                        if (boardStatic.get(r, c-1) == null) {
+                                        if (boardStatic.get(r, c-1) == null) {//if there is no object in the spot to move to
                                             boardStatic.add(r, c - 1, new MobileEnemy(boardStatic.get(r, c).getXPos(), boardStatic.get(r, c).getYPos(), boardStatic.get(r, c).getType(), boardStatic.get(r, c).getVision(), true, false, false, true, false, boardStatic.get(r, c).getEX(), boardStatic.remove(r, c).getEY()));
-                                            boardStatic.get(r, c-1).setMoved(true);
+                                            boardStatic.get(r, c-1).setMoved(true);//set the state of the currently selected enemy to having been moved
                                         }
                                     }
                                 }
                             }
                             else{//not leaving
                                 if (c > boardStatic.get(r, c).getYPos()) {
-                                    if (boardStatic.get(r, c-1) == null) {
+                                    if (boardStatic.get(r, c-1) == null) {//if there is no object in the spot to move to
                                         boardStatic.add(r, c - 1, new MobileEnemy(boardStatic.get(r, c).getXPos(), boardStatic.get(r, c).getYPos(), boardStatic.get(r, c).getType(), boardStatic.get(r, c).getVision(), true, false, false, true, false, boardStatic.get(r, c).getEX(), boardStatic.remove(r, c).getEY()));
-                                        boardStatic.get(r, c-1).setMoved(true);
+                                        boardStatic.get(r, c-1).setMoved(true);//set the state of the currently selected enemy to having been moved
                                     }
                                 }
-                                else {
+                                else {//if at the end of the path
                                     boardStatic.get(r, c).setLeaving(true);
                                     if (c < boardStatic.get(r, c).getEY()) {
-                                        if (boardStatic.get(r, c+1) == null) {
+                                        if (boardStatic.get(r, c+1) == null) {//if there is no object in the spot to move to
                                             boardStatic.add(r, c + 1, new MobileEnemy(boardStatic.get(r, c).getXPos(), boardStatic.get(r, c).getYPos(), boardStatic.get(r, c).getType(), boardStatic.get(r, c).getVision(), true, false, false, true, true, boardStatic.get(r, c).getEX(), boardStatic.remove(r, c).getEY()));
-                                            boardStatic.get(r, c+1).setMoved(true);
+                                            boardStatic.get(r, c+1).setMoved(true);//set the state of the currently selected enemy to having been moved
                                         }
                                     }
                                 }
@@ -326,34 +329,34 @@ public class DrawView extends SurfaceView {
                         else{//if moving vertically
                             if (boardStatic.get(r, c).getLeaving()) {//leaving
                                 if (r < boardStatic.get(r, c).getEX()) {
-                                    if (boardStatic.get(r+1, c) == null) {
+                                    if (boardStatic.get(r+1, c) == null) {//if there is no object in the spot to move to
                                         boardStatic.add(r+1, c, new MobileEnemy(boardStatic.get(r, c).getXPos(), boardStatic.get(r, c).getYPos(), boardStatic.get(r, c).getType(), boardStatic.get(r, c).getVision(), true, false, true, true, true, boardStatic.get(r, c).getEX(), boardStatic.remove(r, c).getEY()));
-                                        boardStatic.get(r+1, c).setMoved(true);
+                                        boardStatic.get(r+1, c).setMoved(true);//set the state of the currently selected enemy to having been moved
                                     }
                                 }
-                                else {
+                                else {//if at the end of the path
                                     boardStatic.get(r, c).setLeaving(false);
                                     if (r > boardStatic.get(r, c).getXPos()) {
-                                        if (boardStatic.get(r-1, c) == null) {
+                                        if (boardStatic.get(r-1, c) == null) {//if there is no object in the spot to move to
                                             boardStatic.add(r-1, c, new MobileEnemy(boardStatic.get(r, c).getXPos(), boardStatic.get(r, c).getYPos(), boardStatic.get(r, c).getType(), boardStatic.get(r, c).getVision(), true, false, true, true, false, boardStatic.get(r, c).getEX(), boardStatic.remove(r, c).getEY()));
-                                            boardStatic.get(r-1, c).setMoved(true);
+                                            boardStatic.get(r-1, c).setMoved(true);//set the state of the currently selected enemy to having been moved
                                         }
                                     }
                                 }
                             }
                             else{//not leaving
                                 if (r > boardStatic.get(r, c).getXPos()) {
-                                    if (boardStatic.get(r-1, c) == null) {
+                                    if (boardStatic.get(r-1, c) == null) {//if there is no object in the spot to move to
                                         boardStatic.add(r-1, c, new MobileEnemy(boardStatic.get(r, c).getXPos(), boardStatic.get(r, c).getYPos(), boardStatic.get(r, c).getType(), boardStatic.get(r, c).getVision(), true, false, true, true, false, boardStatic.get(r, c).getEX(), boardStatic.remove(r, c).getEY()));
-                                        boardStatic.get(r-1, c).setMoved(true);
+                                        boardStatic.get(r-1, c).setMoved(true);//set the state of the currently selected enemy to having been moved
                                     }
                                 }
-                                else {
+                                else {//if at the end of the path
                                     boardStatic.get(r, c).setLeaving(true);
                                     if (r < boardStatic.get(r, c).getEX()) {
-                                        if (boardStatic.get(r+1, c) == null) {
+                                        if (boardStatic.get(r+1, c) == null) {//if there is no object in the spot to move to
                                             boardStatic.add(r+1, c, new MobileEnemy(boardStatic.get(r, c).getXPos(), boardStatic.get(r, c).getYPos(), boardStatic.get(r, c).getType(), boardStatic.get(r, c).getVision(), true, false, true, true, true, boardStatic.get(r, c).getEX(), boardStatic.remove(r, c).getEY()));
-                                            boardStatic.get(r+1, c).setMoved(true);
+                                            boardStatic.get(r+1, c).setMoved(true);//set the state of the currently selected enemy to having been moved
                                         }
                                     }
                                 }
@@ -484,17 +487,19 @@ public class DrawView extends SurfaceView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        if(gameState==0) {//start screen
-            if (canvasWidth == 0) {//if the canvas' width has not been defined, set it
-                canvasWidth = canvas.getWidth();
-                createScreen(canvas);//make the screen
-            }
-            canvas.drawRect(fullscreenBox, paint2);//draw the box across whole screen covering whatever was there before
-            canvas.drawBitmap(visionMarker, null, levelButton, null);
-            canvas.drawBitmap(playerPic, null, startButton, null);
-            canvas.drawText("level: "+level, (canvas.getWidth() / 2) - 100, 300, paint);
-        } else {
-            if (gameState == 1) {//on map
+        switch(gameState){
+            case 0://start screen
+                if (canvasWidth == 0) {//if the canvas' width has not been defined, set it
+                    canvasWidth = canvas.getWidth();
+                    createScreen(canvas);//make the screen
+                }
+                canvas.drawRect(fullscreenBox, paint2);//draw the box across whole screen covering whatever was there before
+                canvas.drawBitmap(visionMarker, null, levelButton, null);
+                canvas.drawBitmap(playerPic, null, startButton, null);
+                canvas.drawText("level: "+level, (canvas.getWidth() / 2) - 100, 300, paint);
+                canvas.drawRect(musicButton, paint);//draw the music Button
+                break;
+            case 1://map
                 if (!levelStarted) {//if the level has not been created yet
                     createLevel();
                     levelStarted = !levelStarted;
@@ -554,61 +559,65 @@ public class DrawView extends SurfaceView {
                 if((playerLocation[0]>=viewX&&playerLocation[0]<viewX+8)&&(playerLocation[1]>=viewY&&playerLocation[1]<viewY+8)) {//player is within bounds of the screen
                     canvas.drawBitmap(playerPic, null, board[(playerLocation[0]-viewX)][(playerLocation[1]-viewY)], null);//draw Player
                 }
-                canvas.drawBitmap(upArrowPic, null, upButton, null);
-                canvas.drawBitmap(downArrowPic, null, downButton, null);
-                canvas.drawBitmap(leftArrowPic, null, leftButton, null);
-                canvas.drawBitmap(rightArrowPic, null, rightButton, null);
-                canvas.drawBitmap(upArrowPic, null, upScreenButton, null);
-                canvas.drawBitmap(downArrowPic, null, downScreenButton, null);
-                canvas.drawBitmap(leftArrowPic, null, leftScreenButton, null);
-                canvas.drawBitmap(rightArrowPic, null, rightScreenButton, null);
-                canvas.drawBitmap(screenIndicatorPic, null, middleScreenButton, null);
-                canvas.drawBitmap(moveIndicatorPic, null, middleButton, null);
-                canvas.drawRect(musicButton, paint);
-                canvas.drawBitmap(homeButtonPic, null, homeButton, null);
+                canvas.drawBitmap(upArrowPic, null, upButton, null);//draw upButton
+                canvas.drawBitmap(downArrowPic, null, downButton, null);//draw downButton
+                canvas.drawBitmap(leftArrowPic, null, leftButton, null);//draw leftButton
+                canvas.drawBitmap(rightArrowPic, null, rightButton, null);//draw rightButton
+                canvas.drawBitmap(upArrowPic, null, upScreenButton, null);//draw upScreenButton
+                canvas.drawBitmap(downArrowPic, null, downScreenButton, null);//draw downScreenButton
+                canvas.drawBitmap(leftArrowPic, null, leftScreenButton, null);//draw leftScreenButton
+                canvas.drawBitmap(rightArrowPic, null, rightScreenButton, null);//draw rightScreenButton
+                canvas.drawBitmap(screenIndicatorPic, null, middleScreenButton, null);//draw middleScreenButton
+                canvas.drawBitmap(moveIndicatorPic, null, middleButton, null);//draw middleButton
+                canvas.drawRect(musicButton, paint);//draw the music Button
+                canvas.drawBitmap(homeButtonPic, null, homeButton, null);//draw the homeButton
                 canvas.drawText("x: " + viewX + " Y: " + viewY + " Health: " + playerHealth, (canvas.getWidth() / 2) - 100, 50, paint);//print screen location
                 //canvas.drawBitmap(arinPic, null, moveButton, null);
-            } else {
-                if (gameState == 2) {//death screen
-                    canvas.drawRect(fullscreenBox, paint2);//draw the box across whole screen covering whatever was there before
-                    canvas.drawText("You have died", (canvas.getWidth() / 2) - 100, 300, paint);//text to let player know this is death screen
-                    canvas.drawRect(musicButton, paint);
-                }
-                else {
-                    if (gameState == 3) {//fight screen
-                        canvas.drawRect(fullscreenBox, paint2);//draw the box across whole screen covering whatever was there before
-                        if(boardStatic.get(enemyLocation[0], enemyLocation[1])!=null){
-                            switch(boardStatic.get(enemyLocation[0], enemyLocation[1]).getType()){
-                                case 3://archer
-                                    canvas.drawBitmap(grassPic, null, board[4][2], null);//draw grass
-                                    canvas.drawBitmap(archerPic, null, board[4][2], null);//draw Archer
-                                    break;
-                                case 6://soldier
-                                    canvas.drawBitmap(grassPic, null, board[4][2], null);//draw grass
-                                    canvas.drawBitmap(soldierPic, null, board[4][2], null);//draw Soldier
-                                    break;
-                                case 7://scout
-                                    canvas.drawBitmap(grassPic, null, board[4][2], null);//draw grass
-                                    canvas.drawBitmap(scoutPic, null, board[4][2], null);//draw Scout
-                                    break;
-                                default://if there is a incorrect number(should never appear)
-                                    canvas.drawBitmap(background_1, null, board[4][2], null);//draw MacNabb
-                                    break;
-                            }
-                        }
-                        canvas.drawBitmap(grassPic, null, board[4][6], null);//draw grass
-                        canvas.drawBitmap(playerPic, null, board[4][6], null);//draw Player
-                        canvas.drawBitmap(homeButtonPic, null, homeButton, null);
-                    } else {
-                        if (gameState == 4) {//victory screen
-                            canvas.drawRect(fullscreenBox, paint2);//draw the box across whole screen covering whatever was there before
-                            canvas.drawText("Victory, click to restart", (canvas.getWidth() / 4), (canvas.getHeight() / 2) - 100, paint);//text to say you won
-                            canvas.drawRect(musicButton, paint);
-                            canvas.drawBitmap(homeButtonPic, null, homeButton, null);
-                        }
+                break;
+            case 2://death screen
+                canvas.drawRect(fullscreenBox, paint2);//draw the box across whole screen covering whatever was there before
+                canvas.drawText("You have died", (canvas.getWidth() / 2) - 100, 300, paint);//text to let player know this is death screen
+                canvas.drawRect(musicButton, paint);//draw the music Button
+                canvas.drawBitmap(homeButtonPic, null, homeButton, null);//draw the homeButton
+                break;
+            case 3://fight screen
+                canvas.drawRect(fullscreenBox, paint2);//draw the box across whole screen covering whatever was there before
+                if(boardStatic.get(enemyLocation[0], enemyLocation[1])!=null){
+                    switch(boardStatic.get(enemyLocation[0], enemyLocation[1]).getType()){
+                        case 3://archer
+                            canvas.drawBitmap(grassPic, null, board[4][2], null);//draw grass
+                            canvas.drawBitmap(archerPic, null, board[4][2], null);//draw Archer
+                            break;
+                        case 6://soldier
+                            canvas.drawBitmap(grassPic, null, board[4][2], null);//draw grass
+                            canvas.drawBitmap(soldierPic, null, board[4][2], null);//draw Soldier
+                            break;
+                        case 7://scout
+                            canvas.drawBitmap(grassPic, null, board[4][2], null);//draw grass
+                            canvas.drawBitmap(scoutPic, null, board[4][2], null);//draw Scout
+                            break;
+                        default://if there is a incorrect number(should never appear)
+                            canvas.drawBitmap(background_1, null, board[4][2], null);//draw MacNabb
+                            break;
                     }
                 }
-            }
+                canvas.drawBitmap(grassPic, null, board[4][6], null);//draw grass
+                canvas.drawBitmap(playerPic, null, board[4][6], null);//draw Player
+                canvas.drawBitmap(homeButtonPic, null, homeButton, null);
+                canvas.drawRect(musicButton, paint);//draw the music Button
+                canvas.drawText("Player Health: "+playerHealth, (canvas.getWidth() / 4), 50, paint);//display player health
+                canvas.drawText("Enemy Health: "+enemyHealth, (canvas.getWidth() / 4), (canvas.getHeight() / 4) -100, paint);//text to say you won
+                canvas.drawBitmap(visionMarker, null, startButton, null);//draw the button to hit the enemy, using the startButton temporarily
+                break;
+            case 4://victory screen
+                canvas.drawRect(fullscreenBox, paint2);//draw the box across whole screen covering whatever was there before
+                canvas.drawText("Victory", (canvas.getWidth() / 4), (canvas.getHeight() / 2) - 100, paint);//text to say you won
+                canvas.drawRect(musicButton, paint);
+                canvas.drawBitmap(homeButtonPic, null, homeButton, null);
+                canvas.drawRect(musicButton, paint);//draw the music Button
+                break;
+            default:
+                break;
         }
     }
 
@@ -618,20 +627,21 @@ public class DrawView extends SurfaceView {
             lastClick = System.currentTimeMillis();
             float x = event.getX();//x location of touch
             float y = event.getY();//y location of touch
-            if (gameState == 0) {
-                if(levelButton.contains(x, y)){
-                    if(level<3){
-                        level++;
+            switch(gameState){
+                case 0://start screen
+                    if(levelButton.contains(x, y)){//increase the level by 1, reset after 3
+                        if(level<3){
+                            level++;
+                        }
+                        else
+                            level=1;
                     }
-                    else
-                        level=1;
-                }
-                if(startButton.contains(x, y)){
-                    createLevel();
-                    gameState=1;
-                }
-            } else {
-                if (gameState == 1) {
+                    if(startButton.contains(x, y)){//begin the game
+                        createLevel();
+                        gameState=1;
+                    }
+                    break;
+                case 1://on map
                     synchronized (getHolder()) {
                         if (upButton.contains(x, y)) {//move player up and move enemies 1
                             move();
@@ -660,17 +670,14 @@ public class DrawView extends SurfaceView {
                         } else if (leftScreenButton.contains(x, y))//move screen left 2
                             if (viewY > 0)
                                 viewY -= 2;
-                        if (musicButton.contains(x, y)) {
-                            gameState = 3;
-                        }
                         if(homeButton.contains(x, y)){
-                            gameState=0;
-                            level=1;
-                            playerHealth=20;
-                            viewX=12;
-                            viewY=12;
+                            gameState = 0;//start screen
+                            playerHealth = 20;//refresh health
+                            level = 1;
+                            viewX = 12;//reset view
+                            viewY = 12;//reset view
                         }
-                        /*if (musicButton.contains(x, y)) {//play/pause the music
+                        if (musicButton.contains(x, y)) {//play/pause the music
                             if (bavariaOn) {//pause if on
                                 bavariaOn = false;
                                 fluteSong.pause();
@@ -678,60 +685,70 @@ public class DrawView extends SurfaceView {
                                 bavariaOn = true;
                                 fluteSong.start();
                             }
-                        }*/
-                    }
-                } else {
-                    if (gameState == 2) {//death screen
-                        if (musicButton.contains(x, y)) {//restart game
-                            gameState = 0;//start screen
-                            playerHealth=20;//refresh health
-                            level=1;
-                            createLevel();//create level 1 again
-                            viewX=12;//reset view
-                            viewY=12;//reset view
-                        }
-                        if(homeButton.contains(x, y)){
-                            gameState=0;
-                            level=1;
-                            playerHealth=20;
-                            viewX=12;
-                            viewY=12;
                         }
                     }
-                    else{
-                        if(gameState==3){//fight screen
-                            if(musicButton.contains(x, y)){
-                                gameState=1;
-                            }
-                            if(homeButton.contains(x, y)){
-                                gameState=0;
-                                level=1;
-                                playerHealth=20;
-                                viewX=12;
-                                viewY=12;
-                            }
-                        }
-                        else{
-                            if(gameState==4) {//victory screen
-                                if (musicButton.contains(x, y)) {//restart game
-                                    gameState = 0;//start screen
-                                    playerHealth = 20;//refresh health
-                                    level = 1;
-                                    createLevel();//create level 1 again
-                                    viewX = 12;//reset view
-                                    viewY = 12;//reset view
-                                }
-                                if(homeButton.contains(x, y)){
-                                    gameState=0;
-                                    level=1;
-                                    playerHealth=20;
-                                    viewX=12;
-                                    viewY=12;
-                                }
-                            }
+                    break;
+                case 2://death screen
+                    if (musicButton.contains(x, y)) {//play/pause the music
+                        if (bavariaOn) {//pause if on
+                            bavariaOn = false;
+                            fluteSong.pause();
+                        } else {//play if off
+                            bavariaOn = true;
+                            fluteSong.start();
                         }
                     }
-                }
+                    if(homeButton.contains(x, y)){
+                        gameState = 0;//start screen
+                        playerHealth = 20;//refresh health
+                        level = 1;
+                        viewX = 12;//reset view
+                        viewY = 12;//reset view
+                    }
+                    break;
+                case 3://fight screen
+                    if (musicButton.contains(x, y)) {//play/pause the music
+                        if (bavariaOn) {//pause if on
+                            bavariaOn = false;
+                            fluteSong.pause();
+                        } else {//play if off
+                            bavariaOn = true;
+                            fluteSong.start();
+                        }
+                    }
+                    if(homeButton.contains(x, y)){
+                        gameState = 0;//start screen
+                        playerHealth = 20;//refresh health
+                        level = 1;
+                        viewX = 12;//reset view
+                        viewY = 12;//reset view
+                    }
+                    if (startButton.contains(x, y)) {//hit the enemy
+                        enemyHealth--;//temp
+                        playerText=playerTurn(boardStatic.get(enemyLocation[0], enemyLocation[1]));//player hits the enemy
+                        enemyText=enemyTurn(boardStatic.get(enemyLocation[0], enemyLocation[1]));//enemy hits the player
+                                            }
+                    break;
+                case 4://victory screen
+                    if (musicButton.contains(x, y)) {//play/pause the music
+                        if (bavariaOn) {//pause if on
+                            bavariaOn = false;
+                            fluteSong.pause();
+                        } else {//play if off
+                            bavariaOn = true;
+                            fluteSong.start();
+                        }
+                    }
+                    if(homeButton.contains(x, y)){
+                        gameState = 0;//start screen
+                        playerHealth = 20;//refresh health
+                        level = 1;
+                        viewX = 12;//reset view
+                        viewY = 12;//reset view
+                    }
+                    break;
+                default:
+                    break;
             }
         }
         return true;
