@@ -1,4 +1,4 @@
-package com.example.Kill_Deathinator;//add instructions
+package com.example.Kill_Deathinator;//add instructions -- finish battle -- make battle based on enemy type
 import android.content.Context;
 import android.graphics.*;
 import android.media.MediaPlayer;
@@ -114,7 +114,7 @@ public class DrawView extends SurfaceView {
         soldierPic=BitmapFactory.decodeResource(getResources(), R.drawable.soldier);
         treePic=BitmapFactory.decodeResource(getResources(), R.drawable.tree);
         treasurePic=BitmapFactory.decodeResource(getResources(), R.drawable.treasure);
-        grassPic=BitmapFactory.decodeResource(getResources(), R.drawable.grass);
+        grassPic=BitmapFactory.decodeResource(getResources(), R.drawable.grass01);
         arinPic=BitmapFactory.decodeResource(getResources(), R.drawable.im_sorry);
         rightArrowPic=BitmapFactory.decodeResource(getResources(), R.drawable.right_arrow);
         downArrowPic=BitmapFactory.decodeResource(getResources(), R.drawable.down_arrow);
@@ -263,7 +263,7 @@ public class DrawView extends SurfaceView {
         checkVision();//update the current vision
         if(enemyVision[playerLocation[0]][playerLocation[1]]==1&&(boardStatic.get(playerLocation[0], playerLocation[1])==null)){//check if the player is within the vision of an enemy
             playerHealth--;
-            paint.setColor(Color.rgb(256, 0, 0));//make text color red
+            paint.setColor(Color.rgb(255, 0, 0));//make text color red
             if(playerHealth<=0){
                 gameState=2;//send to death screen
             }
@@ -477,12 +477,24 @@ public class DrawView extends SurfaceView {
         levelButton=new RectF(canvasWidth/6+(canvasWidth/6*2), canvasHeight-(canvasWidth/6*4), canvasWidth/6+(canvasWidth/6*3), canvasHeight-(canvasWidth/6*3));
     }
 
+    //pre: enemy needs to be !=null
+    //post: returns what the enemy did
     private String enemyTurn(MobileEnemy enemy){
+        if(enemyHealth<1){
+            return "The enemy has been defeated";
+        } else{
+            if(Math.random()>.8){
+                playerHealth--;
+                return "The enemy hit for 1 damage";
+            }
+        }
         return "";//temp
     }
 
+    //pre: enemy needs to be !=null
+    //post: returns what the player did
     private String playerTurn(MobileEnemy enemy){
-        return "";//temp
+        return "You did NOTHING!";//temp
     }
 
     @Override
@@ -606,7 +618,9 @@ public class DrawView extends SurfaceView {
                 canvas.drawBitmap(homeButtonPic, null, homeButton, null);
                 canvas.drawRect(musicButton, paint);//draw the music Button
                 canvas.drawText("Player Health: "+playerHealth, (canvas.getWidth() / 4), 50, paint);//display player health
-                canvas.drawText("Enemy Health: "+enemyHealth, (canvas.getWidth() / 4), (canvas.getHeight() / 4) -100, paint);//text to say you won
+                canvas.drawText(playerText, (canvas.getWidth() / 6), 100, paint);//display player action
+                canvas.drawText(enemyText, (canvas.getWidth() / 6), 200, paint);//display enemy action
+                canvas.drawText("Enemy Health: "+enemyHealth, (canvas.getWidth() / 4), 150, paint);//text to say you won
                 canvas.drawBitmap(visionMarker, null, startButton, null);//draw the button to hit the enemy, using the startButton temporarily
                 break;
             case 4://victory screen
@@ -639,6 +653,15 @@ public class DrawView extends SurfaceView {
                     if(startButton.contains(x, y)){//begin the game
                         createLevel();
                         gameState=1;
+                    }
+                    if (musicButton.contains(x, y)) {//play/pause the music
+                        if (bavariaOn) {//pause if on
+                            bavariaOn = false;
+                            fluteSong.pause();
+                        } else {//play if off
+                            bavariaOn = true;
+                            fluteSong.start();
+                        }
                     }
                     break;
                 case 1://on map
@@ -727,7 +750,7 @@ public class DrawView extends SurfaceView {
                         enemyHealth--;//temp
                         playerText=playerTurn(boardStatic.get(enemyLocation[0], enemyLocation[1]));//player hits the enemy
                         enemyText=enemyTurn(boardStatic.get(enemyLocation[0], enemyLocation[1]));//enemy hits the player
-                                            }
+                    }
                     break;
                 case 4://victory screen
                     if (musicButton.contains(x, y)) {//play/pause the music
