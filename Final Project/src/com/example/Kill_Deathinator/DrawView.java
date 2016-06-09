@@ -424,7 +424,7 @@ public class DrawView extends SurfaceView {
                     boardStatic.add(x, y, (new MobileEnemy(x, y, t, v, e, w, vert, true, true, ex, ey)));//add the MobileEnemy to the board
             }
         }
-        candy=false;//has not obtained treasuse for new level
+        candy=false;//has not obtained treasure for new level
         playerHome=playerLocation.clone();//update player home
         checkVision();//reload the vision for the enemies to display on board
         enemyHealth=20;//reset the enemy's health
@@ -485,15 +485,39 @@ public class DrawView extends SurfaceView {
         if(enemyHealth<1){
             return "The enemy has been defeated";
         } else{
-            if(Math.random()<.8){
-                playerHealth--;
-                return "The enemy hit for 1 damage";
+            switch(enemy.getType()){
+                case 3://archer
+                    if(Math.random()<.8){//80% hit rate
+                        playerHealth--;
+                        if(playerHealth>0)
+                            return "The enemy hit for 1 damage";
+                        else
+                            return "The enemy has defeated you";
+                    }
+                case 6://soldier
+                    if(Math.random()<.8){
+                        playerHealth--;
+                        if(playerHealth>0)
+                            return "The enemy hit for 1 damage";
+                        else
+                            return "The enemy has defeated you";
+                    }
+                case 7://scout
+                    if(Math.random()<.8){
+                        playerHealth--;
+                        if(playerHealth>0)
+                            return "The enemy hit for 1 damage";
+                        else
+                            return "The enemy has defeated you";
+                    }
+                default:
+                    break;
             }
         }
-        return "The Enemy missed";//temp
+        return "The Enemy missed";//if the alive enemy didn't hit
     }
 
-    //pre: enemy needs to be !=null
+    //pre: attack needs to be 0<attack<4
     //post: returns what the player did
     private String playerTurn(int attack){
         if(playerHealth<=0){
@@ -790,7 +814,7 @@ public class DrawView extends SurfaceView {
                         enemyText=enemyTurn(boardStatic.get(enemyLocation[0], enemyLocation[1]));//enemy hits the player
                     }
                     if(levelButton.contains(x, y)){
-                        if(attackDamage>3){
+                        if(attackDamage>2){
                             attackDamage=1;
                         }
                         else
