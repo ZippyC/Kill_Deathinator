@@ -74,6 +74,7 @@ public class DrawView extends SurfaceView {
     private int enemyHealth=20;//health of the currently being fought enemy(gets reset each time you get into a fight)
     private String enemyText="";//displays for the fight
     private String playerText="";//displays for the fight
+    private int attackDamage=1;//which attack the player is attempting to use
 
     public DrawView(Context context){
         super(context);
@@ -426,6 +427,7 @@ public class DrawView extends SurfaceView {
         candy=false;//has not obtained treasuse for new level
         playerHome=playerLocation.clone();//update player home
         checkVision();//reload the vision for the enemies to display on board
+        enemyHealth=20;//reset the enemy's health
     }
 
     //post: if the player is found in the vision of any of the enemies, then changes the colour of the text to white
@@ -483,17 +485,52 @@ public class DrawView extends SurfaceView {
         if(enemyHealth<1){
             return "The enemy has been defeated";
         } else{
-            if(Math.random()>.8){
+            if(Math.random()<.8){
                 playerHealth--;
                 return "The enemy hit for 1 damage";
             }
         }
-        return "";//temp
+        return "The Enemy missed";//temp
     }
 
     //pre: enemy needs to be !=null
     //post: returns what the player did
-    private String playerTurn(MobileEnemy enemy){
+    private String playerTurn(int attack){
+        if(playerHealth<=0){
+            gameState=2;//death
+        }
+        else
+        if(enemyHealth<=0){
+            gameState=1;//send the player back to the map
+            playerLocation[0]=enemyLocation[0];//set the location of the player to the prior location of the enemy
+            playerLocation[1]=enemyLocation[1];//set the location of the player to the prior location of the enemy
+            boardStatic.remove(enemyLocation[0], enemyLocation[1]);//remove the enemy
+            enemyHealth=20;//reset enemy health
+        }
+        else
+            switch(attackDamage){
+                case 1:
+                    if(Math.random()>.10){
+                        enemyHealth--;
+                        return "You hit for 1 damage";
+                    }
+                    return "You missed";
+
+                case 2:
+                    if(Math.random()>.30){
+                        enemyHealth=enemyHealth-2;
+                        return "You hit for 2 damage";
+                    }
+                    return "You missed";
+                case 3:
+                    if(Math.random()>.60){
+                        enemyHealth=enemyHealth-3;
+                        return "You hit for 3 damage";
+                    }
+                    return "You missed";
+                default:
+                    return "You missed";
+            }
         return "You did NOTHING!";//temp
     }
 
@@ -617,11 +654,12 @@ public class DrawView extends SurfaceView {
                 canvas.drawBitmap(playerPic, null, board[4][6], null);//draw Player
                 canvas.drawBitmap(homeButtonPic, null, homeButton, null);
                 canvas.drawRect(musicButton, paint);//draw the music Button
-                canvas.drawText("Player Health: "+playerHealth, (canvas.getWidth() / 4), 50, paint);//display player health
+                canvas.drawText("Player Health: "+playerHealth+" Attack Damage: "+attackDamage, (canvas.getWidth() / 4), 50, paint);//display player health
                 canvas.drawText(playerText, (canvas.getWidth() / 6), 100, paint);//display player action
                 canvas.drawText(enemyText, (canvas.getWidth() / 6), 200, paint);//display enemy action
                 canvas.drawText("Enemy Health: "+enemyHealth, (canvas.getWidth() / 4), 150, paint);//text to say you won
                 canvas.drawBitmap(visionMarker, null, startButton, null);//draw the button to hit the enemy, using the startButton temporarily
+                canvas.drawBitmap(visionMarker, null, levelButton, null);
                 break;
             case 4://victory screen
                 canvas.drawRect(fullscreenBox, paint2);//draw the box across whole screen covering whatever was there before
@@ -748,8 +786,15 @@ public class DrawView extends SurfaceView {
                     }
                     if (startButton.contains(x, y)) {//hit the enemy
                         enemyHealth--;//temp
-                        playerText=playerTurn(boardStatic.get(enemyLocation[0], enemyLocation[1]));//player hits the enemy
+                        playerText=playerTurn(attackDamage);//player hits the enemy
                         enemyText=enemyTurn(boardStatic.get(enemyLocation[0], enemyLocation[1]));//enemy hits the player
+                    }
+                    if(levelButton.contains(x, y)){
+                        if(attackDamage>3){
+                            attackDamage=1;
+                        }
+                        else
+                            attackDamage++;
                     }
                     break;
                 case 4://victory screen
