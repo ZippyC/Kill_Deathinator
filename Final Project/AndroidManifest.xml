@@ -6,7 +6,7 @@
     <uses-sdk android:minSdkVersion="15"/>
     <application android:label="@string/app_name" android:icon="@drawable/warning_tile">
         <activity android:name="MyActivity"
-                  android:label="わるいゲーエ'Bad Game'"
+                  android:label="'Work in Progress'"
                   android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

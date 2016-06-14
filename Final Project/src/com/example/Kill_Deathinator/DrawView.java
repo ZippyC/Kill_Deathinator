@@ -1,4 +1,4 @@
-package com.example.Kill_Deathinator;//add instructions -- finish battle -- make battle based on enemy type
+package com.example.Kill_Deathinator;//add instructions -- finish battle -- make battle based on enemy type   name: わるいゲーエ'Bad Game'
 import android.content.Context;
 import android.graphics.*;
 import android.media.MediaPlayer;
