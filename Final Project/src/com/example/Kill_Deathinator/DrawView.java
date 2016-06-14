@@ -528,8 +528,6 @@ public class DrawView extends SurfaceView {
             gameState=1;//send the player back to the map
             playerLocation[0]=enemyLocation[0];//set the location of the player to the prior location of the enemy
             playerLocation[1]=enemyLocation[1];//set the location of the player to the prior location of the enemy
-            boardStatic.remove(enemyLocation[0], enemyLocation[1]);//remove the enemy
-            enemyHealth=20;//reset enemy health
         }
         else
             switch(attackDamage){
@@ -809,9 +807,15 @@ public class DrawView extends SurfaceView {
                         viewY = 12;//reset view
                     }
                     if (startButton.contains(x, y)) {//hit the enemy
-                        enemyHealth--;//temp
                         playerText=playerTurn(attackDamage);//player hits the enemy
-                        enemyText=enemyTurn(boardStatic.get(enemyLocation[0], enemyLocation[1]));//enemy hits the player
+                        if(enemyHealth>0) {
+                            enemyText = enemyTurn(boardStatic.get(enemyLocation[0], enemyLocation[1]));//enemy hits the player
+                        }else{
+                            playerTurn(1);
+                            boardStatic.remove(enemyLocation[0], enemyLocation[1]);//remove the enemy
+                            enemyHealth=20;//reset enemy health
+                            checkVision();
+                        }
                     }
                     if(levelButton.contains(x, y)){
                         if(attackDamage>2){

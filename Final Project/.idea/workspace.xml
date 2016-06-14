@@ -42,10 +42,9 @@
       <file leaf-file-name="DrawView.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/example/Kill_Deathinator/DrawView.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="311">
-              <caret line="498" column="39" selection-start-line="498" selection-start-column="39" selection-end-line="498" selection-end-column="39" />
+            <state relative-caret-position="91">
+              <caret line="803" column="58" selection-start-line="803" selection-start-column="58" selection-end-line="803" selection-end-column="58" />
               <folding>
-                <element signature="imports" expanded="true" />
                 <element signature="method#DrawView#0;class#DrawView#0" expanded="false" />
                 <element signature="method#getFileSize#0;class#DrawView#0" expanded="false" />
                 <element signature="method#readFile#0;class#DrawView#0" expanded="false" />
@@ -54,9 +53,9 @@
                 <element signature="method#createLevel#0;class#DrawView#0" expanded="false" />
                 <element signature="method#checkVision#0;class#DrawView#0" expanded="false" />
                 <element signature="method#createScreen#0;class#DrawView#0" expanded="false" />
+                <element signature="method#enemyTurn#0;class#DrawView#0" expanded="false" />
                 <element signature="method#playerTurn#0;class#DrawView#0" expanded="false" />
                 <element signature="method#onDraw#0;class#DrawView#0" expanded="false" />
-                <element signature="method#onTouchEvent#0;class#DrawView#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -65,7 +64,7 @@
       <file leaf-file-name="WorldObject.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/example/Kill_Deathinator/WorldObject.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="209">
+            <state relative-caret-position="306">
               <caret line="18" column="22" selection-start-line="18" selection-start-column="22" selection-end-line="18" selection-end-column="22" />
               <folding />
             </state>
@@ -117,8 +116,8 @@
   <component name="ProjectFrameBounds">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
-    <option name="width" value="1296" />
-    <option name="height" value="1000" />
+    <option name="width" value="1936" />
+    <option name="height" value="1066" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -145,8 +144,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -236,6 +233,8 @@
         </subPane>
       </pane>
       <pane id="Scratches" />
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -440,11 +439,13 @@
       <workItem from="1463216370572" duration="4296000" />
       <workItem from="1463257992083" duration="5085000" />
       <workItem from="1463266165495" duration="8323000" />
+      <workItem from="1465886238512" duration="661000" />
+      <workItem from="1465898952062" duration="993000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="24737000" />
+    <option name="totallyTimeSpent" value="26391000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -456,24 +457,26 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1296" height="1000" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1066" extended-state="6" />
     <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32949308" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32392895" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32810867" sideWeight="0.50416666" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25691244" sideWeight="0.49583334" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2570533" sideWeight="0.49583334" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.29681647" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2967607" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32949308" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15210356" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16822916" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
@@ -485,8 +488,6 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32397005" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33895132" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Memory Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -506,7 +507,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="18" />
+      <option name="time" value="19" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -578,7 +579,6 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
             <element signature="method#DrawView#0;class#DrawView#0" expanded="false" />
             <element signature="method#getFileSize#0;class#DrawView#0" expanded="false" />
             <element signature="method#readFile#0;class#DrawView#0" expanded="false" />
@@ -587,9 +587,9 @@
             <element signature="method#createLevel#0;class#DrawView#0" expanded="false" />
             <element signature="method#checkVision#0;class#DrawView#0" expanded="false" />
             <element signature="method#createScreen#0;class#DrawView#0" expanded="false" />
+            <element signature="method#enemyTurn#0;class#DrawView#0" expanded="false" />
             <element signature="method#playerTurn#0;class#DrawView#0" expanded="false" />
             <element signature="method#onDraw#0;class#DrawView#0" expanded="false" />
-            <element signature="method#onTouchEvent#0;class#DrawView#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -627,7 +627,6 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
             <element signature="method#DrawView#0;class#DrawView#0" expanded="false" />
             <element signature="method#getFileSize#0;class#DrawView#0" expanded="false" />
             <element signature="method#readFile#0;class#DrawView#0" expanded="false" />
@@ -636,9 +635,9 @@
             <element signature="method#createLevel#0;class#DrawView#0" expanded="false" />
             <element signature="method#checkVision#0;class#DrawView#0" expanded="false" />
             <element signature="method#createScreen#0;class#DrawView#0" expanded="false" />
+            <element signature="method#enemyTurn#0;class#DrawView#0" expanded="false" />
             <element signature="method#playerTurn#0;class#DrawView#0" expanded="false" />
             <element signature="method#onDraw#0;class#DrawView#0" expanded="false" />
-            <element signature="method#onTouchEvent#0;class#DrawView#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -676,7 +675,6 @@
         <state relative-caret-position="0">
           <caret line="65" column="24" selection-start-line="65" selection-start-column="24" selection-end-line="65" selection-end-column="24" />
           <folding>
-            <element signature="imports" expanded="true" />
             <element signature="method#DrawView#0;class#DrawView#0" expanded="false" />
             <element signature="method#getFileSize#0;class#DrawView#0" expanded="false" />
             <element signature="method#readFile#0;class#DrawView#0" expanded="false" />
@@ -685,9 +683,9 @@
             <element signature="method#createLevel#0;class#DrawView#0" expanded="false" />
             <element signature="method#checkVision#0;class#DrawView#0" expanded="false" />
             <element signature="method#createScreen#0;class#DrawView#0" expanded="false" />
+            <element signature="method#enemyTurn#0;class#DrawView#0" expanded="false" />
             <element signature="method#playerTurn#0;class#DrawView#0" expanded="false" />
             <element signature="method#onDraw#0;class#DrawView#0" expanded="false" />
-            <element signature="method#onTouchEvent#0;class#DrawView#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -718,7 +716,6 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
             <element signature="method#DrawView#0;class#DrawView#0" expanded="false" />
             <element signature="method#getFileSize#0;class#DrawView#0" expanded="false" />
             <element signature="method#readFile#0;class#DrawView#0" expanded="false" />
@@ -727,9 +724,9 @@
             <element signature="method#createLevel#0;class#DrawView#0" expanded="false" />
             <element signature="method#checkVision#0;class#DrawView#0" expanded="false" />
             <element signature="method#createScreen#0;class#DrawView#0" expanded="false" />
+            <element signature="method#enemyTurn#0;class#DrawView#0" expanded="false" />
             <element signature="method#playerTurn#0;class#DrawView#0" expanded="false" />
             <element signature="method#onDraw#0;class#DrawView#0" expanded="false" />
-            <element signature="method#onTouchEvent#0;class#DrawView#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -820,13 +817,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://C:/Program Files/Android/android-sdk/sources/android-15/android/graphics/Canvas.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="1280" column="0" selection-start-line="1280" selection-start-column="0" selection-end-line="1280" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://C:/Program Files/Android/android-sdk/sources/android-15/android/graphics/Canvas.java" />
     <entry file="file://$PROJECT_DIR$/src/com/example/Kill_Deathinator/LoopThread.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -870,11 +861,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/drawable-mdpi/move_button.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/res/drawable-mdpi/move_button.png" />
     <entry file="file://$PROJECT_DIR$/res/drawable-mdpi/nab_bear_man.jpg">
       <provider selected="true" editor-type-id="images">
         <state />
@@ -885,20 +872,11 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/example/Kill_Deathinator/WorldObject.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="18" column="22" selection-start-line="18" selection-start-column="22" selection-end-line="18" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/example/Kill_Deathinator/DrawView.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="311">
-          <caret line="498" column="39" selection-start-line="498" selection-start-column="39" selection-end-line="498" selection-end-column="39" />
+        <state relative-caret-position="91">
+          <caret line="803" column="58" selection-start-line="803" selection-start-column="58" selection-end-line="803" selection-end-column="58" />
           <folding>
-            <element signature="imports" expanded="true" />
             <element signature="method#DrawView#0;class#DrawView#0" expanded="false" />
             <element signature="method#getFileSize#0;class#DrawView#0" expanded="false" />
             <element signature="method#readFile#0;class#DrawView#0" expanded="false" />
@@ -907,10 +885,18 @@
             <element signature="method#createLevel#0;class#DrawView#0" expanded="false" />
             <element signature="method#checkVision#0;class#DrawView#0" expanded="false" />
             <element signature="method#createScreen#0;class#DrawView#0" expanded="false" />
+            <element signature="method#enemyTurn#0;class#DrawView#0" expanded="false" />
             <element signature="method#playerTurn#0;class#DrawView#0" expanded="false" />
             <element signature="method#onDraw#0;class#DrawView#0" expanded="false" />
-            <element signature="method#onTouchEvent#0;class#DrawView#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/example/Kill_Deathinator/WorldObject.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="18" column="22" selection-start-line="18" selection-start-column="22" selection-end-line="18" selection-end-column="22" />
+          <folding />
         </state>
       </provider>
     </entry>
